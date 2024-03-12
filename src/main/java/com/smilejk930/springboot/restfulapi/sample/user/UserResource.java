@@ -21,12 +21,14 @@ public class UserResource {
     @Autowired
     private UserDaoService service;
 
+    // 모든 사용자를 검색하는 메소드
     @GetMapping("/users")
     public List<User> retrieveAllUsers() {
         return service.findAll();
     }
 
     @GetMapping("/users/{id}")
+    // 특정 사용자를 검색하는 메소드
     public User retrieveOneUsers(@PathVariable int id) {
         User user = service.findOne(id);
         if (user == null) {
@@ -36,13 +38,14 @@ public class UserResource {
     }
 
     @DeleteMapping("/users/{id}")
+    // 사용자를 삭제하는 메소드
     public void deleteUser(@PathVariable int id) {
         service.deleteById(id);
     }
 
+    // 사용자를 생성하는 메소드
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-
         User savedUser = service.save(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest() // 현재 요청에 해당하는 URL을 반환하고

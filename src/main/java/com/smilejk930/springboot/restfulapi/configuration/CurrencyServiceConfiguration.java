@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * custom한 currency-service에 대해0 properties를 설정한다.
+ * custom한 currency-service에 대한 properties를 설정한다.
  * currency-service.url
  * currency-service.username
  * currency-service.key
