@@ -1,6 +1,7 @@
 package com.smilejk930.springboot.restfulapi.response.error;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,13 @@ import lombok.Getter;
 @Getter
 public class ErrorDetails {
 
+    public ErrorDetails(LocalDateTime timestamp, String message, String description) {
+        this.timestamp = timestamp;
+        this.message = message;
+        this.details = List.of(description);
+    }
+
     private LocalDateTime timestamp;
     private String message;
-    private String details;
+    private List<String> details;
 }
