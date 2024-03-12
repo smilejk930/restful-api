@@ -8,7 +8,8 @@
 "java.configuration.runtimes": [
         {
             "name": "JavaSE-21",
-            "path": "D:\\develop\\dev-workspace\\jdk\\openjdk-21.0.2"
+            "path": "D:\\develop\\dev-workspace\\jdk\\openjdk-21.0.2",
+            "default": true
         }
     ]
 ```
