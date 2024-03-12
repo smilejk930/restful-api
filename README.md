@@ -13,3 +13,15 @@
         }
     ]
 ```
+
+## vscode, cursor 등 사용을 위한 시스템 변수 등록
+
+1. JAVA_HOME
+   - openjdk-21.0.2
+2. MAVEN_HOME
+   - apache-maven-3.9.6
+
+이후 path에 등록
+
+- %JAVA_HOME%\bin
+- %MAVEN_HOME%\bin
