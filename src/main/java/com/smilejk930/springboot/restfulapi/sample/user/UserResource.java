@@ -27,8 +27,8 @@ public class UserResource {
         return service.findAll();
     }
 
-    @GetMapping("/users/{id}")
     // 특정 사용자를 검색하는 메소드
+    @GetMapping("/users/{id}")
     public User retrieveOneUsers(@PathVariable int id) {
         User user = service.findOne(id);
         if (user == null) {
@@ -37,8 +37,8 @@ public class UserResource {
         return user;
     }
 
-    @DeleteMapping("/users/{id}")
     // 사용자를 삭제하는 메소드
+    @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id) {
         service.deleteById(id);
     }
