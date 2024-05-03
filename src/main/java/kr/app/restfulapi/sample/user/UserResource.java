@@ -1,9 +1,13 @@
 package kr.app.restfulapi.sample.user;
 
-
+//메소드에 대해 정적 임포트를 수행
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +32,20 @@ public class UserResource {
 
   // 특정 사용자를 검색하는 메소드
   @GetMapping("/users/{id}")
-  public User retrieveOneUsers(@PathVariable int id) {
+  public EntityModel<User> retrieveOneUsers(@PathVariable int id) {
     User user = service.findOne(id);
     if (user == null) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
-    return service.findOne(id);
+
+    /*
+     * EntityModel은 Spring HATEOAS에서 제공하는 클래스로, RESTful API에서 리소스를 표현하고 관련 링크를 추가하는데 사용됩니다.
+     */
+    EntityModel<User> entityModel = EntityModel.of(user);
+    WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers()); // 컨트롤러 메소드를 가리키는 링크 생성
+    entityModel.add(link.withRel("all-users"));// "all-users" 관계를 가진 링크를 entityModel에 추가합니다.
+
+    return entityModel;
   }
 
   // 사용자를 생성하는 메소드
