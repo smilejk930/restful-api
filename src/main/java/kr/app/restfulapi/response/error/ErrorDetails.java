@@ -1,6 +1,6 @@
 package kr.app.restfulapi.response.error;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 public class ErrorDetails {
 
-  private LocalDate timestamp;
+  private LocalDateTime timestamp;
   private String message;
   private String details;
 }
