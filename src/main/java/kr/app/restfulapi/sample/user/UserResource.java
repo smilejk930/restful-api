@@ -20,11 +20,13 @@ public class UserResource {
   @Autowired
   private UserDaoService service;
 
+  // 모든 사용자를 검색하는 메소드
   @GetMapping("/users")
   public List<User> retrieveAllUsers() {
     return service.findAll();
   }
 
+  // 특정 사용자를 검색하는 메소드
   @GetMapping("/users/{id}")
   public User retrieveOneUsers(@PathVariable int id) {
     User user = service.findOne(id);
@@ -34,6 +36,7 @@ public class UserResource {
     return service.findOne(id);
   }
 
+  // 사용자를 생성하는 메소드
   @PostMapping("/users")
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 
@@ -46,6 +49,7 @@ public class UserResource {
     return ResponseEntity.created(location).build();
   }
 
+  // 사용자를 삭제하는 메소드
   @DeleteMapping("/users/{id}")
   public void deleteUser(@PathVariable int id) {
     service.deleteById(id);
