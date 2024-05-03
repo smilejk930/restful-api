@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,5 +43,10 @@ public class UserResource {
         .buildAndExpand(savedUser.getId()).toUri();
     // ResponseEntity를 사용하여 생성된 사용자의 URI를 포함한 응답을 반환합니다. 상태 코드는 201 Created입니다.
     return ResponseEntity.created(location).build();
+  }
+
+  @DeleteMapping("/users/{id}")
+  public void deleteUser(@PathVariable int id) {
+    service.deleteById(id);
   }
 }
