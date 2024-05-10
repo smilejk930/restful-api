@@ -1,4 +1,4 @@
-package kr.app.restfulapi.configuration;
+package kr.app.restfulapi.sample.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package kr.app.restfulapi.configuration;
+package kr.app.restfulapi.sample.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
