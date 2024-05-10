@@ -1,6 +1,7 @@
 package kr.app.restfulapi.sample.course.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import kr.app.restfulapi.sample.course.Course;
@@ -21,11 +22,21 @@ public class CourseJdbcRepository {
           where id = ?;
       """;
 
+  private static String SELECT_QUERY = """
+          select * from course
+          where id = ?;
+      """;
+
   public void insert(Course course) {
     springjdbcTemplate.update(INSERT_QUERY, course.getId(), course.getName(), course.getAuthor());
   }
 
   public void deleteById(long id) {
     springjdbcTemplate.update(DELETE_QUERY, id);
+  }
+
+  public Course findById(long id) {
+    return springjdbcTemplate.queryForObject(SELECT_QUERY,
+        new BeanPropertyRowMapper<>(Course.class), id);
   }
 }
