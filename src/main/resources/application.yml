@@ -1,0 +1,10 @@
+#prod, dev 공통 설정
+#공백: 스페이스 2칸
+spring:
+  application:
+    name: restful-api
+  profiles: #profile(e.g. dev, prod, test, qa, ...)
+    active: dev
+
+server:
+  port: 9090 #서버 포트 설정

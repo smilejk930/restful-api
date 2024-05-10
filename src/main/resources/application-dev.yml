@@ -1,0 +1,12 @@
+#개발버전 설정
+#logging
+logging:
+  level:
+    org:
+      springframework: debug
+
+#custom properties
+currency-service:
+  url: http://dev.com/currency
+  username: devName
+  key: devKey
