@@ -10,3 +10,10 @@ currency-service:
   url: http://dev.com/currency
   username: devName
   key: devKey
+
+#actuator의 모든 정보를 볼 수 있음
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
