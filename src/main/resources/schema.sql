@@ -1,3 +1,4 @@
+/**
 create table course
 (
     id bigint not null,
@@ -5,3 +6,4 @@ create table course
     author varchar(255) not null,
     primary key (id)
 );
+*/
