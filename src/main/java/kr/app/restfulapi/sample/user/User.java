@@ -1,6 +1,9 @@
 package kr.app.restfulapi.sample.user;
 
 import java.time.LocalDate;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,8 +15,11 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
+@Entity(name = "user_details")
 public class User {
 
+  @Id
+  @GeneratedValue
   private Integer id;
 
   @Size(min = 2, message = "이름은 2글자 이상 입력해주세요.")
