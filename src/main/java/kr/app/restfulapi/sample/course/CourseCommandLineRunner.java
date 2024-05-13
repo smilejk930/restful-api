@@ -1,16 +1,19 @@
-package kr.app.restfulapi.sample.course.jdbc;
+package kr.app.restfulapi.sample.course;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import kr.app.restfulapi.sample.course.Course;
+import kr.app.restfulapi.sample.course.jpa.CourseJpaRepository;
 
 @Component
 // 어플리케이션이 시작할때 실행되게 하려면 implements CommandLineRunner
-public class CourseJdbcCommandLineRunner implements CommandLineRunner {
+public class CourseCommandLineRunner implements CommandLineRunner {
+
+  // @Autowired
+  // private CourseJdbcRepository repository;
 
   @Autowired
-  private CourseJdbcRepository repository;
+  private CourseJpaRepository repository;
 
   @Override
   public void run(String... args) throws Exception {
