@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import kr.app.restfulapi.sample.user.jpa.UserRepository;
+import kr.app.restfulapi.sample.user.post.Post;
 
 @RestController
 public class UserJpaResource {
@@ -67,5 +68,16 @@ public class UserJpaResource {
   @DeleteMapping("/jpa/users/{id}")
   public void deleteUser(@PathVariable int id) {
     repository.deleteById(id);
+  }
+
+  // 사용자의 모든 게시물을 조회하는 메소드
+  @GetMapping("/jpa/users/{id}/posts")
+  public List<Post> retrievePostsForUser(@PathVariable int id) {
+    Optional<User> user = repository.findById(id);
+    if (user.isEmpty()) {
+      throw new UserNotFoundException(String.format("ID[%s] not found", id));
+    }
+
+    return user.get().getPosts();
   }
 }
