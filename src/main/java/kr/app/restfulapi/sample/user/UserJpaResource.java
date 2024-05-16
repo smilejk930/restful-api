@@ -26,7 +26,7 @@ import kr.app.restfulapi.sample.user.post.Post;
 public class UserJpaResource {
 
   @Resource
-  private UserRepository repository;
+  private UserRepository userRepository;
 
   @Resource
   private PostRepository postRepository;
@@ -34,13 +34,13 @@ public class UserJpaResource {
   // 모든 사용자를 조회하는 메소드
   @GetMapping("/jpa/users")
   public List<User> retrieveAllUsers() {
-    return repository.findAll();
+    return userRepository.findAll();
   }
 
   // 사용자를 조회하는 메소드
   @GetMapping("/jpa/users/{id}")
   public EntityModel<User> retrieveOneUser(@PathVariable int id) {
-    Optional<User> user = repository.findById(id);
+    Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
@@ -59,7 +59,7 @@ public class UserJpaResource {
   @PostMapping("/jpa/users")
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 
-    User savedUser = repository.save(user);
+    User savedUser = userRepository.save(user);
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest() // 현재 요청에 해당하는 URL을 반환하고
         .path("/{id}") // 생성된 사용자의 id를 반환
@@ -71,13 +71,13 @@ public class UserJpaResource {
   // 사용자를 삭제하는 메소드
   @DeleteMapping("/jpa/users/{id}")
   public void deleteUser(@PathVariable int id) {
-    repository.deleteById(id);
+    userRepository.deleteById(id);
   }
 
   // 사용자의 모든 게시물을 조회하는 메소드
   @GetMapping("/jpa/users/{id}/posts")
   public List<Post> retrievePostsForUser(@PathVariable int id) {
-    Optional<User> user = repository.findById(id);
+    Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
@@ -88,7 +88,7 @@ public class UserJpaResource {
   // 사용자의 게시물을 조회하는 메소드
   @GetMapping("/jpa/users/{id}/posts/{postId}")
   public EntityModel<Post> retrieveOnePostForUser(@PathVariable int id, @PathVariable int postId) {
-    Optional<User> user = repository.findById(id);
+    Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
@@ -112,7 +112,7 @@ public class UserJpaResource {
   @PostMapping("/jpa/users/{id}/posts")
   public ResponseEntity<Post> createPostForUser(@PathVariable int id,
       @Valid @RequestBody Post post) {
-    Optional<User> user = repository.findById(id);
+    Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
@@ -131,7 +131,7 @@ public class UserJpaResource {
   // 사용자의 게시물을 삭제하는 메소드
   @DeleteMapping("/jpa/users/{id}/posts/{postId}")
   public void deletePostForUser(@PathVariable int id, @PathVariable int postId) {
-    Optional<User> user = repository.findById(id);
+    Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
