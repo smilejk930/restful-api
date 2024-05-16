@@ -6,6 +6,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Size;
 import kr.app.restfulapi.sample.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Post {
   @GeneratedValue
   private Integer id;
 
+  @Size(min = 10, message = "설명은 10글자 이상 입력해주세요.")
   private String description;
 
   /*

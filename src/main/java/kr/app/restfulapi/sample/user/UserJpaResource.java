@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import kr.app.restfulapi.sample.user.jpa.PostRepository;
 import kr.app.restfulapi.sample.user.jpa.UserRepository;
 import kr.app.restfulapi.sample.user.post.Post;
 
@@ -27,15 +28,18 @@ public class UserJpaResource {
   @Resource
   private UserRepository repository;
 
-  // 모든 사용자를 검색하는 메소드
+  @Resource
+  private PostRepository postRepository;
+
+  // 모든 사용자를 조회하는 메소드
   @GetMapping("/jpa/users")
   public List<User> retrieveAllUsers() {
     return repository.findAll();
   }
 
-  // 특정 사용자를 검색하는 메소드
+  // 사용자를 조회하는 메소드
   @GetMapping("/jpa/users/{id}")
-  public EntityModel<User> retrieveOneUsers(@PathVariable int id) {
+  public EntityModel<User> retrieveOneUser(@PathVariable int id) {
     Optional<User> user = repository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
@@ -79,5 +83,64 @@ public class UserJpaResource {
     }
 
     return user.get().getPosts();
+  }
+
+  // 사용자의 게시물을 조회하는 메소드
+  @GetMapping("/jpa/users/{id}/posts/{postId}")
+  public EntityModel<Post> retrieveOnePostForUser(@PathVariable int id, @PathVariable int postId) {
+    Optional<User> user = repository.findById(id);
+    if (user.isEmpty()) {
+      throw new UserNotFoundException(String.format("ID[%s] not found", id));
+    }
+
+    Optional<Post> post = postRepository.findById(postId);
+    if (post.isEmpty() || post.get().getUser().getId() != user.get().getId()) {
+      throw new UserNotFoundException(String.format("POST[%s] not found", postId));
+    }
+
+    /*
+    * EntityModel은 Spring HATEOAS에서 제공하는 클래스로, RESTful API에서 리소스를 표현하고 관련 링크를 추가하는데 사용됩니다.
+    */
+    EntityModel<Post> entityModel = EntityModel.of(post.get());
+    WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrievePostsForUser(id)); // 컨트롤러 메소드를 가리키는 링크 생성
+    entityModel.add(link.withRel("all-posts"));// "all-posts" 관계를 가진 링크를 entityModel에 추가합니다.
+
+    return entityModel;
+  }
+
+  // 사용자의 게시물을 생성하는 메소드
+  @PostMapping("/jpa/users/{id}/posts")
+  public ResponseEntity<Post> createPostForUser(@PathVariable int id,
+      @Valid @RequestBody Post post) {
+    Optional<User> user = repository.findById(id);
+    if (user.isEmpty()) {
+      throw new UserNotFoundException(String.format("ID[%s] not found", id));
+    }
+
+    post.setUser(user.get());
+
+    Post savedPost = postRepository.save(post);
+
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest() // 현재 요청에 해당하는 URL을 반환하고
+        .path("/{id}") // 생성된 게시물의 id를 반환
+        .buildAndExpand(savedPost.getId()).toUri();
+    // ResponseEntity를 사용하여 생성된 게시물의 URI를 포함한 응답을 반환합니다. 상태 코드는 201 Created입니다.
+    return ResponseEntity.created(location).build();
+  }
+
+  // 사용자의 게시물을 삭제하는 메소드
+  @DeleteMapping("/jpa/users/{id}/posts/{postId}")
+  public void deletePostForUser(@PathVariable int id, @PathVariable int postId) {
+    Optional<User> user = repository.findById(id);
+    if (user.isEmpty()) {
+      throw new UserNotFoundException(String.format("ID[%s] not found", id));
+    }
+
+    Optional<Post> post = postRepository.findById(postId);
+    if (post.isEmpty() || post.get().getUser().getId() != user.get().getId()) {
+      throw new UserNotFoundException(String.format("POST[%s] not found", postId));
+    }
+
+    postRepository.deleteById(postId);
   }
 }
