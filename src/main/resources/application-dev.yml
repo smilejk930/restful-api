@@ -13,6 +13,11 @@ currency-service:
 
 #actuator의 모든 정보를 볼 수 있음
 management:
+  server:
+    port: 9292
+  endpoint:
+    health :
+      show-details: always
   endpoints:
     web:
       exposure:
