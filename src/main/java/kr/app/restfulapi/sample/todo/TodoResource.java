@@ -16,11 +16,6 @@ public class TodoResource {
   @Autowired
   private TodoService todoService;
 
-  @GetMapping(path = "/basicauth")
-  public String basicAuthCheck() {
-    return "Success";
-  }
-
   @GetMapping("/users/{username}/todos")
   public List<Todo> retrieveTodos(@PathVariable String username) {
     return todoService.findByUsername(username);
