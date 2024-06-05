@@ -7,18 +7,19 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -31,8 +32,8 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 public class JwtSecurityConfig {
 
   @Bean
@@ -43,7 +44,7 @@ public class JwtSecurityConfig {
         .authorizeHttpRequests(auth -> auth.requestMatchers("/authenticate").permitAll()
             // .requestMatchers(PathRequest.toH2Console()).permitAll() // h2-console is a servlet and NOT recommended for a production
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
-        .csrf(AbstractHttpConfigurer::disable)
+        .csrf(csrf -> csrf.disable())
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt) // Deprecated in SB 3.1.x
@@ -52,7 +53,7 @@ public class JwtSecurityConfig {
         // .headers(header -> { // Deprecated in SB 3.1.x
         // header.frameOptions().sameOrigin();
         // })
-        .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)) // Starting from SB 3.1.x using Lambda DSL
+        .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())) // Starting from SB 3.1.x using Lambda DSL
         .build();
   }
 
@@ -66,10 +67,24 @@ public class JwtSecurityConfig {
 
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withUsername("smilejk").password("{noop}password").authorities("read")
-        .roles("USER").build();
+    UserDetails user = User.withUsername("smilejk")
+        // .password("{noop}password") // {noop}: 인코딩을 하지 않음
+        // .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
+        .password("{bcrypt}" + passwordEncoder().encode("password")) // BCrypt 해시 함수로 암호화
+        .authorities("read").roles("USER").build();
 
-    return new InMemoryUserDetailsManager(user);
+    UserDetails admin = User.withUsername("admin")
+        // .password("{noop}password")
+        // .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
+        .password("{bcrypt}" + passwordEncoder().encode("password")) // BCrypt 해시 함수로 암호화
+        .roles("ADMIN").build();
+
+    return new InMemoryUserDetailsManager(user, admin);
+  }
+
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
   @Bean

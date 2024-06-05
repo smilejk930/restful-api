@@ -2,7 +2,6 @@ package kr.app.restfulapi.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+//@Configuration
 public class BasicAuthSecurityConfiguration {
 
   @Bean
@@ -35,14 +34,15 @@ public class BasicAuthSecurityConfiguration {
   @Bean
   public UserDetailsService userDetailsService() {
     UserDetails user = User.withUsername("smilejk")
-        // .password("{noop}password")
-        .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
-        .authorities("read") // {noop}: 인코딩을 하지 않음
-        .roles("USER").build();
+        // .password("{noop}password") // {noop}: 인코딩을 하지 않음
+        // .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
+        .password("{bcrypt}" + passwordEncoder().encode("password")) // BCrypt 해시 함수로 암호화
+        .authorities("read").roles("USER").build();
 
     UserDetails admin = User.withUsername("admin")
         // .password("{noop}password")
-        .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
+        // .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
+        .password("{bcrypt}" + passwordEncoder().encode("password")) // BCrypt 해시 함수로 암호화
         .roles("ADMIN").build();
 
     return new InMemoryUserDetailsManager(user, admin);
