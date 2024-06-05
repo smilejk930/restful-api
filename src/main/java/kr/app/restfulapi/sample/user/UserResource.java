@@ -5,7 +5,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.net.URI;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,11 @@ import jakarta.validation.Valid;
 @RestController
 public class UserResource {
 
-  @Autowired
-  private UserDaoService service;
+  private final UserDaoService service;
+
+  public UserResource(UserDaoService service) {
+    this.service = service;
+  }
 
   // 모든 사용자를 검색하는 메소드
   @GetMapping("/users")

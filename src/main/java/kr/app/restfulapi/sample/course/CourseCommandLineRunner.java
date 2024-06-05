@@ -1,6 +1,5 @@
 package kr.app.restfulapi.sample.course;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import kr.app.restfulapi.sample.course.springdatajpa.CourseSpringDataJpaRepository;
@@ -15,8 +14,11 @@ public class CourseCommandLineRunner implements CommandLineRunner {
   // @Autowired
   // private CourseJpaRepository repository;
 
-  @Autowired
-  private CourseSpringDataJpaRepository repository;
+  private final CourseSpringDataJpaRepository repository;
+
+  public CourseCommandLineRunner(CourseSpringDataJpaRepository repository) {
+    this.repository = repository;
+  }
 
   @Override
   public void run(String... args) throws Exception {

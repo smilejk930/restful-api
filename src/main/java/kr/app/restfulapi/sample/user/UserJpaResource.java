@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import kr.app.restfulapi.sample.user.jpa.PostRepository;
 import kr.app.restfulapi.sample.user.jpa.UserRepository;
@@ -25,11 +24,13 @@ import kr.app.restfulapi.sample.user.post.Post;
 @RestController
 public class UserJpaResource {
 
-  @Resource
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
+  private final PostRepository postRepository;
 
-  @Resource
-  private PostRepository postRepository;
+  public UserJpaResource(UserRepository userRepository, PostRepository postRepository) {
+    this.userRepository = userRepository;
+    this.postRepository = postRepository;
+  }
 
   // 모든 사용자를 조회하는 메소드
   @GetMapping("/jpa/users")

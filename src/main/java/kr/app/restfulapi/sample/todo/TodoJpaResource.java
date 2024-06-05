@@ -1,7 +1,6 @@
 package kr.app.restfulapi.sample.todo;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +15,13 @@ import kr.app.restfulapi.sample.todo.repository.TodoRepository;
 @RestController
 public class TodoJpaResource {
 
-  @Autowired
-  private TodoService todoService;
+  private final TodoService todoService;
+  private final TodoRepository todoRepository;
 
-  @Autowired
-  private TodoRepository todoRepository;
+  public TodoJpaResource(TodoService todoService, TodoRepository todoRepository) {
+    this.todoService = todoService;
+    this.todoRepository = todoRepository;
+  }
 
   @GetMapping("/users/{username}/todos")
   public List<Todo> retrieveTodos(@PathVariable String username) {
