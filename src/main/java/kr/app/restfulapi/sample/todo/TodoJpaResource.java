@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 import kr.app.restfulapi.sample.todo.repository.TodoRepository;
 
 @RestController
@@ -49,7 +50,7 @@ public class TodoJpaResource {
   }
 
   @PostMapping("/users/{username}/todos")
-  public Todo createTodo(@PathVariable String username, @RequestBody Todo todo) {
+  public Todo createTodo(@PathVariable String username, @Valid @RequestBody Todo todo) {
     todo.setUsername(username);
     todo.setId(null);
     return todoRepository.save(todo);
