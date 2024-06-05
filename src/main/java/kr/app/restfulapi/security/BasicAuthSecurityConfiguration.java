@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -33,12 +34,22 @@ public class BasicAuthSecurityConfiguration {
 
   @Bean
   public UserDetailsService userDetailsService() {
-    UserDetails user = User.withUsername("smilejk").password("{noop}password").authorities("read") // {noop}: 인코딩을 하지 않음
+    UserDetails user = User.withUsername("smilejk")
+        // .password("{noop}password")
+        .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
+        .authorities("read") // {noop}: 인코딩을 하지 않음
         .roles("USER").build();
 
-    UserDetails admin =
-        User.withUsername("admin").password("{noop}password").roles("ADMIN").build();
+    UserDetails admin = User.withUsername("admin")
+        // .password("{noop}password")
+        .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
+        .roles("ADMIN").build();
 
     return new InMemoryUserDetailsManager(user, admin);
+  }
+
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }
