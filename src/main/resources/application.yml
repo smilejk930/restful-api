@@ -41,11 +41,11 @@ spring:
     #defer-datasource-initialization: true
 
   #security
-  security:
-    user:
-      name: username
-      password: password
-      
+  #security:
+  #  user:
+  #    name: username
+  #    password: password
+  
 #서버 포트 설정
 server:
   port: 9090
