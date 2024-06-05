@@ -26,7 +26,8 @@ public class BasicAuthSecurityConfiguration {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 스프링시큐리티가 세션을 생성하지도 않고 기존 것을 사용하지도 않음
                                                                                        // (JWT 같은토큰방식을 쓸때 사용하는 설정)
-        .csrf(csrf -> csrf.disable())// CSRF -> POST, PUT; CSRF 해제 -> POST, PUT 가능
+        .csrf(csrf -> csrf.disable()) // CSRF -> POST, PUT; CSRF 해제 -> POST, PUT 가능
+        .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())) // Request가 동일한 origin에서 오는 경우 해당 애플리케이션에 프레임을 허용
         .build();
   }
 
