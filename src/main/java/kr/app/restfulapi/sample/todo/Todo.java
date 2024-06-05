@@ -27,7 +27,7 @@ public class Todo {
 
   @Id
   @GeneratedValue
-  private int id;
+  private Integer id;
 
   private String username;
 
