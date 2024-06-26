@@ -27,15 +27,16 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     // Apply search criteria if provided
     BooleanBuilder whereBuilder = new BooleanBuilder();
     if (post != null) {
-      if (post.getTitle() != null) {
-        whereBuilder.and(qPost.title.containsIgnoreCase(post.getTitle()));
+      if (post.getSj() != null) {
+        whereBuilder.and(qPost.sj.containsIgnoreCase(post.getSj()));
       }
-      if (post.getContent() != null) {
-        whereBuilder.and(qPost.content.containsIgnoreCase(post.getContent()));
+      if (post.getCn() != null) {
+        whereBuilder.and(qPost.cn.containsIgnoreCase(post.getCn()));
       }
     }
-    List<Post> results = queryFactory.selectFrom(qPost).where(whereBuilder).orderBy(qPost.id.desc())
-        .offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+    List<Post> results =
+        queryFactory.selectFrom(qPost).where(whereBuilder).orderBy(qPost.registDt.desc())
+            .offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
     long totalCount = results.size();
 
     return new PageImpl<>(results, pageable, totalCount);

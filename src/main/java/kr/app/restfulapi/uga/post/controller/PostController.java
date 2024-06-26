@@ -35,7 +35,8 @@ public class PostController {
 
   @GetMapping
   public ResponseEntity<Page<PostDto>> getAllPost(@ModelAttribute PostDto postDto,
-      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+      @PageableDefault(size = 10, sort = "registDt",
+          direction = Sort.Direction.DESC) Pageable pageable,
       @AuthenticationPrincipal UserDetails userDetails) {
 
     Page<PostDto> posts = postService.getAllPosts(postDto, pageable, userDetails);
@@ -43,15 +44,15 @@ public class PostController {
     return ResponseEntity.ok(posts);
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<EntityModel<PostDto>> getPostById(@PathVariable String id,
+  @GetMapping("/{postId}")
+  public ResponseEntity<EntityModel<PostDto>> getPostById(@PathVariable String postId,
       @AuthenticationPrincipal UserDetails userDetails) {
 
-    Optional<PostDto> optionalPostDto = postService.getPostById(id, userDetails);
+    Optional<PostDto> optionalPostDto = postService.getPostById(postId, userDetails);
 
     return optionalPostDto.map(postDto -> {
       EntityModel<PostDto> model = EntityModel.of(postDto);
-      model.add(linkTo(methodOn(this.getClass()).getPostById(id, userDetails)).withSelfRel());
+      model.add(linkTo(methodOn(this.getClass()).getPostById(postId, userDetails)).withSelfRel());
       model.add(
           linkTo(methodOn(this.getClass()).getAllPost(postDto, Pageable.unpaged(), userDetails))
               .withRel("allPosts"));
@@ -69,20 +70,20 @@ public class PostController {
     return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<PostDto> updatePost(@PathVariable String id,
+  @PutMapping("/{postId}")
+  public ResponseEntity<PostDto> updatePost(@PathVariable String postId,
       @RequestBody @Valid PostDto postDto, @AuthenticationPrincipal UserDetails userDetails) {
 
-    Optional<PostDto> updatedPost = postService.updatePost(id, postDto, userDetails);
+    Optional<PostDto> updatedPost = postService.updatePost(postId, postDto, userDetails);
 
     return updatedPost.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deletePost(@PathVariable String id,
+  @DeleteMapping("/{postId}")
+  public ResponseEntity<Void> deletePost(@PathVariable String postId,
       @AuthenticationPrincipal UserDetails userDetails) {
 
-    boolean deleted = postService.deletePost(id, userDetails);
+    boolean deleted = postService.deletePost(postId, userDetails);
 
     return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
   }
