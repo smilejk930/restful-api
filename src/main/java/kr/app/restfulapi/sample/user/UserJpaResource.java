@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,8 @@ public class UserJpaResource {
   private final UserRepository userRepository;
   private final PostRepository postRepository;
 
-  public UserJpaResource(UserRepository userRepository, PostRepository postRepository) {
+  public UserJpaResource(@Qualifier("sampleUserRepository") UserRepository userRepository,
+      @Qualifier("samplePostRepository") PostRepository postRepository) {
     this.userRepository = userRepository;
     this.postRepository = postRepository;
   }
