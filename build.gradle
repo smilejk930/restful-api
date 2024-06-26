@@ -1,32 +1,32 @@
 buildscript {
    dependencies {
-      classpath('gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10')
+      classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:1.0.10")
    }
 }
 
 plugins {
-	id 'java'
-	id 'war'
-	id 'org.springframework.boot' version '3.2.5'
-	id 'io.spring.dependency-management' version '1.1.4'
-	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+	id "java"
+	id "war"
+	id "org.springframework.boot" version "3.2.5"
+	id "io.spring.dependency-management" version "1.1.4"
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
-apply plugin: 'com.ewerk.gradle.plugins.querydsl'
+apply plugin: "com.ewerk.gradle.plugins.querydsl"
 
-group = 'kr.app'
-version = '0.0.1-SNAPSHOT'
+group = "kr.app"
+version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = '21'
+	sourceCompatibility = "21"
 }
 
-def querydslVersion = '5.0.0:jakarta'
-def lombokVersion = '1.18.32'
-def hibernateVersion = '6.5.2.Final'
-def cubridJdbcVersion = '11.2.0.0035'
-def querydslDir = 'src/main/generated/querydsl'
-def sourceDir = 'src/main/java'
+def querydslVersion = "5.0.0:jakarta"
+def lombokVersion = "1.18.32"
+def hibernateVersion = "6.5.2.Final"
+def cubridJdbcVersion = "11.2.0.0035"
+def querydslDir = "src/main/generated/querydsl"
+def sourceDir = "src/main/java"
 
 configurations {
 	compileOnly {
@@ -38,43 +38,43 @@ configurations {
 repositories {
 	mavenCentral()
 	maven {
-		url 'https://maven.cubrid.org'
+		url "https://maven.cubrid.org"
 	}
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	implementation 'org.springframework.boot:spring-boot-configuration-processor'
-	// implementation 'org.springframework.boot:spring-boot-starter-data-jdbc' //cubrid-jdbc와 충돌로 인해 주석처리 함
-	// implementation 'org.springframework.data:spring-data-rest-hal-explorer:4.2.5' //HAL Explorer
-	// implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0' //Swagger-ui
-	// implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.1' //Response를 XML로 반환
-	implementation 'cubrid:cubrid-jdbc:$cubridJdbcVersion'
-	implementation 'org.hibernate:hibernate-core:$hibernateVersion' //cubrid 접속을 위한 추가
-	implementation 'org.hibernate.orm:hibernate-community-dialects:$hibernateVersion' //cubrid 접속을 위한 추가
-	implementation 'com.querydsl:querydsl-jpa:$querydslVersion' // Querydsl
+	implementation "org.springframework.boot:spring-boot-starter-actuator"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.springframework.boot:spring-boot-starter-hateoas"
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation "org.springframework.boot:spring-boot-starter-validation"
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+	implementation "org.springframework.boot:spring-boot-configuration-processor"
+	// implementation "org.springframework.boot:spring-boot-starter-data-jdbc" //cubrid-jdbc와 충돌로 인해 주석처리 함
+	// implementation "org.springframework.data:spring-data-rest-hal-explorer:4.2.5" //HAL Explorer
+	// implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0" //Swagger-ui
+	// implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.1" //Response를 XML로 반환
+	implementation "cubrid:cubrid-jdbc:$cubridJdbcVersion"
+	implementation "org.hibernate:hibernate-core:$hibernateVersion" //cubrid 접속을 위한 추가
+	implementation "org.hibernate.orm:hibernate-community-dialects:$hibernateVersion" //cubrid 접속을 위한 추가
+	implementation "com.querydsl:querydsl-jpa:$querydslVersion" // Querydsl
 
-	compileOnly 'org.projectlombok:lombok:$lombokVersion'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	// runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok:$lombokVersion'
-	annotationProcessor 'com.querydsl:querydsl-apt:$querydslVersion' // Querydsl
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly "org.projectlombok:lombok:$lombokVersion"
+	developmentOnly "org.springframework.boot:spring-boot-devtools"
+	// runtimeOnly "com.h2database:h2"
+	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+	annotationProcessor "com.querydsl:querydsl-apt:$querydslVersion" // Querydsl
+	providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
 
-tasks.named('test') {
+tasks.named("test") {
 	useJUnitPlatform()
 }
 
 querydsl {
-	library = 'com.querydsl:querydsl-apt'
+	library = "com.querydsl:querydsl-apt"
 	jpa = true
 	querydslSourcesDir = querydslDir
 }
@@ -89,8 +89,8 @@ task generateQueryDSL(type: JavaCompile) {
 	classpath = configurations.compileClasspath
 	destinationDir = file(querydslDir)
 	options.compilerArgs = [
-		'-proc:only',
-		'-processor', 'com.querydsl.apt.jpa.JPAAnnotationProcessor'
+		"-proc:only",
+		"-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
 	]
 	outputs.dir querydslDir
 }
