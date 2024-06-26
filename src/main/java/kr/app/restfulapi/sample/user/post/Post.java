@@ -17,7 +17,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-@Entity
+@Entity(name = "sample_post")
 public class Post {
 
   @Id
