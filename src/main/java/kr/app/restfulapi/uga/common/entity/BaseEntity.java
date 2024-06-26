@@ -2,7 +2,9 @@ package kr.app.restfulapi.uga.common.entity;
 
 import java.time.LocalDateTime;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
@@ -16,12 +18,13 @@ import lombok.Getter;
 public abstract class BaseEntity {
 
   @Comment("등록자아이디")
-  // @CreatedBy
-  @Column(nullable = false)
-  private String registerId = "1";
+  @CreatedBy
+  @Column(updatable = false, nullable = false)
+  private String registerId;
 
   @Comment("수정자아이디")
-  // @LastModifiedBy
+  @LastModifiedBy
+  @Column(insertable = false)
   private String updusrId;
 
   @Comment("등록일시")
