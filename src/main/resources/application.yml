@@ -27,8 +27,9 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      naming: #테이블명의 "."을 Hibernate가 자동으로 "_"로 변환시키기 때문에 "."을 그대로 사용하기 위해 파라미터 설정
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      #naming: 
+        #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl #테이블명의 "."을 Hibernate가 자동으로 "_"로 변환시키기 때문에 "."을 그대로 사용하기 위해 파라미터 설정
+        #physical-strategy: org.hibernate.boot.model.naming.SpringPhysicalNamingStrategy #default(카멜케이스->스네니크케이스로 속성명 자동변경)
       ddl-auto: none
     properties: 
       hibernate:
