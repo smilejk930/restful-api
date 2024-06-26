@@ -32,7 +32,7 @@ public class PostService {
   }
 
   @Transactional(readOnly = true)
-  public Optional<PostDto> getPostById(Long id, UserDetails userDetails) {
+  public Optional<PostDto> getPostById(String id, UserDetails userDetails) {
 
     return postRepository.findById(id).map(PostDto::toDto);
 
@@ -50,7 +50,7 @@ public class PostService {
   }
 
   @Transactional
-  public Optional<PostDto> updatePost(Long id, PostDto postDto, UserDetails userDetails) {
+  public Optional<PostDto> updatePost(String id, PostDto postDto, UserDetails userDetails) {
 
     return postRepository.findById(id).map(post -> {
       post.setTitle(postDto.title());
@@ -61,7 +61,7 @@ public class PostService {
   }
 
   @Transactional
-  public boolean deletePost(Long id, UserDetails userDetails) {
+  public boolean deletePost(String id, UserDetails userDetails) {
 
     Optional<Post> optionalPost = postRepository.findById(id);
     if (optionalPost.isPresent()) {

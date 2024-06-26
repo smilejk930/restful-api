@@ -27,8 +27,9 @@ public class Post {
   // Resolved [java.lang.NullPointerException: Cannot invoke "cubrid.jdbc.driver.CUBRIDConnection.createCUBRIDException(int, java.lang.Throwable)"
   // because "this.con" is null]
   // @GeneratedValue(strategy = GenerationType.IDENTITY) //cubrid error 발생
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+  // @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
   private String title;
   private String content;
