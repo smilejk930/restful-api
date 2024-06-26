@@ -22,11 +22,31 @@ public class QPost extends EntityPathBase<Post> {
 
     public static final QPost post = new QPost("post");
 
-    public final StringPath content = createString("content");
+    public final kr.app.restfulapi.uga.common.entity.QBaseEntity _super = new kr.app.restfulapi.uga.common.entity.QBaseEntity(this);
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final StringPath cn = createString("cn");
 
-    public final StringPath title = createString("title");
+    //inherited
+    public final StringPath lastServerNm = _super.lastServerNm;
+
+    public final StringPath postId = createString("postId");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
+
+    //inherited
+    public final StringPath registerId = _super.registerId;
+
+    //inherited
+    public final StringPath registServerNm = _super.registServerNm;
+
+    public final StringPath sj = createString("sj");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
+
+    //inherited
+    public final StringPath updusrId = _super.updusrId;
 
     public final kr.app.restfulapi.uga.user.entity.QUser user;
 

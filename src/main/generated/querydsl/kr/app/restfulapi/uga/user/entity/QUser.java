@@ -20,13 +20,35 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final kr.app.restfulapi.uga.common.entity.QBaseEntity _super = new kr.app.restfulapi.uga.common.entity.QBaseEntity(this);
+
+    //inherited
+    public final StringPath lastServerNm = _super.lastServerNm;
+
+    public final StringPath loginId = createString("loginId");
 
     public final StringPath password = createString("password");
 
-    public final ListPath<kr.app.restfulapi.uga.post.entity.Post, kr.app.restfulapi.uga.post.entity.QPost> posts = this.<kr.app.restfulapi.uga.post.entity.Post, kr.app.restfulapi.uga.post.entity.QPost>createList("posts", kr.app.restfulapi.uga.post.entity.Post.class, kr.app.restfulapi.uga.post.entity.QPost.class, PathInits.DIRECT2);
+    public final ListPath<kr.app.restfulapi.uga.post.entity.Post, kr.app.restfulapi.uga.post.entity.QPost> post = this.<kr.app.restfulapi.uga.post.entity.Post, kr.app.restfulapi.uga.post.entity.QPost>createList("post", kr.app.restfulapi.uga.post.entity.Post.class, kr.app.restfulapi.uga.post.entity.QPost.class, PathInits.DIRECT2);
 
-    public final StringPath username = createString("username");
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
+
+    //inherited
+    public final StringPath registerId = _super.registerId;
+
+    //inherited
+    public final StringPath registServerNm = _super.registServerNm;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
+
+    //inherited
+    public final StringPath updusrId = _super.updusrId;
+
+    public final StringPath userId = createString("userId");
+
+    public final StringPath userNm = createString("userNm");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
