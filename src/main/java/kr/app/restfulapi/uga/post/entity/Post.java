@@ -28,7 +28,7 @@ public class Post {
   // because "this.con" is null]
   // @GeneratedValue(strategy = GenerationType.IDENTITY) //cubrid error 발생
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
+  private Long id;
 
   private String title;
   private String content;

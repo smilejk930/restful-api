@@ -27,12 +27,12 @@ public class PostService {
      * new RuntimeException("User not found"));
      */
     // 하드 코딩으로 user 정보 입력
-    User user = User.builder().id(1).build();
+    User user = User.builder().id(1L).build();
     return postRepository.findAllWithCriteria(postDto.toEntity(user), pageable).map(PostDto::toDto);
   }
 
   @Transactional(readOnly = true)
-  public Optional<PostDto> getPostById(Integer id, UserDetails userDetails) {
+  public Optional<PostDto> getPostById(Long id, UserDetails userDetails) {
 
     return postRepository.findById(id).map(PostDto::toDto);
 
@@ -42,7 +42,7 @@ public class PostService {
   public PostDto createPost(PostDto postDto, UserDetails userDetails) {
 
     // 하드 코딩으로 user 정보 입력
-    User user = User.builder().id(1).build();
+    User user = User.builder().id(1L).build();
     Post post = postDto.toEntity(user);
     Post savedPost = postRepository.save(post);
 
@@ -50,7 +50,7 @@ public class PostService {
   }
 
   @Transactional
-  public Optional<PostDto> updatePost(Integer id, PostDto postDto, UserDetails userDetails) {
+  public Optional<PostDto> updatePost(Long id, PostDto postDto, UserDetails userDetails) {
 
     return postRepository.findById(id).map(post -> {
       post.setTitle(postDto.title());
@@ -61,7 +61,7 @@ public class PostService {
   }
 
   @Transactional
-  public boolean deletePost(Integer id, UserDetails userDetails) {
+  public boolean deletePost(Long id, UserDetails userDetails) {
 
     Optional<Post> optionalPost = postRepository.findById(id);
     if (optionalPost.isPresent()) {

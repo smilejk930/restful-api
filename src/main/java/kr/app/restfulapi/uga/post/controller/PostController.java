@@ -44,7 +44,7 @@ public class PostController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<EntityModel<PostDto>> getPostById(@PathVariable Integer id,
+  public ResponseEntity<EntityModel<PostDto>> getPostById(@PathVariable Long id,
       @AuthenticationPrincipal UserDetails userDetails) {
 
     Optional<PostDto> optionalPostDto = postService.getPostById(id, userDetails);
@@ -70,7 +70,7 @@ public class PostController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<PostDto> updatePost(@PathVariable Integer id,
+  public ResponseEntity<PostDto> updatePost(@PathVariable Long id,
       @RequestBody @Valid PostDto postDto, @AuthenticationPrincipal UserDetails userDetails) {
 
     Optional<PostDto> updatedPost = postService.updatePost(id, postDto, userDetails);
@@ -79,7 +79,7 @@ public class PostController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deletePost(@PathVariable Integer id,
+  public ResponseEntity<Void> deletePost(@PathVariable Long id,
       @AuthenticationPrincipal UserDetails userDetails) {
 
     boolean deleted = postService.deletePost(id, userDetails);
