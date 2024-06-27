@@ -10,9 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.app.restfulapi.uga.post.entity.Post;
+import kr.app.restfulapi.uga.post.entity.QPost;
+import kr.app.restfulapi.util.QuerydslUtil;
 import lombok.RequiredArgsConstructor;
 
 /***
@@ -30,9 +34,11 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     BooleanExpression predicate = buildPredicate(condition);
 
-    List<Post> results =
-        queryFactory.selectFrom(post).where(predicate).orderBy(post.registDt.desc())
-            .offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+    OrderSpecifier<?>[] orderSpecifiers = QuerydslUtil
+        .getSortOrder(new PathBuilder<>(QPost.class, post.getMetadata()), pageable.getSort());
+
+    List<Post> results = queryFactory.selectFrom(post).where(predicate).orderBy(orderSpecifiers)
+        .offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
     Long totalCount = queryFactory.select(post.count()).from(post).where(predicate).fetchOne();
 
