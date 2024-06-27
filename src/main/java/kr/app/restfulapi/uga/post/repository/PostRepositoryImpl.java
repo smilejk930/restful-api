@@ -28,7 +28,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
   @Transactional(readOnly = true)
   public Page<Post> findAllWithCriteria(Post condition, Pageable pageable) {
 
-    BooleanExpression predicate = buildPredicate(Optional.ofNullable(condition));
+    BooleanExpression predicate = buildPredicate(condition);
 
     List<Post> results =
         queryFactory.selectFrom(post).where(predicate).orderBy(post.registDt.desc())
@@ -39,14 +39,18 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     return new PageImpl<>(results, pageable, totalCount);
   }
 
-  private BooleanExpression buildPredicate(Optional<Post> optPost) {
-    String sj = optPost.map(Post::getSj).orElse("");
-    String cn = optPost.map(Post::getCn).orElse("");
+  /**
+   * 조건절 Build
+   */
+  private BooleanExpression buildPredicate(Post condition) {
 
     BooleanExpression predicate = post.isNotNull();
 
-    predicate = StringUtils.hasText(sj) ? predicate.and(post.sj.containsIgnoreCase(sj)) : predicate;
-    predicate = StringUtils.hasText(cn) ? predicate.and(post.cn.containsIgnoreCase(cn)) : predicate;
+    Optional<Post> opt = Optional.ofNullable(condition);
+    opt.map(Post::getSj).filter(StringUtils::hasText)
+        .ifPresent(str -> predicate.and(post.sj.containsIgnoreCase(str)));
+    opt.map(Post::getCn).filter(StringUtils::hasText)
+        .ifPresent(str -> predicate.and(post.cn.containsIgnoreCase(str)));
 
     return predicate;
   }
