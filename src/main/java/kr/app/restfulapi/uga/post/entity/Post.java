@@ -24,8 +24,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "post", schema = "TESTUSER",
     // uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id"}, name = "fk_user_id")},
-    indexes = {@Index(name = "idx_sj", columnList = "sj"),
-        @Index(name = "idx_regist_dt", columnList = "regist_dt")})
+    indexes = {@Index(name = "idx_sj", columnList = "sj"), @Index(name = "idx_regist_dt", columnList = "regist_dt")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

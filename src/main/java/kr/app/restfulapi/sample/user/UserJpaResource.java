@@ -28,8 +28,7 @@ public class UserJpaResource {
   private final UserRepository userRepository;
   private final PostRepository postRepository;
 
-  public UserJpaResource(@Qualifier("sampleUserRepository") UserRepository userRepository,
-      @Qualifier("samplePostRepository") PostRepository postRepository) {
+  public UserJpaResource(@Qualifier("sampleUserRepository") UserRepository userRepository, @Qualifier("samplePostRepository") PostRepository postRepository) {
     this.userRepository = userRepository;
     this.postRepository = postRepository;
   }
@@ -66,7 +65,8 @@ public class UserJpaResource {
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest() // 현재 요청에 해당하는 URL을 반환하고
         .path("/{id}") // 생성된 사용자의 id를 반환
-        .buildAndExpand(savedUser.getId()).toUri();
+        .buildAndExpand(savedUser.getId())
+        .toUri();
     // ResponseEntity를 사용하여 생성된 사용자의 URI를 포함한 응답을 반환합니다. 상태 코드는 201 Created입니다.
     return ResponseEntity.created(location).build();
   }
@@ -113,8 +113,7 @@ public class UserJpaResource {
 
   // 사용자의 게시물을 생성하는 메소드
   @PostMapping("/jpa/users/{id}/posts")
-  public ResponseEntity<Post> createPostForUser(@PathVariable int id,
-      @Valid @RequestBody Post post) {
+  public ResponseEntity<Post> createPostForUser(@PathVariable int id, @Valid @RequestBody Post post) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
@@ -126,7 +125,8 @@ public class UserJpaResource {
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest() // 현재 요청에 해당하는 URL을 반환하고
         .path("/{id}") // 생성된 게시물의 id를 반환
-        .buildAndExpand(savedPost.getId()).toUri();
+        .buildAndExpand(savedPost.getId())
+        .toUri();
     // ResponseEntity를 사용하여 생성된 게시물의 URI를 포함한 응답을 반환합니다. 상태 코드는 201 Created입니다.
     return ResponseEntity.created(location).build();
   }

@@ -34,11 +34,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     BooleanExpression predicate = buildPredicate(condition);
 
-    OrderSpecifier<?>[] orderSpecifiers = QuerydslUtil
-        .getSortOrder(new PathBuilder<>(QPost.class, post.getMetadata()), pageable.getSort());
+    OrderSpecifier<?>[] orderSpecifiers = QuerydslUtil.getSortOrder(new PathBuilder<>(QPost.class, post.getMetadata()), pageable.getSort());
 
-    List<Post> results = queryFactory.selectFrom(post).where(predicate).orderBy(orderSpecifiers)
-        .offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+    List<Post> results = queryFactory.selectFrom(post).where(predicate).orderBy(orderSpecifiers).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
     Long totalCount = queryFactory.select(post.count()).from(post).where(predicate).fetchOne();
 
@@ -53,10 +51,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     BooleanExpression predicate = post.isNotNull();
 
     Optional<Post> opt = Optional.ofNullable(condition);
-    opt.map(Post::getSj).filter(StringUtils::hasText)
-        .ifPresent(str -> predicate.and(post.sj.containsIgnoreCase(str)));
-    opt.map(Post::getCn).filter(StringUtils::hasText)
-        .ifPresent(str -> predicate.and(post.cn.containsIgnoreCase(str)));
+    opt.map(Post::getSj).filter(StringUtils::hasText).ifPresent(str -> predicate.and(post.sj.containsIgnoreCase(str)));
+    opt.map(Post::getCn).filter(StringUtils::hasText).ifPresent(str -> predicate.and(post.cn.containsIgnoreCase(str)));
 
     return predicate;
   }
