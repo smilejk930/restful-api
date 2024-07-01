@@ -9,6 +9,9 @@ public enum FieldErrorReason {
 
   USER_NOT_FOUND(
       "사용자가 존재하지 않습니다."
+  ),
+  RESOURCE_NOT_FOUND(
+      "정보가 존재하지 않습니다."
   );
 
   /** error가 발생한 항목의 이유 */
