@@ -41,7 +41,7 @@ public class FieldError {
    * @param fieldErrorReason field, reason 상수
    * @return List FieldError
    */
-  public static List<FieldError> of(String field, String value, FieldErrorReason reason) {
+  public static List<FieldError> of(final String field, final String value, final FieldErrorReason reason) {
     return List.of(FieldError.builder().field(field).value(value).reason(reason.getReason()).build());
   }
 
