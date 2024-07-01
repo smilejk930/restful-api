@@ -16,7 +16,17 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResponse {
 
-  @Builder
+  @Builder(builderClassName = "errorStatus", builderMethodName = "errorStatus")
+  public ErrorResponse(ErrorStatus status, List<FieldError> errors) {
+
+    this.resultType = status.getResultType();
+    this.status = status.getStatus().value();
+    this.message = status.getMessage();
+    this.timestamp = LocalDateTime.now();
+    this.errors = errors;
+  }
+
+  @Builder(builderClassName = "httpStatusCode", builderMethodName = "httpStatusCode")
   public ErrorResponse(HttpStatusCode status, List<FieldError> errors) {
     ErrorStatus.find(status);
 
