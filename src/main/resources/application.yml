@@ -55,7 +55,7 @@ spring:
       max-request-size: 215MB
 
 file:
-  allowed-extensions: pdf, doc, docx, xls, xlsx, gif, jpg, jpeg, png
+  allowed-extensions: zip, pdf, doc, docx, xls, xlsx, gif, jpg, jpeg, png
   
 #서버 포트 설정
 server:
