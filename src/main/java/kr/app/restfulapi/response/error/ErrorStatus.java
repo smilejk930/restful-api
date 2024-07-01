@@ -12,13 +12,16 @@ import lombok.Getter;
 public enum ErrorStatus {
 
   INTERNAL_SERVER_ERROR(
-      HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."
+      HttpStatus.INTERNAL_SERVER_ERROR, "서비스 제공 상태가 원활하지 않습니다."
   ),
   METHOD_NOT_ALLOWED(
-      HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 메서드입니다."
+      HttpStatus.METHOD_NOT_ALLOWED, "지원하지 않는 HTTP METHOD입니다."
   ),
   BAD_REQUEST(
       "fail", HttpStatus.BAD_REQUEST, "잘못된 요청입니다."
+  ),
+  HTTP_MESSAGE_NOT_READABLE(
+      "fail", HttpStatus.BAD_REQUEST, "BODY에 입력한 JSON 형식이 잘못되었습니다."
   ),
   UNAUTHORIZED(
       HttpStatus.UNAUTHORIZED, "인증이 필요합니다."
