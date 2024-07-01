@@ -10,7 +10,7 @@ public record PostDto(
     @NotBlank(message = "제목은 필수 입력값입니다.") @Size(min = 3, max = 200, message = "제목은 {min}자 이상, {max}자 이하로 입력해주세요.") String sj,
     @NotBlank(message = "내용은 필수 입력값입니다.") @Size(min = 1, max = 4000, message = "내용은 {min}자 이상, {max}자 이하로 입력해주세요.") String cn) {
 
-  static public PostDto toDto(Post post) {
+  public static PostDto toDto(Post post) {
     return new PostDto(post.getPostId(), post.getSj(), post.getCn());
   }
 
