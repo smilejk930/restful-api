@@ -10,3 +10,7 @@ currency-service:
   url: http://prod.com/currency
   username: prodName
   key: prodKey
+  
+#file upload path
+file:
+  upload-dir: D:/develop/restful-api-file

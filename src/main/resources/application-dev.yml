@@ -11,6 +11,10 @@ currency-service:
   username: devName
   key: devKey
 
+#file upload path
+file:
+  upload-dir: D:/develop/restful-api-file
+
 #actuator의 모든 정보를 볼 수 있음
 management:
   server:
