@@ -2,15 +2,12 @@ package kr.app.restfulapi.uga.post.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,17 +38,18 @@ public class PostController {
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto,
-      @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+      @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable,
+      @AuthenticationPrincipal UserDetails userDetails) {
 
     Page<PostDto> postDtoList = postService.getAllPosts(postDto, pageable, userDetails);
-
+    /*
     List<EntityModel<PostDto>> models = postDtoList.stream().map(data -> {
       Link detailLink = null;
       detailLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPostById(data.postId(), userDetails)).withRel("detailLink");
       return EntityModel.of(data, detailLink);
-    }).toList();
+    }).toList();*/
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(models).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(postDtoList).build());
   }
 
   @GetMapping("/{postId}")
@@ -76,7 +74,8 @@ public class PostController {
   }
 
   @PutMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @RequestBody @Valid PostDto postDto, @AuthenticationPrincipal UserDetails userDetails) {
+  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @RequestBody @Valid PostDto postDto,
+      @AuthenticationPrincipal UserDetails userDetails) {
 
     Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto, userDetails);
 
