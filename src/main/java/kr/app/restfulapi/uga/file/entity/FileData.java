@@ -1,19 +1,17 @@
 package kr.app.restfulapi.uga.file.entity;
 
+import java.time.LocalDateTime;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.LastModifiedDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import kr.app.restfulapi.uga.common.entity.BaseEntity;
-import kr.app.restfulapi.uga.user.entity.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,28 +35,61 @@ public class FileData extends BaseEntity {
 
   @Comment("파일명")
   @Column(length = 200, nullable = false)
-  private String finm;
+  private String fileNm;
+
+  @Comment("파일그룹명")
+  @Column(length = 200, nullable = false)
+  private String fileGroupNm;
+
+  @Comment("참조아이디")
+  @Column(nullable = false)
+  private String refrnId;
+
+  @Comment("파일섹션값")
+  @Column(nullable = false)
+  private String fileSectValue;
+
+  @Comment("삭제여부")
+  @ColumnDefault("'N'")
+  @Column(length = 1, nullable = false)
+  @Builder.Default
+  private String deleteAt = "N";
+
+  @Comment("파일순번")
+  @ColumnDefault("0")
+  @Column(nullable = false)
+  @Builder.Default
+  private Long fileSn = 0L;
 
   @Comment("파일저장명")
   @Column(length = 200, nullable = false)
   private String fileStreNm;
 
-  @Comment("파일경로")
+  @Comment("파일저장경로")
   @Column(length = 4000, nullable = false)
-  private String flpth;
-
-  @Comment("파일사이즈")
-  @Column(nullable = false)
-  private Long filesiz;
+  private String fileStreCours;
 
   @Comment("파일확장자명")
   @Column(length = 200, nullable = false)
-  private String fileEventn;
+  private String fileExtsnNm;
 
-  @Comment("사용자아이디")
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id",
-      // name = "wrter_id", referencedColumnName = "userId",
-      foreignKey = @ForeignKey(name = "fk_user_info_to_files"))
-  private User user;
+  @Comment("파일사이즈")
+  @Column(nullable = false)
+  private Long fileSize;
+
+  @Comment("다운로드횟수")
+  @ColumnDefault("0")
+  @Column(nullable = false)
+  @Builder.Default
+  private Long dwldCo = 0L;
+
+  @Comment("파일동기화코드")
+  @ColumnDefault("'FSC001'")
+  @Column(nullable = false)
+  @Builder.Default
+  private String fileSynchrnCode = "FSC001";
+
+  @Comment("파일동기화일시")
+  @LastModifiedDate
+  private LocalDateTime fileSynchrnDt;
 }

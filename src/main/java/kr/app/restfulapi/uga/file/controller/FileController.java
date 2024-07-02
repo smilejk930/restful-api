@@ -1,5 +1,6 @@
 package kr.app.restfulapi.uga.file.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
+import kr.app.restfulapi.uga.common.util.FileUtils;
 import kr.app.restfulapi.uga.file.dto.FileDataDto;
+import kr.app.restfulapi.uga.file.dto.FileDataSetup;
 import kr.app.restfulapi.uga.file.service.FileService;
-import kr.app.restfulapi.uga.file.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,8 +36,9 @@ public class FileController {
   private final FileService fileService;
 
   @PostMapping("/upload")
-  public ResponseEntity<List<FileDataDto>> uploadFiles(@RequestParam("files") List<MultipartFile> files) {
-    List<FileDataDto> uploadedFiles = fileService.storeFiles(files);
+  public ResponseEntity<List<FileDataDto>> uploadFiles(@RequestParam("files") List<MultipartFile> files,
+      @ModelAttribute FileDataSetup fileDataSetup) {
+    List<FileDataDto> uploadedFiles = fileService.storeFiles(files, fileDataSetup);
     return ResponseEntity.status(HttpStatus.CREATED).body(uploadedFiles);
   }
 
@@ -47,14 +51,14 @@ public class FileController {
     }
 
     FileDataDto fileDataDto = optFileDataDto.get();
-    Resource resource = new PathResource(fileDataDto.flpth());
+    Resource resource = new PathResource(fileDataDto.fileStreCours() + File.separator + fileDataDto.fileStreNm());
 
-    String contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+    String contentType = request.getServletContext().getMimeType(fileDataDto.fileNm());
     if (contentType == null) {
       contentType = "application/octet-stream";
     }
 
-    String encodedFileName = URLEncoder.encode(fileDataDto.finm(), StandardCharsets.UTF_8.toString());
+    String encodedFileName = URLEncoder.encode(fileDataDto.fileNm(), StandardCharsets.UTF_8.toString());
     encodedFileName = encodedFileName.replaceAll("\\+", "%20");
 
     HttpHeaders headers = new HttpHeaders();
@@ -77,7 +81,7 @@ public class FileController {
       byte[] imageData = fileService.getImage(fileDataDto); // FileService에서 이미지 데이터 가져오기
 
       // 이미지 타입에 따라 적절한 MediaType 설정
-      String contentType = FileUtils.determineImageContentType(fileDataDto.finm());
+      String contentType = FileUtils.determineImageContentType(fileDataDto.fileNm());
       if (contentType == null) {
         contentType = MediaType.IMAGE_JPEG_VALUE; // 기본적으로 JPEG로 설정
       }

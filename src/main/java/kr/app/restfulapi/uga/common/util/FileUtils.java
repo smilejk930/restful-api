@@ -1,4 +1,4 @@
-package kr.app.restfulapi.uga.file.util;
+package kr.app.restfulapi.uga.common.util;
 
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
