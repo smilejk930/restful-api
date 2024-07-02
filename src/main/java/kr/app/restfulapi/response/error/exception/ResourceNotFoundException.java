@@ -8,8 +8,4 @@ public class ResourceNotFoundException extends BusinessException {
   public ResourceNotFoundException() {
     super(ErrorStatus.NOT_FOUND);
   }
-  /*
-  public ResourceNotFoundException(String field, String value) {
-    super(ErrorStatus.NOT_FOUND, FieldError.of(field, value, FieldErrorReason.RESOURCE_NOT_FOUND));
-  }*/
 }
