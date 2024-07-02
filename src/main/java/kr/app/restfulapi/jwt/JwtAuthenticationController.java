@@ -14,18 +14,15 @@ public class JwtAuthenticationController {
 
   private final AuthenticationManager authenticationManager;
 
-  public JwtAuthenticationController(JwtTokenService tokenService,
-      AuthenticationManager authenticationManager) {
+  public JwtAuthenticationController(JwtTokenService tokenService, AuthenticationManager authenticationManager) {
     this.tokenService = tokenService;
     this.authenticationManager = authenticationManager;
   }
 
   @PostMapping("/authenticate")
-  public ResponseEntity<JwtTokenResponse> generateToken(
-      @RequestBody JwtTokenRequest jwtTokenRequest) {
+  public ResponseEntity<JwtTokenResponse> generateToken(@RequestBody JwtTokenRequest jwtTokenRequest) {
 
-    var authenticationToken = new UsernamePasswordAuthenticationToken(jwtTokenRequest.username(),
-        jwtTokenRequest.password());
+    var authenticationToken = new UsernamePasswordAuthenticationToken(jwtTokenRequest.username(), jwtTokenRequest.password());
 
     var authentication = authenticationManager.authenticate(authenticationToken);
 

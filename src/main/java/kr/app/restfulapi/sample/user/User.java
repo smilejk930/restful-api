@@ -40,8 +40,7 @@ public class User {
   @JsonIgnore // 응답을 외부로 표현하지 않게 하기 위해 설정
   private List<Post> posts; // 사용자는 게시물과 일대다 관계
 
-  public User(Integer id, @Size(min = 2, message = "이름은 2글자 이상 입력해주세요.") String name,
-      @Past(message = "생년월일은 과거 날짜만 입력 가능합니다.") LocalDate birthDate) {
+  public User(Integer id, @Size(min = 2, message = "이름은 2글자 이상 입력해주세요.") String name, @Past(message = "생년월일은 과거 날짜만 입력 가능합니다.") LocalDate birthDate) {
     super();
     this.id = id;
     this.name = name;

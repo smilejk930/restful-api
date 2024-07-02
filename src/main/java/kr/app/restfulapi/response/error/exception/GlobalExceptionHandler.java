@@ -25,8 +25,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   protected ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
-    ErrorResponse errorResponse =
-        ErrorResponse.errorStatus().status(ErrorStatus.INTERNAL_SERVER_ERROR).errors(FieldError.of(null, request.getDescription(false), ex.getMessage())).build();
+    ErrorResponse errorResponse = ErrorResponse.errorStatus()
+        .status(ErrorStatus.INTERNAL_SERVER_ERROR)
+        .errors(FieldError.of(null, request.getDescription(false), ex.getMessage()))
+        .build();
     return new ResponseEntity<>(errorResponse, ErrorStatus.INTERNAL_SERVER_ERROR.getStatus());
   }
 
@@ -39,33 +41,42 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   /* User가 존재하지 않을 때 */
   @ExceptionHandler(UserNotFoundException.class)
   protected final ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) {
-    ErrorResponse errorResponse = ErrorResponse.errorStatus().status(ErrorStatus.NOT_FOUND).errors(FieldError.of(null, ex.getMessage(), request.getDescription(false))).build();
+    ErrorResponse errorResponse =
+        ErrorResponse.errorStatus().status(ErrorStatus.NOT_FOUND).errors(FieldError.of(null, ex.getMessage(), request.getDescription(false))).build();
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
   /* DTO validation 오류 발생 시 */
   @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status,
+      WebRequest request) {
     ErrorResponse errorResponse = ErrorResponse.httpStatusCode().status(status).errors(FieldError.of(ex.getBindingResult())).build();
     return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
   }
 
   @Override
-  protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    ErrorResponse errorResponse = ErrorResponse.httpStatusCode().status(status).errors(FieldError.of(null, request.getDescription(false), ex.getMessage())).build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
-  }
-
-  @Override
-  protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    ErrorResponse errorResponse = ErrorResponse.httpStatusCode().status(status).errors(FieldError.of("HTTP METHOD", ex.getMethod(), ex.getMessage())).build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
-  }
-
-  @Override
-  protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+  protected ResponseEntity<Object> handleNoResourceFoundException(NoResourceFoundException ex, HttpHeaders headers, HttpStatusCode status,
+      WebRequest request) {
     ErrorResponse errorResponse =
-        ErrorResponse.errorStatus().status(ErrorStatus.HTTP_MESSAGE_NOT_READABLE).errors(FieldError.of("HTTP BODY", request.getDescription(false), ex.getMessage())).build();
+        ErrorResponse.httpStatusCode().status(status).errors(FieldError.of(null, request.getDescription(false), ex.getMessage())).build();
+    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers,
+      HttpStatusCode status, WebRequest request) {
+    ErrorResponse errorResponse =
+        ErrorResponse.httpStatusCode().status(status).errors(FieldError.of("HTTP METHOD", ex.getMethod(), ex.getMessage())).build();
+    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status,
+      WebRequest request) {
+    ErrorResponse errorResponse = ErrorResponse.errorStatus()
+        .status(ErrorStatus.HTTP_MESSAGE_NOT_READABLE)
+        .errors(FieldError.of("HTTP BODY", request.getDescription(false), ex.getMessage()))
+        .build();
     return new ResponseEntity<>(errorResponse, ErrorStatus.HTTP_MESSAGE_NOT_READABLE.getStatus());
   }
 

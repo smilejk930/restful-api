@@ -58,7 +58,8 @@ public class UserResource {
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest() // 현재 요청에 해당하는 URL을 반환하고
         .path("/{id}") // 생성된 사용자의 id를 반환
-        .buildAndExpand(savedUser.getId()).toUri();
+        .buildAndExpand(savedUser.getId())
+        .toUri();
     // ResponseEntity를 사용하여 생성된 사용자의 URI를 포함한 응답을 반환합니다. 상태 코드는 201 Created입니다.
     return ResponseEntity.created(location).build();
   }

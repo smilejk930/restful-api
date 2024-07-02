@@ -36,7 +36,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     OrderSpecifier<?>[] orderSpecifiers = QuerydslUtil.getSortOrder(new PathBuilder<>(QPost.class, post.getMetadata()), pageable.getSort());
 
-    List<Post> results = queryFactory.selectFrom(post).where(predicate).orderBy(orderSpecifiers).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+    List<Post> results =
+        queryFactory.selectFrom(post).where(predicate).orderBy(orderSpecifiers).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
     Long totalCount = queryFactory.select(post.count()).from(post).where(predicate).fetchOne();
 

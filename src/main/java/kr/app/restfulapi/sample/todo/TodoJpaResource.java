@@ -43,8 +43,7 @@ public class TodoJpaResource {
   }
 
   @PutMapping("/users/{username}/todos/{id}")
-  public Todo updateTodo(@PathVariable String username, @PathVariable int id,
-      @RequestBody Todo todo) {
+  public Todo updateTodo(@PathVariable String username, @PathVariable int id, @RequestBody Todo todo) {
     // todoService.updateTodo(todo);
     todoRepository.save(todo);
     return todo;

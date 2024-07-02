@@ -48,7 +48,11 @@ public class FieldError {
   public static List<FieldError> of(final BindingResult bindingResult) {
     final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
     return fieldErrors.stream()
-        .map(error -> FieldError.builder().field(error.getField()).value(Objects.toString(error.getRejectedValue(), "")).reason(error.getDefaultMessage()).build())
+        .map(error -> FieldError.builder()
+            .field(error.getField())
+            .value(Objects.toString(error.getRejectedValue(), ""))
+            .reason(error.getDefaultMessage())
+            .build())
         .collect(Collectors.toList());
   }
 }

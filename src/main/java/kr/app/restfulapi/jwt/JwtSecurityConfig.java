@@ -43,8 +43,7 @@ public class JwtSecurityConfig {
         // .requestMatchers(PathRequest.toH2Console()).permitAll() //(사용X) h2-console is a servlet and NOT recommended for a production
         // .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
         .csrf(csrf -> csrf.disable())
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt) // (사용X) Deprecated in SB 3.1.x
         // .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults())) // Starting from SB 3.1.x using Lambda DSL
         .httpBasic(Customizer.withDefaults())
@@ -69,13 +68,16 @@ public class JwtSecurityConfig {
         // .password("{noop}password") // {noop}: 인코딩을 하지 않음
         // .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
         .password("{bcrypt}" + passwordEncoder().encode("password")) // BCrypt 해시 함수로 암호화
-        .authorities("read").roles("USER").build();
+        .authorities("read")
+        .roles("USER")
+        .build();
 
     UserDetails admin = User.withUsername("admin")
         // .password("{noop}password")
         // .password("password").passwordEncoder(passwordStr -> passwordEncoder().encode(passwordStr))
         .password("{bcrypt}" + passwordEncoder().encode("password")) // BCrypt 해시 함수로 암호화
-        .roles("ADMIN").build();
+        .roles("ADMIN")
+        .build();
 
     return new InMemoryUserDetailsManager(user, admin);
   }
@@ -106,8 +108,8 @@ public class JwtSecurityConfig {
   public RSAKey rsaKey() {
     KeyPair keyPair = keyPair();
 
-    return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
-        .privateKey((RSAPrivateKey) keyPair.getPrivate()).keyID(UUID.randomUUID().toString())
+    return new RSAKey.Builder((RSAPublicKey) keyPair.getPublic()).privateKey((RSAPrivateKey) keyPair.getPrivate())
+        .keyID(UUID.randomUUID().toString())
         .build();
   }
 

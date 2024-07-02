@@ -28,7 +28,8 @@ public class UserJpaResource {
   private final UserRepository userRepository;
   private final PostRepository postRepository;
 
-  public UserJpaResource(@Qualifier("sampleUserRepository") UserRepository userRepository, @Qualifier("samplePostRepository") PostRepository postRepository) {
+  public UserJpaResource(@Qualifier("sampleUserRepository") UserRepository userRepository,
+      @Qualifier("samplePostRepository") PostRepository postRepository) {
     this.userRepository = userRepository;
     this.postRepository = postRepository;
   }
