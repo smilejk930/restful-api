@@ -6,9 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.annotation.PostConstruct;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Component
-public class FileUtils {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CustomFileUtils {
 
   private static String[] allowedExtensions;
 

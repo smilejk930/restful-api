@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DateUtils {
+public class CustomDateUtils {
 
   public static String getCurrentDate() {
     LocalDate now = LocalDate.now();
