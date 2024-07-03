@@ -3,6 +3,7 @@ package kr.app.restfulapi.response.error;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,11 @@ public class FieldError {
    * @return List FieldError
    */
   public static List<FieldError> of(final String field, final String value, final String reason) {
-    return List.of(FieldError.builder().field(field).value(value).reason(reason).build());
+    return List.of(FieldError.builder()
+        .field(Objects.toString(field, "N/A"))
+        .value(Objects.toString(value, "N/A"))
+        .reason(Objects.toString(reason, "N/A"))
+        .build());
   }
 
   /**
@@ -42,7 +47,8 @@ public class FieldError {
    * @return List FieldError
    */
   public static List<FieldError> of(final String field, final String value, final FieldErrorReason reason) {
-    return List.of(FieldError.builder().field(field).value(value).reason(reason.getReason()).build());
+    return List
+        .of(FieldError.builder().field(Objects.toString(field, "N/A")).value(Objects.toString(value, "N/A")).reason(reason.getReason()).build());
   }
 
   public static List<FieldError> of(final BindingResult bindingResult) {
@@ -50,7 +56,7 @@ public class FieldError {
     return fieldErrors.stream()
         .map(error -> FieldError.builder()
             .field(error.getField())
-            .value(Objects.toString(error.getRejectedValue(), ""))
+            .value(ObjectUtils.getDisplayString(error.getRejectedValue()))
             .reason(error.getDefaultMessage())
             .build())
         .collect(Collectors.toList());
