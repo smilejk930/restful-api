@@ -7,5 +7,4 @@ import kr.app.restfulapi.uga.post.entity.Post;
 public interface PostRepositoryCustom {
 
   Page<Post> findAllWithCriteria(Post post, Pageable pageable);
-
 }

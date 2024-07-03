@@ -16,12 +16,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostService {
 
+  // TODO 삭제여부 추가
+
   private final PostRepository postRepository;
 
   // private final UserRepository userRepository;
 
   @Transactional(readOnly = true)
-  public Page<PostDto> getAllPosts(PostDto postDto, Pageable pageable, UserDetails userDetails) {
+  public Page<PostDto> getAllPost(PostDto postDto, Pageable pageable, UserDetails userDetails) {
     /*
      * User user = userRepository.findById(userDetails.getId()).orElseThrow(() ->
      * new RuntimeException("User not found"));

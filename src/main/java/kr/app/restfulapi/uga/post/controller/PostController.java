@@ -36,12 +36,15 @@ public class PostController {
 
   private final PostService postService;
 
+  // TODO 게시글 등록 파일등록도 같이, 수정 시에는 파일 삭제가 됐다면 삭제될 파일들 리스트를 가지고 파일 삭제해야함
+  // TODO 게시글 삭제 시 파일들도 삭제
+
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto,
       @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable,
       @AuthenticationPrincipal UserDetails userDetails) {
 
-    Page<PostDto> postDtoList = postService.getAllPosts(postDto, pageable, userDetails);
+    Page<PostDto> postDtoList = postService.getAllPost(postDto, pageable, userDetails);
     /*
     List<EntityModel<PostDto>> models = postDtoList.stream().map(data -> {
       Link detailLink = null;
@@ -89,9 +92,10 @@ public class PostController {
 
     boolean isDeleted = postService.deletePost(postId, userDetails);
 
-    return Optional.ofNullable(isDeleted)
-        .filter(Boolean::booleanValue)
-        .map(data -> ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.DELETED).build()))
-        .orElseThrow(ResourceNotFoundException::new);
+    if (isDeleted) {
+      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.DELETED).build());
+    } else {
+      throw new ResourceNotFoundException();
+    }
   }
 }
