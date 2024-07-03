@@ -111,6 +111,16 @@ public class FileService {
     return fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(FileDataDto::toDto);
   }
 
+  @Transactional
+  public Optional<FileDataDto> getFileDownload(String fileId) {
+
+    return fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(fileData -> {
+      fileData.setDwldCo(fileData.getDwldCo() + 1);
+
+      return FileDataDto.toDto(fileData);
+    });
+  }
+
   @Transactional(readOnly = true)
   public byte[] getImage(FileDataDto fileDataDto) throws IOException {
     Path imagePath = Paths.get(fileDataDto.fileStreCours()).resolve(fileDataDto.fileStreNm());

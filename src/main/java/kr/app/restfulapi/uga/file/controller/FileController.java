@@ -37,8 +37,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/files")
 public class FileController {
 
-  // TODO 파일 다운로드 시 다운로드 횟수 추가
-
   private final FileService fileService;
 
   @GetMapping
@@ -57,7 +55,7 @@ public class FileController {
 
   @GetMapping("/{fileId}")
   public ResponseEntity<Resource> downloadFile(@PathVariable String fileId, HttpServletRequest request) throws IOException {
-    Optional<FileDataDto> optFileDataDto = fileService.getFile(fileId);
+    Optional<FileDataDto> optFileDataDto = fileService.getFileDownload(fileId);
 
     if (optFileDataDto.isEmpty()) {
       throw new ResourceNotFoundException();
