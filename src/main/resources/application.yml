@@ -1,5 +1,10 @@
 #prod, dev 공통 설정
 #공백: 스페이스 2칸
+
+#서버 포트 설정
+server:
+  port: 9090
+  
 spring:
   application:
     name: restful-api
@@ -54,9 +59,6 @@ spring:
       max-file-size: 200MB
       max-request-size: 215MB
 
+#허용되는 파일확장자명 목록
 file:
   allowed-extensions: zip, pdf, doc, docx, xls, xlsx, gif, jpg, jpeg, png
-  
-#서버 포트 설정
-server:
-  port: 9090
