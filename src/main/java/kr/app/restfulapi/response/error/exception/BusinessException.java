@@ -13,9 +13,26 @@ public class BusinessException extends RuntimeException {
   private ErrorStatus status;
   private List<FieldError> errors;
 
+  public BusinessException(Exception e) {
+    super(e);
+    this.status = ErrorStatus.INTERNAL_SERVER_ERROR;
+  }
+
+  public BusinessException(Exception e, String message) {
+    super(e);
+    this.status = ErrorStatus.INTERNAL_SERVER_ERROR;
+    this.errors = FieldError.of(null, null, message);
+  }
+
   public BusinessException(ErrorStatus status) {
     super(status.getMessage());
     this.status = status;
+  }
+
+  public BusinessException(ErrorStatus status, String message) {
+    super(status.getMessage());
+    this.status = status;
+    this.errors = FieldError.of(null, null, message);
   }
 
   public BusinessException(ErrorStatus status, List<FieldError> errors) {
