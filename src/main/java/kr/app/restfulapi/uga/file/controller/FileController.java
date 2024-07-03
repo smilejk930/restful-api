@@ -22,9 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
-import kr.app.restfulapi.uga.common.util.FileUtils;
+import kr.app.restfulapi.response.error.exception.BusinessException;
+import kr.app.restfulapi.response.error.exception.ResourceNotFoundException;
+import kr.app.restfulapi.response.success.SuccessResponse;
+import kr.app.restfulapi.response.success.SuccessStatus;
+import kr.app.restfulapi.uga.common.util.CustomFileUtils;
 import kr.app.restfulapi.uga.file.dto.FileDataDto;
-import kr.app.restfulapi.uga.file.dto.FileDataSetup;
+import kr.app.restfulapi.uga.file.dto.FileDataInit;
 import kr.app.restfulapi.uga.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 
@@ -33,13 +37,22 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/files")
 public class FileController {
 
+  // TODO 파일 다운로드 시 다운로드 횟수 추가
+
   private final FileService fileService;
 
-  @PostMapping("/upload")
-  public ResponseEntity<List<FileDataDto>> uploadFiles(@RequestParam("files") List<MultipartFile> files,
-      @ModelAttribute FileDataSetup fileDataSetup) {
-    List<FileDataDto> uploadedFiles = fileService.storeFiles(files, fileDataSetup);
-    return ResponseEntity.status(HttpStatus.CREATED).body(uploadedFiles);
+  @GetMapping
+  public ResponseEntity<SuccessResponse> getAllFiles(@ModelAttribute FileDataInit fileDataInit) {
+
+    List<FileDataDto> fileDataDtoList = fileService.getAllFiles(fileDataInit);
+
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(fileDataDtoList).build());
+  }
+
+  @PostMapping
+  public ResponseEntity<SuccessResponse> uploadFiles(@RequestParam("files") List<MultipartFile> files, @ModelAttribute FileDataInit fileDataInit) {
+    List<FileDataDto> uploadedFiles = fileService.storeFiles(files, fileDataInit);
+    return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(uploadedFiles).build());
   }
 
   @GetMapping("/{fileId}")
@@ -47,7 +60,7 @@ public class FileController {
     Optional<FileDataDto> optFileDataDto = fileService.getFile(fileId);
 
     if (optFileDataDto.isEmpty()) {
-      return ResponseEntity.notFound().build();
+      throw new ResourceNotFoundException();
     }
 
     FileDataDto fileDataDto = optFileDataDto.get();
@@ -73,7 +86,7 @@ public class FileController {
     Optional<FileDataDto> optFileDataDto = fileService.getFile(fileId);
 
     if (optFileDataDto.isEmpty()) {
-      return ResponseEntity.notFound().build();
+      throw new ResourceNotFoundException();
     }
 
     FileDataDto fileDataDto = optFileDataDto.get();
@@ -81,7 +94,7 @@ public class FileController {
       byte[] imageData = fileService.getImage(fileDataDto); // FileService에서 이미지 데이터 가져오기
 
       // 이미지 타입에 따라 적절한 MediaType 설정
-      String contentType = FileUtils.determineImageContentType(fileDataDto.fileNm());
+      String contentType = CustomFileUtils.determineImageContentType(fileDataDto.fileNm());
       if (contentType == null) {
         contentType = MediaType.IMAGE_JPEG_VALUE; // 기본적으로 JPEG로 설정
       }
@@ -94,8 +107,7 @@ public class FileController {
 
       return ResponseEntity.ok().headers(headers).body(resource);
     } catch (IOException e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      throw new BusinessException(e);
     }
   }
 }

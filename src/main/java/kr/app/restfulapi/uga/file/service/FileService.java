@@ -16,15 +16,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import kr.app.restfulapi.response.error.FieldErrorReason;
+import kr.app.restfulapi.response.error.exception.BusinessException;
+import kr.app.restfulapi.response.error.exception.FieldNullPointException;
 import kr.app.restfulapi.response.error.exception.IllegalArgumentException;
-import kr.app.restfulapi.uga.common.util.DateUtils;
-import kr.app.restfulapi.uga.common.util.FileUtils;
+import kr.app.restfulapi.uga.common.util.CustomDateUtils;
+import kr.app.restfulapi.uga.common.util.CustomFileUtils;
+import kr.app.restfulapi.uga.common.util.CustomObjectUtils;
 import kr.app.restfulapi.uga.file.dto.FileDataDto;
-import kr.app.restfulapi.uga.file.dto.FileDataSetup;
+import kr.app.restfulapi.uga.file.dto.FileDataInit;
 import kr.app.restfulapi.uga.file.entity.FileData;
 import kr.app.restfulapi.uga.file.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileService {
@@ -34,8 +39,26 @@ public class FileService {
   @Value("${file.upload-dir}")
   private String uploadDir;
 
+  @Transactional(readOnly = true)
+  public List<FileDataDto> getAllFiles(FileDataInit fileDataInit) {
+
+    if (fileDataInit.isAnyNullOfRequiredlField()) {
+      log.error("FileDataInit의 필요 속성값들이 NULL");
+      throw new FieldNullPointException();
+    }
+
+    List<FileData> fileDataList = fileRepository.findAllWithCriteria(fileDataInit.toEntity());
+
+    return fileDataList.stream().map(FileDataDto::toDto).toList();
+  }
+
   @Transactional
-  public List<FileDataDto> storeFiles(List<MultipartFile> files, FileDataSetup fileDataSetup) {
+  public List<FileDataDto> storeFiles(List<MultipartFile> files, FileDataInit fileDataInit) {
+
+    if (CustomObjectUtils.isAnyNullOfFields(fileDataInit)) {
+      log.error("FileDataInit의 속성값들 중 NULL 존재");
+      throw new FieldNullPointException();
+    }
 
     List<FileDataDto> uploadedFiles = new ArrayList<>();
 
@@ -43,32 +66,35 @@ public class FileService {
 
     Stream.ofNullable(files).flatMap(List<MultipartFile>::stream).forEach(file -> {
 
-      if (!FileUtils.isAllowedExtension(file)) {
-        throw new IllegalArgumentException("파일", file.getOriginalFilename(), FieldErrorReason.FILE_EXTENSION_NOT_ALLOWED);
+      if (!CustomFileUtils.isAllowedExtension(file)) {
+        throw new IllegalArgumentException(
+            file.getOriginalFilename(),
+            CustomFileUtils.getFileExtension(file),
+            FieldErrorReason.FILE_EXTENSION_NOT_ALLOWED);
       }
 
       String cleanedFilename = StringUtils.cleanPath(file.getOriginalFilename());
-      String saveFileName = "FILE_" + DateUtils.getCurrentDateTimeMillisecond();
-      String fileStreCours = uploadDir + File.separator + fileDataSetup.fileGroupNm() + File.separator + DateUtils.getCurrentYear() + File.separator
-          + DateUtils.getCurrentMonth();
+      String saveFileName = "FILE_" + CustomDateUtils.getCurrentDateTimeMillisecond();
+      String fileStreCours = uploadDir + File.separator + fileDataInit.getFileGroupNm() + File.separator + CustomDateUtils.getCurrentYear()
+          + File.separator + CustomDateUtils.getCurrentMonth();
       Path savePath = Paths.get(fileStreCours).resolve(saveFileName);
 
       try {
         Files.createDirectories(savePath.getParent());
         Files.copy(file.getInputStream(), savePath);
       } catch (IOException e) {
-        e.printStackTrace();
+        throw new BusinessException(e);
       }
 
       FileData fileData = fileRepository.save(FileData.builder()
           .fileNm(cleanedFilename)
-          .fileGroupNm(fileDataSetup.fileGroupNm())
-          .refrnId(fileDataSetup.refrnId())
-          .fileSectValue(fileDataSetup.fileSectValue())
+          .fileGroupNm(fileDataInit.getFileGroupNm())
+          .refrnId(fileDataInit.getRefrnId())
+          .fileSectValue(fileDataInit.getFileSectValue())
           .fileSn(atFileSn.getAndIncrement())
           .fileStreNm(saveFileName)
           .fileStreCours(savePath.getParent().toString())
-          .fileExtsnNm(FileUtils.getFileExtension(cleanedFilename))
+          .fileExtsnNm(CustomFileUtils.getFileExtension(cleanedFilename))
           .fileSize(file.getSize())
           .build());
 
@@ -82,9 +108,10 @@ public class FileService {
 
   @Transactional(readOnly = true)
   public Optional<FileDataDto> getFile(String fileId) {
-    return fileRepository.findById(fileId).map(FileDataDto::toDto);
+    return fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(FileDataDto::toDto);
   }
 
+  @Transactional(readOnly = true)
   public byte[] getImage(FileDataDto fileDataDto) throws IOException {
     Path imagePath = Paths.get(fileDataDto.fileStreCours()).resolve(fileDataDto.fileStreNm());
     return Files.readAllBytes(imagePath);
