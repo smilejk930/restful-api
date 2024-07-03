@@ -19,15 +19,19 @@ public class QBaseEntity extends EntityPathBase<BaseEntity> {
 
     public static final QBaseEntity baseEntity = new QBaseEntity("baseEntity");
 
+    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
+
     public final StringPath lastServerNm = createString("lastServerNm");
 
-    public final DateTimePath<java.time.LocalDateTime> registDt = createDateTime("registDt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
 
     public final StringPath registerId = createString("registerId");
 
     public final StringPath registServerNm = createString("registServerNm");
 
-    public final DateTimePath<java.time.LocalDateTime> updtDt = createDateTime("updtDt", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
 
     public final StringPath updusrId = createString("updusrId");
 

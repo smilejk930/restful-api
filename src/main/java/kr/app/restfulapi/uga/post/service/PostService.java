@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostService {
 
-  // TODO 게시글 삭제여부 추가
+  // TODO 해당하는 USER_ID로 검색
 
   private final PostRepository postRepository;
 
@@ -37,7 +37,7 @@ public class PostService {
   @Transactional(readOnly = true)
   public Optional<PostDto> getPostById(String postId, UserDetails userDetails) {
 
-    return postRepository.findById(postId).map(PostDto::toDto);
+    return postRepository.findByPostIdAndDeleteAt(postId, "N").map(PostDto::toDto);
 
   }
 
@@ -55,7 +55,7 @@ public class PostService {
   @Transactional
   public Optional<PostDto> updatePost(String postId, PostDto postDto, UserDetails userDetails) {
 
-    return postRepository.findById(postId).map(post -> {
+    return postRepository.findByPostIdAndDeleteAt(postId, "N").map(post -> {
       post.setSj(postDto.sj());
       post.setCn(postDto.cn());
       post.setUpdusrId("1");// TODO USER_ID 추후 변경
@@ -68,13 +68,12 @@ public class PostService {
   @Transactional
   public boolean deletePost(String postId, UserDetails userDetails) {
 
-    Optional<Post> optionalPost = postRepository.findById(postId);
-    if (optionalPost.isPresent()) {
-      postRepository.delete(optionalPost.get());
+    return postRepository.findByPostIdAndDeleteAt(postId, "N").map(post -> {
+      post.setDeleteAt("Y");
+      post.setUpdusrId("1");// TODO USER_ID 추후 변경
+      post.setUpdtDt(LocalDateTime.now());
 
       return true;
-    }
-
-    return false;
+    }).orElse(false);
   }
 }

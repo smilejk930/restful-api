@@ -1,5 +1,6 @@
 package kr.app.restfulapi.uga.post.entity;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,6 +49,12 @@ public class Post extends BaseEntity {
   @Comment("내용")
   @Column(length = 4000, nullable = false)
   private String cn;
+
+  @Comment("삭제여부")
+  @ColumnDefault("'N'")
+  @Column(length = 1, nullable = false)
+  @Builder.Default
+  private String deleteAt = "N";
 
   @Comment("사용자아이디")
   @ManyToOne(fetch = FetchType.LAZY)

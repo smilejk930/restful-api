@@ -26,6 +26,8 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath cn = createString("cn");
 
+    public final StringPath deleteAt = createString("deleteAt");
+
     //inherited
     public final StringPath lastServerNm = _super.lastServerNm;
 

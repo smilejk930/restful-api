@@ -49,6 +49,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     BooleanExpression whereClause = qPost.isNotNull();
 
+    whereClause = whereClause.and(qPost.deleteAt.eq("N"));
     whereClause = StringUtils.hasText(criteria.getSj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSj())) : whereClause;
     whereClause = StringUtils.hasText(criteria.getCn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getCn())) : whereClause;
 
