@@ -1,5 +1,6 @@
 package kr.app.restfulapi.uga.post.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostService {
 
-  // TODO 삭제여부 추가
+  // TODO 게시글 삭제여부 추가
 
   private final PostRepository postRepository;
 
@@ -28,7 +29,7 @@ public class PostService {
      * User user = userRepository.findById(userDetails.getId()).orElseThrow(() ->
      * new RuntimeException("User not found"));
      */
-    // 하드 코딩으로 user 정보 입력
+    // TODO USER_ID 추후 변경
     User user = User.builder().userId("1").build();
     return postRepository.findAllWithCriteria(postDto.toEntity(user), pageable).map(PostDto::toDto);
   }
@@ -43,7 +44,7 @@ public class PostService {
   @Transactional
   public PostDto createPost(PostDto postDto, UserDetails userDetails) {
 
-    // 하드 코딩으로 user 정보 입력
+    // TODO USER_ID 추후 변경
     User user = User.builder().userId("1").build();
     Post post = postDto.toEntity(user);
     Post savedPost = postRepository.save(post);
@@ -57,6 +58,8 @@ public class PostService {
     return postRepository.findById(postId).map(post -> {
       post.setSj(postDto.sj());
       post.setCn(postDto.cn());
+      post.setUpdusrId("1");// TODO USER_ID 추후 변경
+      post.setUpdtDt(LocalDateTime.now());
 
       return PostDto.toDto(post);
     });
