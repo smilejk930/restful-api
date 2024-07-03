@@ -12,6 +12,10 @@ public class IllegalArgumentException extends BusinessException {
     super(ErrorStatus.BAD_REQUEST);
   }
 
+  public IllegalArgumentException(String message) {
+    super(ErrorStatus.BAD_REQUEST, message);
+  }
+
   public IllegalArgumentException(String field, String value, String reason) {
     super(ErrorStatus.BAD_REQUEST, FieldError.of(field, value, reason));
   }

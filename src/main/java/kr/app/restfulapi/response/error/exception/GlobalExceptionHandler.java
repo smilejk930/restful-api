@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import kr.app.restfulapi.response.error.ErrorResponse;
@@ -27,7 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
     ErrorResponse errorResponse = ErrorResponse.errorStatus()
         .status(ErrorStatus.INTERNAL_SERVER_ERROR)
-        .errors(FieldError.of(null, request.getDescription(false), ex.getMessage()))
+        .errors(FieldError.of(null, request.getDescription(false), "N/A"))
         .build();
     return new ResponseEntity<>(errorResponse, ErrorStatus.INTERNAL_SERVER_ERROR.getStatus());
   }
@@ -80,5 +81,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, ErrorStatus.HTTP_MESSAGE_NOT_READABLE.getStatus());
   }
 
+  @Override
+  protected ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex, HttpHeaders headers, HttpStatusCode status,
+      WebRequest request) {
+    ErrorResponse errorResponse = ErrorResponse.errorStatus()
+        .status(ErrorStatus.BAD_REQUEST)
+        .errors(FieldError.of(null, request.getDescription(false), ex.getMessage()))
+        .build();
+    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
+  }
 
 }
