@@ -1,9 +1,6 @@
 package kr.app.restfulapi.uga.post.repository;
 
-//Q클래스 static import
-import static kr.app.restfulapi.uga.post.entity.QPost.post;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +11,9 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.app.restfulapi.uga.common.util.QuerydslUtils;
 import kr.app.restfulapi.uga.post.entity.Post;
 import kr.app.restfulapi.uga.post.entity.QPost;
-import kr.app.restfulapi.util.QuerydslUtil;
 import lombok.RequiredArgsConstructor;
 
 /***
@@ -27,34 +24,35 @@ import lombok.RequiredArgsConstructor;
 public class PostRepositoryImpl implements PostRepositoryCustom {
 
   private final JPAQueryFactory queryFactory;
+  private QPost qPost = QPost.post;
 
   @Override
   @Transactional(readOnly = true)
-  public Page<Post> findAllWithCriteria(Post condition, Pageable pageable) {
+  public Page<Post> findAllWithCriteria(Post criteria, Pageable pageable) {
 
-    BooleanExpression predicate = buildPredicate(condition);
+    BooleanExpression whereClause = buildWhereClause(criteria);
 
-    OrderSpecifier<?>[] orderSpecifiers = QuerydslUtil.getSortOrder(new PathBuilder<>(QPost.class, post.getMetadata()), pageable.getSort());
+    OrderSpecifier<?>[] orderSpecifiers = QuerydslUtils.getSortOrder(new PathBuilder<>(QPost.class, qPost.getMetadata()), pageable.getSort());
 
     List<Post> results =
-        queryFactory.selectFrom(post).where(predicate).orderBy(orderSpecifiers).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+        queryFactory.selectFrom(qPost).where(whereClause).orderBy(orderSpecifiers).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 
-    Long totalCount = queryFactory.select(post.count()).from(post).where(predicate).fetchOne();
+    Long totalCount = queryFactory.select(qPost.count()).from(qPost).where(whereClause).fetchOne();
 
     return new PageImpl<>(results, pageable, totalCount);
   }
 
   /**
-   * 조건절 Build
+   * Where절 Build
    */
-  private BooleanExpression buildPredicate(Post condition) {
+  private BooleanExpression buildWhereClause(Post criteria) {
 
-    BooleanExpression predicate = post.isNotNull();
+    BooleanExpression whereClause = qPost.isNotNull();
 
-    Optional<Post> opt = Optional.ofNullable(condition);
-    opt.map(Post::getSj).filter(StringUtils::hasText).ifPresent(str -> predicate.and(post.sj.containsIgnoreCase(str)));
-    opt.map(Post::getCn).filter(StringUtils::hasText).ifPresent(str -> predicate.and(post.cn.containsIgnoreCase(str)));
+    whereClause = StringUtils.hasText(criteria.getSj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSj())) : whereClause;
+    whereClause = StringUtils.hasText(criteria.getCn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getCn())) : whereClause;
 
-    return predicate;
+    return whereClause;
   }
+
 }
