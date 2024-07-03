@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 패키지별 로그 레벨 설정 -->
+    <logger name="kr.app.restfulapi" level="DEBUG"/>
+
+    <!-- 기본 로그 레벨 설정 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    
+     <!-- ERROR 레벨 로그를 빨간색으로 출력하는 설정 -->
+    <conversionRule conversionWord="highlight" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+
+    <!-- ERROR 레벨 로그의 출력 형식 지정 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %highlight([%-5level]) %logger{30}.%M:%L - %highlight(%msg%n)</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+</configuration>
