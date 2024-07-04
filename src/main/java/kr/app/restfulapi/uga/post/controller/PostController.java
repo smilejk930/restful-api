@@ -1,13 +1,10 @@
 package kr.app.restfulapi.uga.post.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
-import kr.app.restfulapi.response.error.exception.ResourceNotFoundException;
 import kr.app.restfulapi.response.success.SuccessResponse;
 import kr.app.restfulapi.response.success.SuccessStatus;
 import kr.app.restfulapi.uga.post.dto.PostDto;
@@ -60,12 +56,13 @@ public class PostController {
 
     Optional<PostDto> optPostDto = postService.getPostById(postId, userDetails);
 
-    return optPostDto.map(data -> {
-      EntityModel<PostDto> model = EntityModel.of(data);
-      model.add(linkTo(methodOn(this.getClass()).getAllPost(data, Pageable.unpaged(), userDetails)).withRel("allPosts"));
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(optPostDto).build());
 
-      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(model).build());
-    }).orElseThrow(ResourceNotFoundException::new);
+    /*return optPostDto.map(data -> {
+       EntityModel<PostDto> model = EntityModel.of(data);
+      model.add(linkTo(methodOn(this.getClass()).getAllPost(data, Pageable.unpaged(), userDetails)).withRel("allPosts"));
+      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(data).build());
+    }).orElseThrow(ResourceNotFoundException::new);*/
   }
 
   @PostMapping
@@ -82,20 +79,14 @@ public class PostController {
 
     Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto, userDetails);
 
-    return updatedPostDto.map(data -> {
-      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(data).build());
-    }).orElseThrow(ResourceNotFoundException::new);
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(updatedPostDto).build());
   }
 
   @DeleteMapping("/{postId}")
   public ResponseEntity<SuccessResponse> deletePost(@PathVariable String postId, @AuthenticationPrincipal UserDetails userDetails) {
 
-    boolean isDeleted = postService.deletePost(postId, userDetails);
+    postService.deletePost(postId, userDetails);
 
-    if (isDeleted) {
-      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.DELETED).build());
-    } else {
-      throw new ResourceNotFoundException();
-    }
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.DELETED).build());
   }
 }
