@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.app.restfulapi.response.error.exception.BusinessException;
-import kr.app.restfulapi.response.error.exception.ResourceNotFoundException;
 import kr.app.restfulapi.response.success.SuccessResponse;
 import kr.app.restfulapi.response.success.SuccessStatus;
 import kr.app.restfulapi.uga.common.util.CustomFileUtils;
@@ -57,10 +56,6 @@ public class FileController {
   public ResponseEntity<Resource> downloadFile(@PathVariable String fileId, HttpServletRequest request) throws IOException {
     Optional<FileDataDto> optFileDataDto = fileService.getFileDownload(fileId);
 
-    if (optFileDataDto.isEmpty()) {
-      throw new ResourceNotFoundException();
-    }
-
     FileDataDto fileDataDto = optFileDataDto.get();
     Resource resource = new PathResource(fileDataDto.fileStreCours() + File.separator + fileDataDto.fileStreNm());
 
@@ -83,11 +78,8 @@ public class FileController {
   public ResponseEntity<Resource> showImage(@PathVariable String fileId) {
     Optional<FileDataDto> optFileDataDto = fileService.getFile(fileId);
 
-    if (optFileDataDto.isEmpty()) {
-      throw new ResourceNotFoundException();
-    }
-
     FileDataDto fileDataDto = optFileDataDto.get();
+
     try {
       byte[] imageData = fileService.getImage(fileDataDto); // FileService에서 이미지 데이터 가져오기
 

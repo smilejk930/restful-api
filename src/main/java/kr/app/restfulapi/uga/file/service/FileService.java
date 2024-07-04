@@ -19,6 +19,7 @@ import kr.app.restfulapi.response.error.FieldErrorReason;
 import kr.app.restfulapi.response.error.exception.BusinessException;
 import kr.app.restfulapi.response.error.exception.FieldNullPointException;
 import kr.app.restfulapi.response.error.exception.IllegalArgumentException;
+import kr.app.restfulapi.response.error.exception.ResourceNotFoundException;
 import kr.app.restfulapi.uga.common.util.CustomDateUtils;
 import kr.app.restfulapi.uga.common.util.CustomFileUtils;
 import kr.app.restfulapi.uga.common.util.CustomObjectUtils;
@@ -108,17 +109,22 @@ public class FileService {
 
   @Transactional(readOnly = true)
   public Optional<FileDataDto> getFile(String fileId) {
-    return fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(FileDataDto::toDto);
+
+    Optional<FileDataDto> optFileDataDto = fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(FileDataDto::toDto);
+
+    return optFileDataDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
 
   @Transactional
   public Optional<FileDataDto> getFileDownload(String fileId) {
 
-    return fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(fileData -> {
+    Optional<FileDataDto> optFileDataDto = fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(fileData -> {
       fileData.setDwldCo(fileData.getDwldCo() + 1);
 
       return FileDataDto.toDto(fileData);
     });
+
+    return optFileDataDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
 
   @Transactional(readOnly = true)
