@@ -74,10 +74,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
 querydsl {
 	library = 'com.querydsl:querydsl-apt'
 	jpa = true
@@ -113,4 +109,8 @@ compileQuerydsl {
 
 clean {
 	delete file(querydslDir)
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
 }
