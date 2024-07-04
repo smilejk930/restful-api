@@ -1,8 +1,8 @@
 package kr.app.restfulapi.response.error;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.http.HttpStatusCode;
+import kr.app.restfulapi.uga.common.util.CustomDateUtils;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ public class ErrorResponse {
     this.resultType = status.getResultType();
     this.status = status.getStatus().value();
     this.message = status.getMessage();
-    this.timestamp = LocalDateTime.now();
+    this.timestamp = CustomDateUtils.getFormatCurrentDateTime();
     this.errors = errors;
   }
 
@@ -33,13 +33,13 @@ public class ErrorResponse {
     this.resultType = ErrorStatus.find(status).getResultType();
     this.status = ErrorStatus.find(status).getStatus().value();
     this.message = ErrorStatus.find(status).getMessage();
-    this.timestamp = LocalDateTime.now();
+    this.timestamp = CustomDateUtils.getFormatCurrentDateTime();
     this.errors = errors;
   }
 
   private String resultType;
   private Integer status;
   private String message;
-  private LocalDateTime timestamp;
+  private String timestamp;
   private List<FieldError> errors;
 }
