@@ -2,7 +2,7 @@
 
 - spring boot 3.3.1
 - openjdk-21.0.2
-- Gradle 8.8
+- Gradle 8.5
 
 ## vscode, cursor 등 사용을 위한 설정
 
@@ -14,13 +14,13 @@
 
 https://gradle.org/
 
-Install Gradle 8.8 ➡️ Installing manually
+Install Gradle 8.5 ➡️ Installing manually
 Complete 버전으로 다운로드
 
-D:\develop\Gradle\gradle-8.8\bin
+D:\develop\Gradle\gradle-8.5\bin
 
 시스템 환경변수 Path
-D:\develop\Gradle\gradle-8.8\bin 추가
+D:\develop\Gradle\gradle-8.5\bin 추가
 
 cmd > gradle -v
 
@@ -29,7 +29,7 @@ cmd > gradle -v
 Windows ➡️ Preferences ➡️ Gradle
 
 Local installation directory 선택
-D:\develop\Gradle\gradle-8.8
+D:\develop\Gradle\gradle-8.5
 
 Gradle user home(라이브러리 다운로드 폴더)
 D:\develop\Gradle\repo
