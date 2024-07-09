@@ -1,4 +1,4 @@
-package kr.app.restfulapi.jwt;
+package kr.app.restfulapi.global.jwt;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

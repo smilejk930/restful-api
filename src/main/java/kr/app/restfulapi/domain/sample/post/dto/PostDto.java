@@ -1,8 +1,8 @@
-package kr.app.restfulapi.uga.post.dto;
+package kr.app.restfulapi.domain.sample.post.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import kr.app.restfulapi.uga.post.entity.Post;
+import kr.app.restfulapi.domain.sample.post.entity.Post;
 
 public record PostDto(
     String postId,

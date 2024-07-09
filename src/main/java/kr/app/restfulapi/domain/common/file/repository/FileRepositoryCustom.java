@@ -1,7 +1,7 @@
-package kr.app.restfulapi.uga.file.repository;
+package kr.app.restfulapi.domain.common.file.repository;
 
 import java.util.List;
-import kr.app.restfulapi.uga.file.entity.FileData;
+import kr.app.restfulapi.domain.common.file.entity.FileData;
 
 public interface FileRepositoryCustom {
 

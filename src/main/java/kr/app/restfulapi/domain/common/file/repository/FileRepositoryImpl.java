@@ -1,4 +1,4 @@
-package kr.app.restfulapi.uga.file.repository;
+package kr.app.restfulapi.domain.common.file.repository;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
@@ -7,8 +7,8 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.app.restfulapi.uga.file.entity.FileData;
-import kr.app.restfulapi.uga.file.entity.QFileData;
+import kr.app.restfulapi.domain.common.file.entity.FileData;
+import kr.app.restfulapi.domain.common.file.entity.QFileData;
 import lombok.RequiredArgsConstructor;
 
 /***

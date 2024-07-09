@@ -1,9 +1,9 @@
-package kr.app.restfulapi.uga.user.repository;
+package kr.app.restfulapi.domain.common.user.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import kr.app.restfulapi.uga.user.entity.User;
+import kr.app.restfulapi.domain.common.user.entity.User;
 
 
 @Repository

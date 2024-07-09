@@ -1,7 +1,7 @@
-package kr.app.restfulapi.uga.file.dto;
+package kr.app.restfulapi.domain.common.file.dto;
 
 import org.apache.commons.lang3.ObjectUtils;
-import kr.app.restfulapi.uga.file.entity.FileData;
+import kr.app.restfulapi.domain.common.file.entity.FileData;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

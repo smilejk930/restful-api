@@ -1,4 +1,4 @@
-package kr.app.restfulapi.auditor;
+package kr.app.restfulapi.global.auditor;
 
 import java.util.Optional;
 import org.springframework.data.domain.AuditorAware;

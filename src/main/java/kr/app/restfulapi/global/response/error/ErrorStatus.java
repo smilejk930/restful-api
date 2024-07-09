@@ -1,4 +1,4 @@
-package kr.app.restfulapi.response.error;
+package kr.app.restfulapi.global.response.error;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,8 @@
-package kr.app.restfulapi.util;
+package kr.app.restfulapi.global.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import kr.app.restfulapi.uga.common.util.CustomDateUtils;
+import kr.app.restfulapi.global.util.CustomDateUtils;
 
 class CustomDateUtilsTest {
 

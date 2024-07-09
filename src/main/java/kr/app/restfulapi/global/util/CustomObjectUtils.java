@@ -1,8 +1,8 @@
-package kr.app.restfulapi.uga.common.util;
+package kr.app.restfulapi.global.util;
 
 import java.lang.reflect.Field;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import kr.app.restfulapi.response.error.exception.BusinessException;
+import kr.app.restfulapi.global.response.error.exception.BusinessException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

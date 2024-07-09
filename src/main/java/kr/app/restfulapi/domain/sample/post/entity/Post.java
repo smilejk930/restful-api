@@ -1,4 +1,4 @@
-package kr.app.restfulapi.uga.post.entity;
+package kr.app.restfulapi.domain.sample.post.entity;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import kr.app.restfulapi.uga.common.entity.BaseEntity;
+import kr.app.restfulapi.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

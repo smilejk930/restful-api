@@ -1,4 +1,4 @@
-package kr.app.restfulapi.uga.post.controller;
+package kr.app.restfulapi.domain.sample.post.controller;
 
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
-import kr.app.restfulapi.response.success.SuccessResponse;
-import kr.app.restfulapi.response.success.SuccessStatus;
-import kr.app.restfulapi.uga.post.dto.PostDto;
-import kr.app.restfulapi.uga.post.service.PostService;
+import kr.app.restfulapi.global.response.success.SuccessResponse;
+import kr.app.restfulapi.global.response.success.SuccessStatus;
+import kr.app.restfulapi.domain.sample.post.dto.PostDto;
+import kr.app.restfulapi.domain.sample.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

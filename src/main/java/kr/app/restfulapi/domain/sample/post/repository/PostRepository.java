@@ -1,9 +1,9 @@
-package kr.app.restfulapi.uga.post.repository;
+package kr.app.restfulapi.domain.sample.post.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import kr.app.restfulapi.uga.post.entity.Post;
+import kr.app.restfulapi.domain.sample.post.entity.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, String>, PostRepositoryCustom {

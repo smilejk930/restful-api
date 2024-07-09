@@ -1,8 +1,8 @@
-package kr.app.restfulapi.uga.post.repository;
+package kr.app.restfulapi.domain.sample.post.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import kr.app.restfulapi.uga.post.entity.Post;
+import kr.app.restfulapi.domain.sample.post.entity.Post;
 
 public interface PostRepositoryCustom {
 

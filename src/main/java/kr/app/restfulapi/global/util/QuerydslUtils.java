@@ -1,9 +1,9 @@
-package kr.app.restfulapi.uga.common.util;
+package kr.app.restfulapi.global.util;
 
 import org.springframework.data.domain.Sort;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
-import kr.app.restfulapi.response.error.exception.IllegalArgumentException;
+import kr.app.restfulapi.global.response.error.exception.IllegalArgumentException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

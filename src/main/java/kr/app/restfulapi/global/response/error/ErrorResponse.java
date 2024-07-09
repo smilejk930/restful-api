@@ -1,8 +1,8 @@
-package kr.app.restfulapi.response.error;
+package kr.app.restfulapi.global.response.error;
 
 import java.util.List;
 import org.springframework.http.HttpStatusCode;
-import kr.app.restfulapi.uga.common.util.CustomDateUtils;
+import kr.app.restfulapi.global.util.CustomDateUtils;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

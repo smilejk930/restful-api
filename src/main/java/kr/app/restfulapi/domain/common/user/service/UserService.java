@@ -1,13 +1,13 @@
-package kr.app.restfulapi.uga.user.service;
+package kr.app.restfulapi.domain.common.user.service;
 
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import kr.app.restfulapi.jwt.JwtSecurityConfig;
-import kr.app.restfulapi.response.error.exception.ResourceNotFoundException;
-import kr.app.restfulapi.uga.user.dto.UserDto;
-import kr.app.restfulapi.uga.user.entity.User;
-import kr.app.restfulapi.uga.user.repository.UserRepository;
+import kr.app.restfulapi.global.jwt.JwtSecurityConfig;
+import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
+import kr.app.restfulapi.domain.common.user.dto.UserDto;
+import kr.app.restfulapi.domain.common.user.entity.User;
+import kr.app.restfulapi.domain.common.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

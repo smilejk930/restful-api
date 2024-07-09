@@ -1,4 +1,4 @@
-package kr.app.restfulapi.response.success;
+package kr.app.restfulapi.global.response.success;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

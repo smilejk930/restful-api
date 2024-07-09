@@ -1,7 +1,7 @@
-package kr.app.restfulapi.uga.user.dto;
+package kr.app.restfulapi.domain.common.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import kr.app.restfulapi.uga.user.entity.User;
+import kr.app.restfulapi.domain.common.user.entity.User;
 
 public record UserDto(
     @NotBlank(message = "로그인아이디는 필수 입력값입니다.") String loginId,

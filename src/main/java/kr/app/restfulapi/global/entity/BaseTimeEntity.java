@@ -1,4 +1,4 @@
-package kr.app.restfulapi.uga.common.entity;
+package kr.app.restfulapi.global.entity;
 
 import java.time.LocalDateTime;
 import org.hibernate.annotations.Comment;

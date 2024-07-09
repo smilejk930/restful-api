@@ -1,4 +1,4 @@
-package kr.app.restfulapi.uga.post.service;
+package kr.app.restfulapi.domain.sample.post.service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import kr.app.restfulapi.response.error.exception.ResourceNotFoundException;
-import kr.app.restfulapi.uga.post.dto.PostDto;
-import kr.app.restfulapi.uga.post.entity.Post;
-import kr.app.restfulapi.uga.post.repository.PostRepository;
+import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
+import kr.app.restfulapi.domain.sample.post.dto.PostDto;
+import kr.app.restfulapi.domain.sample.post.entity.Post;
+import kr.app.restfulapi.domain.sample.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

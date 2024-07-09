@@ -1,7 +1,9 @@
-package kr.app.restfulapi.response.error.exception;
+package kr.app.restfulapi.global.response.error.exception;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
+import kr.app.restfulapi.global.response.error.exception.BusinessException;
+import kr.app.restfulapi.global.response.error.exception.FieldNullPointException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

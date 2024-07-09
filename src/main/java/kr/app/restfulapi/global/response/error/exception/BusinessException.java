@@ -1,8 +1,8 @@
-package kr.app.restfulapi.response.error.exception;
+package kr.app.restfulapi.global.response.error.exception;
 
 import java.util.List;
-import kr.app.restfulapi.response.error.ErrorStatus;
-import kr.app.restfulapi.response.error.FieldError;
+import kr.app.restfulapi.global.response.error.ErrorStatus;
+import kr.app.restfulapi.global.response.error.FieldError;
 import lombok.Getter;
 
 @Getter

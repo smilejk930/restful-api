@@ -1,4 +1,4 @@
-package kr.app.restfulapi.response.error.exception;
+package kr.app.restfulapi.global.response.error.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,9 +13,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import kr.app.restfulapi.response.error.ErrorResponse;
-import kr.app.restfulapi.response.error.ErrorStatus;
-import kr.app.restfulapi.response.error.FieldError;
+import kr.app.restfulapi.global.response.error.ErrorResponse;
+import kr.app.restfulapi.global.response.error.ErrorStatus;
+import kr.app.restfulapi.global.response.error.FieldError;
 import kr.app.restfulapi.domain.sample.edu.user.UserNotFoundException;
 
 /**

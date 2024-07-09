@@ -1,4 +1,4 @@
-package kr.app.restfulapi.uga.file.controller;
+package kr.app.restfulapi.domain.common.file.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
-import kr.app.restfulapi.response.error.exception.BusinessException;
-import kr.app.restfulapi.response.success.SuccessResponse;
-import kr.app.restfulapi.response.success.SuccessStatus;
-import kr.app.restfulapi.uga.common.util.CustomFileUtils;
-import kr.app.restfulapi.uga.file.dto.FileDataDto;
-import kr.app.restfulapi.uga.file.dto.FileDataInit;
-import kr.app.restfulapi.uga.file.service.FileService;
+import kr.app.restfulapi.global.response.error.exception.BusinessException;
+import kr.app.restfulapi.global.response.success.SuccessResponse;
+import kr.app.restfulapi.global.response.success.SuccessStatus;
+import kr.app.restfulapi.global.util.CustomFileUtils;
+import kr.app.restfulapi.domain.common.file.dto.FileDataDto;
+import kr.app.restfulapi.domain.common.file.dto.FileDataInit;
+import kr.app.restfulapi.domain.common.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

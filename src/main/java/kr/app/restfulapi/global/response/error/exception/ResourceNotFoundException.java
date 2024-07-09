@@ -1,6 +1,6 @@
-package kr.app.restfulapi.response.error.exception;
+package kr.app.restfulapi.global.response.error.exception;
 
-import kr.app.restfulapi.response.error.ErrorStatus;
+import kr.app.restfulapi.global.response.error.ErrorStatus;
 
 public class ResourceNotFoundException extends BusinessException {
   private static final long serialVersionUID = 1L;
