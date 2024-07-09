@@ -62,3 +62,11 @@ spring:
 #허용되는 파일확장자명 목록
 file:
   allowed-extensions: zip, pdf, doc, docx, xls, xlsx, gif, jpg, jpeg, png
+  
+site:
+  domain: uga.go.kr
+  
+jwt:
+  secret-key: u2Rze+xmgd76YU6Eg9CjSnI0tuSi4ejMfr93fM5KC+I=
+  expiration-minutes: 30 #30분
+  expiration-hours: 1 #1시간
