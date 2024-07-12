@@ -46,6 +46,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	// implementation 'org.springframework.boot:spring-boot-starter-data-jdbc' //cubrid-jdbc와 충돌로 인해 주석처리 함
 	// implementation 'org.springframework.data:spring-data-rest-hal-explorer:4.2.5' //HAL Explorer
 	// implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0' //Swagger-ui
@@ -56,6 +57,7 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:$querydslVersion" // Querydsl
 	implementation "org.apache.commons:commons-lang3:$commonslangVersion"
 	implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
+	implementation 'com.github.ben-manes.caffeine:caffeine'
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	compileOnly "org.projectlombok:lombok:$lombokVersion"
