@@ -15,6 +15,12 @@ public enum FieldErrorReason {
   ),
   FILE_EXTENSION_NOT_ALLOWED(
       "허용되지 않는 파일 확장자입니다."
+  ),
+  LOGINID_ALREADY_EXISTS(
+      "로그인아이디가 이미 존재합니다."
+  ),
+  INVALID_PASSWORD(
+      "비밀번호가 유효하지 않습니다."
   );
 
   /** error가 발생한 항목의 이유 */

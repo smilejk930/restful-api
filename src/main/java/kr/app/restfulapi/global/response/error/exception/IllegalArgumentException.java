@@ -7,24 +7,25 @@ import kr.app.restfulapi.global.response.error.FieldErrorReason;
 
 public class IllegalArgumentException extends BusinessException {
   private static final long serialVersionUID = 1L;
+  private static final ErrorStatus errorStatus = ErrorStatus.BAD_REQUEST;
 
   public IllegalArgumentException() {
-    super(ErrorStatus.BAD_REQUEST);
+    super(errorStatus);
   }
 
   public IllegalArgumentException(String message) {
-    super(ErrorStatus.BAD_REQUEST, message);
+    super(errorStatus, message);
   }
 
   public IllegalArgumentException(String field, String value, String reason) {
-    super(ErrorStatus.BAD_REQUEST, FieldError.of(field, value, reason));
+    super(errorStatus, FieldError.of(field, value, reason));
   }
 
   public IllegalArgumentException(String field, String value, FieldErrorReason reason) {
-    super(ErrorStatus.BAD_REQUEST, FieldError.of(field, value, reason));
+    super(errorStatus, FieldError.of(field, value, reason));
   }
 
   public IllegalArgumentException(List<FieldError> errors) {
-    super(ErrorStatus.BAD_REQUEST, errors);
+    super(errorStatus, errors);
   }
 }
