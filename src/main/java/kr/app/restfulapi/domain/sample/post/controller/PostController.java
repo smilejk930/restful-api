@@ -66,7 +66,7 @@ public class PostController {
   }
 
   @PostMapping
-  public ResponseEntity<SuccessResponse> createPost(@RequestBody @Valid PostDto postDto, @AuthenticationPrincipal UserDetails userDetails) {
+  public ResponseEntity<SuccessResponse> createPost(@Valid @RequestBody PostDto postDto, @AuthenticationPrincipal UserDetails userDetails) {
 
     PostDto createdPostDto = postService.createPost(postDto, userDetails);
 
@@ -74,7 +74,7 @@ public class PostController {
   }
 
   @PutMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @RequestBody @Valid PostDto postDto,
+  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Valid @RequestBody PostDto postDto,
       @AuthenticationPrincipal UserDetails userDetails) {
 
     Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto, userDetails);
