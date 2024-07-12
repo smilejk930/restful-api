@@ -15,15 +15,13 @@ public class ResourceRole {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long resourceRolesId;
+  private Long resourceRoleId;
 
   @ManyToOne
-  @JoinColumn(name = "resource_id", nullable = false)
+  @JoinColumn(name = "resource_id")
   private Resource resource;
 
   @ManyToOne
-  @JoinColumn(name = "role_id", nullable = false)
+  @JoinColumn(name = "role_id")
   private Role role;
-
-  // constructors, getters, setters
 }
