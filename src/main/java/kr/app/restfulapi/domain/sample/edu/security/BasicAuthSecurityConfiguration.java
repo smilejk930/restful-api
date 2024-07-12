@@ -1,4 +1,4 @@
-package kr.app.restfulapi.global.security;
+package kr.app.restfulapi.domain.sample.edu.security;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Bean;
