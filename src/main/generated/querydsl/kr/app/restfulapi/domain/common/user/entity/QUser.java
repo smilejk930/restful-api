@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -36,6 +37,8 @@ public class QUser extends EntityPathBase<User> {
 
     //inherited
     public final StringPath registServerNm = _super.registServerNm;
+
+    public final SetPath<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole> roles = this.<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole>createSet("roles", kr.app.restfulapi.domain.common.role.entity.Role.class, kr.app.restfulapi.domain.common.role.entity.QRole.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;

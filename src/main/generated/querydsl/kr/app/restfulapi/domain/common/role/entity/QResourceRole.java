@@ -24,7 +24,7 @@ public class QResourceRole extends EntityPathBase<ResourceRole> {
 
     public final kr.app.restfulapi.domain.common.resource.entity.QResource resource;
 
-    public final NumberPath<Long> resourceRolesId = createNumber("resourceRolesId", Long.class);
+    public final NumberPath<Long> resourceRoleId = createNumber("resourceRoleId", Long.class);
 
     public final QRole role;
 
@@ -46,7 +46,7 @@ public class QResourceRole extends EntityPathBase<ResourceRole> {
 
     public QResourceRole(Class<? extends ResourceRole> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.resource = inits.isInitialized("resource") ? new kr.app.restfulapi.domain.common.resource.entity.QResource(forProperty("resource")) : null;
+        this.resource = inits.isInitialized("resource") ? new kr.app.restfulapi.domain.common.resource.entity.QResource(forProperty("resource"), inits.get("resource")) : null;
         this.role = inits.isInitialized("role") ? new QRole(forProperty("role")) : null;
     }
 
