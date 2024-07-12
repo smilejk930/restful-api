@@ -1,4 +1,4 @@
-package kr.app.restfulapi.global.jwt;
+package kr.app.restfulapi.domain.sample.edu.jwt;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -6,13 +6,12 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,22 +29,25 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class JwtSecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     // https://github.com/spring-projects/spring-security/issues/1231
     // https://docs.spring.io/spring-boot/docs/current/reference/html/data.html#data.sql.h2-web-console.spring-security
-    return httpSecurity
-        // .authorizeHttpRequests(auth -> auth.requestMatchers("/authenticate").permitAll()
+    return httpSecurity.authorizeHttpRequests(auth -> auth.requestMatchers("/authenticate")
+        .permitAll()
         // .requestMatchers(PathRequest.toH2Console()).permitAll() //(사용X) h2-console is a servlet and NOT recommended for a production
-        // .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
+        .requestMatchers(HttpMethod.OPTIONS, "/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated())
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt) // (사용X) Deprecated in SB 3.1.x
-        // .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults())) // Starting from SB 3.1.x using Lambda DSL
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())) // Starting from SB 3.1.x using Lambda DSL
         .httpBasic(Customizer.withDefaults())
         // .headers(header -> { // (사용X) Deprecated in SB 3.1.x
         // header.frameOptions().sameOrigin(); // (사용X)
@@ -125,5 +127,3 @@ public class JwtSecurityConfig {
   }
 
 }
-
-

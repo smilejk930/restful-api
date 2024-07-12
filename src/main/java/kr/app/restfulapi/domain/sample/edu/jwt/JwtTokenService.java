@@ -1,4 +1,4 @@
-package kr.app.restfulapi.global.jwt;
+package kr.app.restfulapi.domain.sample.edu.jwt;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

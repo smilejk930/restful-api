@@ -1,4 +1,4 @@
-package kr.app.restfulapi.global.jwt;
+package kr.app.restfulapi.domain.sample.edu.jwt;
 
 public record JwtTokenResponse(String token) {
 }
