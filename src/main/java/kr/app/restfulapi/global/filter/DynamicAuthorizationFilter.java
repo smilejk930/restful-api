@@ -30,28 +30,29 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
+    String loginId = null;
     String url = request.getRequestURI();
     String method = request.getMethod();
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    if (authentication == null || !authentication.isAuthenticated()) {
-      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not authenticated");
-      return;
-    }
-
-    UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-    String loginId = userPrincipal.getLoginId();
 
     try {
       // TODO URL 사용여부 추가
       List<Resource> resources = resourceRepository.findAll();
 
       Optional<Resource> matchedResource = resources.stream()
-          .filter(resource -> antPathMatcher.match(resource.getUrlPattern(), url) && resource.getMethod().equalsIgnoreCase(method))
+          .filter(resource -> antPathMatcher.match(resource.getUrlPattern(), url) && resource.getHttpMethod().equalsIgnoreCase(method))
           .findFirst();
 
       if (matchedResource.isPresent()) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+          response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not authenticated");
+          return;
+        }
+
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        loginId = userPrincipal.getLoginId();
 
         Set<Role> resourceRoles = matchedResource.get().getRoles();
 
@@ -68,6 +69,8 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
           response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
           return;
         }
+      } else {
+        // request.setAttribute("exception", new NoResourceFoundException("JWT token has expired"));
       }
 
       filterChain.doFilter(request, response);
