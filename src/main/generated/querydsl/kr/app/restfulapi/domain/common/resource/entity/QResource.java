@@ -26,7 +26,7 @@ public class QResource extends EntityPathBase<Resource> {
 
     public final StringPath description = createString("description");
 
-    public final StringPath method = createString("method");
+    public final StringPath httpMethod = createString("httpMethod");
 
     public final QResource parent;
 

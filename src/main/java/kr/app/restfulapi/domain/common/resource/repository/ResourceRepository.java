@@ -8,7 +8,7 @@ import kr.app.restfulapi.domain.common.resource.entity.Resource;
 @Repository
 public interface ResourceRepository extends JpaRepository<Resource, Long>, ResourceRepositoryCustom {
 
-  Optional<Resource> findByUrlPatternAndMethod(String urlPattern, String method);
+  Optional<Resource> findByUrlPatternAndHttpMethod(String urlPattern, String httpMethod);
 
-  // List<Resource> findByMethodIgnoreCase(String method);
+  // List<Resource> findByHttpMethodIgnoreCase(String httpMethod);
 }

@@ -41,16 +41,18 @@ public class Resource {
   private String urlPattern;
 
   @Column(nullable = false)
-  private String method;
+  private String httpMethod;
 
   @Column()
   private String description;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_resource_id")
+  // @JsonBackReference // 부모 엔티티를 참조하는 필드에 설정
   private Resource parent;
 
   @OneToMany(mappedBy = "parent")
+  // @JsonManagedReference // 자식 엔티티들을 참조하는 필드에 설정
   private List<Resource> children = new ArrayList<>();
 
   @ManyToMany(fetch = FetchType.LAZY)

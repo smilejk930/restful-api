@@ -33,21 +33,21 @@ public class ResourceService {
   private final ResourceRepository resourceRepository;
 
   // 이 메서드는 결과가 캐시되어 있지 않은 경우에만 실행
-  @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "#urlPattern + '-' + #method")
+  @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "#urlPattern + '-' + #httpMethod")
   @Transactional(readOnly = true)
-  public Optional<Resource> findByUrlPatternAndMethod(String urlPattern, String method) {
-    return resourceRepository.findByUrlPatternAndMethod(urlPattern, method);
+  public Optional<Resource> findByUrlPatternAndHttpMethod(String urlPattern, String httpMethod) {
+    return resourceRepository.findByUrlPatternAndHttpMethod(urlPattern, httpMethod);
   }
 
   // 이 메서드의 결과는 항상 캐시를 갱신
-  @CachePut(value = CacheNames.RESOURCE_PERMISSIONS, key = "#resource.urlPattern + '-' + #resource.method")
+  @CachePut(value = CacheNames.RESOURCE_PERMISSIONS, key = "#resource.urlPattern + '-' + #resource.httpMethod")
   @Transactional
   public Resource save(Resource resource) {
     return resourceRepository.save(resource);
   }
 
   // 이 메서드가 실행되면 해당 캐시 항목을 제거
-  @CacheEvict(value = CacheNames.RESOURCE_PERMISSIONS, key = "#resource.urlPattern + '-' + #resource.method")
+  @CacheEvict(value = CacheNames.RESOURCE_PERMISSIONS, key = "#resource.urlPattern + '-' + #resource.httpMethod")
   @Transactional
   public void delete(Resource resource) {
     resourceRepository.delete(resource);
