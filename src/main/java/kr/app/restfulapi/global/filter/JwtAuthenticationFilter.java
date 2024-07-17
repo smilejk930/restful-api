@@ -15,9 +15,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.app.restfulapi.domain.common.user.service.CustomUserDetailsService;
+import kr.app.restfulapi.global.response.error.exception.JwtAuthenticationException;
+import kr.app.restfulapi.global.response.error.exception.JwtTokenException;
 import kr.app.restfulapi.global.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -32,38 +36,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       String jwt = getJwtFromRequest(request);
 
       if (StringUtils.hasText(jwt)) {
-        if (tokenProvider.isValidateToken(jwt)) {
-          Optional<String> optLoginId = tokenProvider.getLoginIdFromJWT(jwt);
-          if (optLoginId.isPresent()) {
-            UserDetails userDetails = customUserDetailsService.loadUserByLoginId(optLoginId.get());
 
-            if (userDetails != null) {
-              // TODO 어떤 역할을 하는지 확인해야함
-              UsernamePasswordAuthenticationToken authentication =
-                  new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-              authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-              SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-              // 유효한 사용자가 아닌 경우 로그를 남기고 인증을 설정하지 않습니다.
-              logger.warn("User not found for Login Id: " + optLoginId.get());
-              SecurityContextHolder.clearContext();// 보안 컨텍스트를 클리어합니다.
-            }
-
-          } else {
-            logger.error("Could not find loginId in JWT token");
-            SecurityContextHolder.clearContext();
-          }
-        } else {
-          logger.warn("Invalid JWT token");
+        if (!tokenProvider.isValidateToken(jwt)) {
+          throw new JwtTokenException("Invalid JWT token");
         }
+
+        Optional<String> optLoginId = tokenProvider.getLoginIdFromJWT(jwt);
+
+        if (optLoginId.isEmpty()) {
+          throw new JwtTokenException("Could not find loginId in JWT token");
+        }
+
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(optLoginId.get());
+
+        if (userDetails == null) {
+          // 유효한 사용자가 아닌 경우 로그를 남기고 인증을 설정하지 않습니다.
+          throw new UsernameNotFoundException("User not found for Login Id: " + optLoginId.get());
+        }
+
+        // TODO 어떤 역할을 하는지 확인해야함
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
       }
-    } catch (UsernameNotFoundException ex) {
-      logger.error("User not found in database", ex);
+    } catch (JwtTokenException | UsernameNotFoundException ex) {
+      log.error("JWT Authentication error", ex);
       SecurityContextHolder.clearContext();
+      throw new JwtAuthenticationException(ex.getMessage());
     } catch (Exception ex) {
-      logger.error("Could not set user authentication in security context", ex);
+      log.error("Unexpected error during JWT authentication", ex);
       SecurityContextHolder.clearContext();
+      throw new JwtAuthenticationException("Could not set user authentication in security context");
     }
 
     filterChain.doFilter(request, response);
