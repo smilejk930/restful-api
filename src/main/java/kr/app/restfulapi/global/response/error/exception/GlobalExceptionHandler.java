@@ -1,12 +1,15 @@
 package kr.app.restfulapi.global.response.error.exception;
 
+import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,10 +22,12 @@ import kr.app.restfulapi.domain.sample.edu.user.UserNotFoundException;
 import kr.app.restfulapi.global.response.error.ErrorResponse;
 import kr.app.restfulapi.global.response.error.ErrorStatus;
 import kr.app.restfulapi.global.response.error.FieldError;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 예외처리를 위한 핸들러 클래스
  */
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -36,9 +41,41 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(BusinessException.class)
-  protected final ResponseEntity<Object> handleBusinessException(BusinessException ex) {
-    ErrorResponse errorResponse = ErrorResponse.errorStatus().status(ex.getStatus()).errors(ex.getErrors()).build();
+  protected final ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
+    ErrorResponse errorResponse;
+    if (null != request && !Objects.isNull(ex.getErrors())) {
+      ex.getErrors().stream().forEach(error -> log.error(error.getReason()));
+      errorResponse =
+          ErrorResponse.errorStatus().status(ex.getStatus()).errors(FieldError.of(null, ex.getMessage(), request.getDescription(false))).build();
+    } else {
+      errorResponse = ErrorResponse.errorStatus().status(ex.getStatus()).errors(ex.getErrors()).build();
+    }
     return new ResponseEntity<>(errorResponse, ex.getStatus().getStatus());
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<Object> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
+    ErrorResponse errorResponse = ErrorResponse.errorStatus()
+        .status(ErrorStatus.UNAUTHORIZED)
+        .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
+        .build();
+    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+    ErrorResponse errorResponse =
+        ErrorResponse.errorStatus().status(ErrorStatus.FORBIDDEN).errors(FieldError.of(null, ex.getMessage(), request.getDescription(false))).build();
+    return new ResponseEntity<>(errorResponse, ErrorStatus.FORBIDDEN.getStatus());
+  }
+
+  @ExceptionHandler(JwtAuthenticationException.class)
+  public ResponseEntity<Object> handleJwtAuthenticationException(JwtAuthenticationException ex, WebRequest request) {
+    ErrorResponse errorResponse = ErrorResponse.errorStatus()
+        .status(ErrorStatus.UNAUTHORIZED)
+        .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
+        .build();
+    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
   }
 
   @ExceptionHandler(BadCredentialsException.class)
@@ -59,6 +96,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
   }
 
+  /*
+  @ExceptionHandler(value = {BadCredentialsException.class, LockedException.class})
+  protected final ResponseEntity<Object> handleBadCredentialsOrLockedException(Exception ex, WebRequest request) {
+    ErrorResponse errorResponse = ErrorResponse.errorStatus()
+        .status(ErrorStatus.UNAUTHORIZED)
+        .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
+        .build();
+    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
+  }
+  */
   /* User가 존재하지 않을 때 */
   @ExceptionHandler(UserNotFoundException.class)
   protected final ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) {
