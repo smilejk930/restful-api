@@ -30,6 +30,8 @@ public class QResource extends EntityPathBase<Resource> {
 
     public final QResource parent;
 
+    public final EnumPath<kr.app.restfulapi.domain.common.resource.util.ResourceAccessType> resourceAccessType = createEnum("resourceAccessType", kr.app.restfulapi.domain.common.resource.util.ResourceAccessType.class);
+
     public final NumberPath<Long> resourceId = createNumber("resourceId", Long.class);
 
     public final SetPath<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole> roles = this.<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole>createSet("roles", kr.app.restfulapi.domain.common.role.entity.Role.class, kr.app.restfulapi.domain.common.role.entity.QRole.class, PathInits.DIRECT2);
