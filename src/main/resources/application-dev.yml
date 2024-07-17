@@ -4,6 +4,12 @@ logging:
   level:
     org:
       springframework: debug
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 
 #custom properties
 currency-service:
