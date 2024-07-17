@@ -8,28 +8,29 @@ import org.springframework.stereotype.Service;
 import kr.app.restfulapi.domain.common.user.entity.User;
 import kr.app.restfulapi.domain.common.user.repository.UserRepository;
 import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
-import kr.app.restfulapi.global.response.error.FieldErrorReason;
-import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 사용자 인증을 위한 커스텀 UserDetailsService 구현체입니다.
+ * 이 서비스는 Spring Security의 인증 메커니즘과 통합되어 사용자 정보를 로드합니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
   private final UserRepository userRepository;
 
+  /**
+   * 주어진 로그인 아이디로 사용자를 조회하고 UserDetails 객체를 반환합니다.
+   *
+   * @param loginId 조회할 사용자의 로그인 아이디
+   * @return 조회된 사용자 정보를 담고 있는 UserDetails 객체
+   * @throws UsernameNotFoundException 주어진 로그인 아이디에 해당하는 사용자가 없을 경우 발생
+   */
   @Override
-  public UserDetails loadUserByUsername(String userNm) throws UsernameNotFoundException {
-    throw new UnsupportedOperationException("loadUserByUsername is not supported. Use loadUserByLoginId instead.");
-  }
-
-  public UserDetails loadUserByLoginId(String loginId) {
+  public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
     Optional<User> optUser = userRepository.findByLoginId(loginId);
 
-    if (optUser.isPresent()) {
-      return UserPrincipal.create(optUser.get());
-    } else {
-      throw new ResourceNotFoundException("loginId", loginId, FieldErrorReason.USER_NOT_FOUND);
-    }
+    return optUser.map(UserPrincipal::create).orElseThrow(() -> new UsernameNotFoundException("로그인 아이디 " + loginId + "가 존재하지 않습니다."));
   }
 }

@@ -8,7 +8,6 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +16,8 @@ import jakarta.validation.Valid;
 import kr.app.restfulapi.domain.common.auth.dto.JwtResponseDto;
 import kr.app.restfulapi.domain.common.auth.dto.LoginDto;
 import kr.app.restfulapi.domain.common.user.dto.UserDto;
-import kr.app.restfulapi.domain.common.user.service.CustomUserDetailsService;
 import kr.app.restfulapi.domain.common.user.service.UserService;
+import kr.app.restfulapi.global.response.error.FieldErrorReason;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
 import kr.app.restfulapi.global.util.JwtTokenProvider;
@@ -33,18 +32,17 @@ public class AuthContorller {
 
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider tokenProvider;
-  private final CustomUserDetailsService customUserDetailsService;;
   private final UserService userService;
 
   @PostMapping("/login")
   public ResponseEntity<SuccessResponse> authenticateUser(@Valid @RequestBody LoginDto loginDto) throws Exception {
     try {
-      UserDetails userDetails = customUserDetailsService.loadUserByLoginId(loginDto.loginId());
 
-      // TODO 정확한 이해가 필요함(userDetails.getUsername())
+      // AuthenticationManager를 사용하여 인증 수행
       Authentication authentication =
-          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetails.getUsername(), loginDto.password()));
+          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.loginId(), loginDto.password()));
 
+      // 인증 성공 시 SecurityContext에 인증 정보 저장
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
       String jwt = tokenProvider.generateToken(authentication);
@@ -52,7 +50,7 @@ public class AuthContorller {
       return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(new JwtResponseDto(jwt)).build());
     } catch (BadCredentialsException ex) {
       log.warn("Login attempt failed for user: {}", loginDto.loginId());
-      throw new BadCredentialsException("Invalid loginId or password");
+      throw new BadCredentialsException(FieldErrorReason.BAD_CREDENTIALS.getReason());
     } catch (LockedException ex) {
       log.warn("Locked account attempt to login: {}", loginDto.loginId());
       throw new LockedException("Account is locked");
