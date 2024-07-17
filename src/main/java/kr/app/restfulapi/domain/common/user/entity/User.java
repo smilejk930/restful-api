@@ -46,10 +46,10 @@ public class User extends BaseEntity {
   private String userNm;
 
   @Comment("비밀번호")
-  @Column(length = 20, nullable = false)
+  @Column(length = 100, nullable = false)
   private String password;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER) // TODO LAZY했을때 CustomUserDetailsService의 optUser.map(UserPrincipal::create)에서 에러 발생 추후 확인 바람
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
