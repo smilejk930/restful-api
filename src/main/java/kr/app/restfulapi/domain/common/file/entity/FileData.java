@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "TESTUSER", indexes = {@Index(name = "idx_finm", columnList = "finm"), @Index(name = "idx_regist_dt", columnList = "regist_dt")})
+@Table(indexes = {@Index(name = "idx_finm", columnList = "finm"), @Index(name = "idx_regist_dt", columnList = "regist_dt")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

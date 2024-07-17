@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "resources", schema = "TESTUSER")
+@Table(name = "resources")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "resource_roles", schema = "TESTUSER")
+@Table(name = "resource_roles")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
