@@ -52,7 +52,8 @@ public class SecurityConfig {
         .exceptionHandling(exceptionHandling -> exceptionHandling
             .authenticationEntryPoint(securityExceptionHandler) /* AuthenticationEntryPoint는 인증되지 않은 사용자가 보안된 리소스에 접근하려 할 때 호출 */
             .accessDeniedHandler(securityExceptionHandler)) // AccessDeniedHandler는 인증된 사용자가 권한이 없는 리소스에 접근하려 할 때 호출
-        .userDetailsService(userDetailsService); // UserDetailsService 설정
+        .userDetailsService(userDetailsService) // UserDetailsService 설정
+    ;
 
     return http.build();
   }
