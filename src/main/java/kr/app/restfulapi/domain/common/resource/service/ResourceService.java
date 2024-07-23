@@ -33,6 +33,13 @@ public class ResourceService {
   private final ResourceRepository resourceRepository;
 
   // 이 메서드는 결과가 캐시되어 있지 않은 경우에만 실행
+  @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "'allResources'")
+  @Transactional(readOnly = true)
+  public List<Resource> getAllResource() {
+    return resourceRepository.findAll();
+  }
+
+  // 이 메서드는 결과가 캐시되어 있지 않은 경우에만 실행
   @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "#urlPattern + '-' + #httpMethod")
   @Transactional(readOnly = true)
   public Optional<Resource> findByUrlPatternAndHttpMethod(String urlPattern, String httpMethod) {

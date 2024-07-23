@@ -13,7 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.app.restfulapi.domain.common.resource.entity.Resource;
-import kr.app.restfulapi.domain.common.resource.repository.ResourceRepository;
+import kr.app.restfulapi.domain.common.resource.service.ResourceService;
 import kr.app.restfulapi.domain.common.resource.util.ResourceAccessType;
 import kr.app.restfulapi.domain.common.role.entity.Role;
 import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DynamicAuthorizationFilter extends OncePerRequestFilter {
 
-  private final ResourceRepository resourceRepository;
+  private final ResourceService resourceService;
   private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
   @Override
@@ -50,7 +50,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
     */
     try {
       // TODO URL 사용여부 추가
-      List<Resource> resources = resourceRepository.findAll();
+      List<Resource> resources = resourceService.getAllResource();
 
       Resource matchedResource = resources.stream()
           .filter(resource -> antPathMatcher.match(resource.getUrlPattern(), url) && resource.getHttpMethod().equalsIgnoreCase(method))
