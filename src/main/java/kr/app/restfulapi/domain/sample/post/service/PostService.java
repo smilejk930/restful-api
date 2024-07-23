@@ -29,9 +29,17 @@ public class PostService {
   @Transactional(readOnly = true)
   public Optional<PostDto> getPostById(String postId) {
 
-    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+    /*
+    Optional<PostDto> optPostDto;
+    if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
+      optPostDto = postRepository.findByPostIdAndDeleteAt(postId, "N").map(PostDto::toDto);
+    } else {
+      UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+      optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(PostDto::toDto);
+    }
+    */
 
-    Optional<PostDto> optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(PostDto::toDto);
+    Optional<PostDto> optPostDto = postRepository.findByPostId(postId).map(PostDto::toDto);
 
     return optPostDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
@@ -65,9 +73,8 @@ public class PostService {
   @Transactional
   public boolean deletePost(String postId) {
 
-    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
-
-    return postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(post -> {
+    return postRepository.findByPostId(postId).map(post -> {
+      UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
       post.setDeleteAt("Y");
       post.setUpdusrId(userPrincipal.getUserId());
       post.setUpdtDt(LocalDateTime.now());

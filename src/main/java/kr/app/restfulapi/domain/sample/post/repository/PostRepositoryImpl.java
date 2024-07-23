@@ -1,6 +1,7 @@
 package kr.app.restfulapi.domain.sample.post.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +48,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
   /**
    * Where절 Build
+   * ADMIN권한과 INTERMEDIATE_ADMIN권한이 있으면 조회할 수 있게 분기 처리
    */
   private BooleanExpression buildWhereClause(Post criteria) {
 
@@ -55,6 +57,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     BooleanExpression whereClause = qPost.isNotNull();
 
     whereClause = whereClause.and(qPost.deleteAt.eq("N"));
+
     // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
     if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
       whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserId()));
@@ -63,6 +66,25 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     whereClause = StringUtils.hasText(criteria.getCn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getCn())) : whereClause;
 
     return whereClause;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<Post> findByPostId(String postId) {
+
+    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+
+    BooleanExpression whereClause = qPost.isNotNull();
+
+    whereClause = whereClause.and(qPost.deleteAt.eq("N"));
+    whereClause = whereClause.and(qPost.postId.eq(postId));
+
+    // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
+    if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
+      whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserId()));
+    }
+    Post result = queryFactory.selectFrom(qPost).where(whereClause).fetchOne();
+    return Optional.ofNullable(result);
   }
 
 }
