@@ -69,5 +69,5 @@ site:
   
 jwt:
   secret-key: u2Rze+xmgd76YU6Eg9CjSnI0tuSi4ejMfr93fM5KC+I=
-  expiration-minutes: 30 #30분
+  expiration-minutes: 60 #60분
   expiration-hours: 1 #1시간
