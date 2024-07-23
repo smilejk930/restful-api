@@ -31,7 +31,7 @@ public class PostServiceTest {
 
     // Act
     // postService.createPost()를 실행하고 결과를 검증합니다.
-    PostDto result = postService.createPost(inputDto, null);
+    PostDto result = postService.createPost(inputDto);
 
     // Assert
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.
@@ -39,7 +39,7 @@ public class PostServiceTest {
     assertTrue(TSID.isValid(result.postId())); // TSID 유효성 검사
 
     // Verify the saved entity
-    PostDto savedPostDto = postService.getPostById(result.postId(), null).orElse(null);
+    PostDto savedPostDto = postService.getPostById(result.postId()).orElse(null);
     assertNotNull(savedPostDto);
     log.info("##### postId: {}", savedPostDto.postId());
     assertEquals(result.postId(), savedPostDto.postId());
