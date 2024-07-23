@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +19,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import kr.app.restfulapi.domain.common.resource.util.ResourceAccessType;
 import kr.app.restfulapi.domain.common.role.entity.Role;
 import lombok.AccessLevel;
@@ -28,7 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "resources")
+@Table(name = "resources", uniqueConstraints = {@UniqueConstraint(name = "uk_resources_url_method", columnNames = {"urlPattern", "httpMethod"})})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,7 +56,7 @@ public class Resource {
   private String description;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parent_resource_id")
+  @JoinColumn(name = "parent_resource_id", foreignKey = @ForeignKey(name = "fk_resources_parent_resource_id"))
   // @JsonBackReference // 부모 엔티티를 참조하는 필드에 설정
   private Resource parent;
 
