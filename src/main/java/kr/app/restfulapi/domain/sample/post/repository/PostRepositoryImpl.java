@@ -11,6 +11,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.app.restfulapi.domain.common.role.util.RoleGroup;
 import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
 import kr.app.restfulapi.domain.sample.post.entity.QPost;
@@ -54,7 +55,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     BooleanExpression whereClause = qPost.isNotNull();
 
     whereClause = whereClause.and(qPost.deleteAt.eq("N"));
-    whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserId()));
+    // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
+    if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
+      whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserId()));
+    }
     whereClause = StringUtils.hasText(criteria.getSj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSj())) : whereClause;
     whereClause = StringUtils.hasText(criteria.getCn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getCn())) : whereClause;
 
