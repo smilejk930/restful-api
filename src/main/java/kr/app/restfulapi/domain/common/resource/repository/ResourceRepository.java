@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import kr.app.restfulapi.domain.common.resource.entity.Resource;
 
 @Repository
-public interface ResourceRepository extends JpaRepository<Resource, Long>, ResourceRepositoryCustom {
+public interface ResourceRepository extends JpaRepository<Resource, String>, ResourceRepositoryCustom {
 
   Optional<Resource> findByUrlPatternAndHttpMethod(String urlPattern, String httpMethod);
 
