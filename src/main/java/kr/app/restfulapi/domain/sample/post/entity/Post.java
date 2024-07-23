@@ -2,10 +2,9 @@ package kr.app.restfulapi.domain.sample.post.entity;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
@@ -34,7 +33,9 @@ public class Post extends BaseEntity {
   // because "this.con" is null]
   // @GeneratedValue(strategy = GenerationType.IDENTITY) //cubrid error 발생
   // @GeneratedValue(strategy = GenerationType.AUTO)
-  @GeneratedValue(strategy = GenerationType.UUID)
+  // @GeneratedValue(strategy = GenerationType.UUID)
+  @Tsid
+  @Column(length = 13, columnDefinition = "CHAR(13)")
   private String postId;
 
   @Comment("제목")

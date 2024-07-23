@@ -3,11 +3,10 @@ package kr.app.restfulapi.domain.common.user.entity;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Comment;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
@@ -33,7 +32,8 @@ import lombok.Setter;
 public class User extends BaseEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
+  @Tsid
+  @Column(length = 13, columnDefinition = "CHAR(13)")
   @Comment("사용자아이디")
   private String userId;
 
