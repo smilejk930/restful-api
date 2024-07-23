@@ -66,7 +66,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
       if (authentication == null || !authentication.isAuthenticated()) {
-        throw new UnauthorizedException("User not authenticated");
+        throw new UnauthorizedException();
       }
 
       UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
