@@ -7,8 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
-import kr.app.restfulapi.global.response.success.SuccessResponse;
-import kr.app.restfulapi.global.response.success.SuccessStatus;
 import kr.app.restfulapi.domain.sample.post.dto.PostDto;
 import kr.app.restfulapi.domain.sample.post.service.PostService;
+import kr.app.restfulapi.global.response.success.SuccessResponse;
+import kr.app.restfulapi.global.response.success.SuccessStatus;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,10 +35,9 @@ public class PostController {
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto,
-      @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable,
-      @AuthenticationPrincipal UserDetails userDetails) {
+      @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-    Page<PostDto> postDtoList = postService.getAllPost(postDto, pageable, userDetails);
+    Page<PostDto> postDtoList = postService.getAllPost(postDto, pageable);
     /*
     List<EntityModel<PostDto>> models = postDtoList.stream().map(data -> {
       Link detailLink = null;
@@ -52,9 +49,9 @@ public class PostController {
   }
 
   @GetMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> getPostById(@PathVariable String postId, @AuthenticationPrincipal UserDetails userDetails) {
+  public ResponseEntity<SuccessResponse> getPostById(@PathVariable String postId) {
 
-    Optional<PostDto> optPostDto = postService.getPostById(postId, userDetails);
+    Optional<PostDto> optPostDto = postService.getPostById(postId);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(optPostDto).build());
 
@@ -66,26 +63,25 @@ public class PostController {
   }
 
   @PostMapping
-  public ResponseEntity<SuccessResponse> createPost(@Valid @RequestBody PostDto postDto, @AuthenticationPrincipal UserDetails userDetails) {
+  public ResponseEntity<SuccessResponse> createPost(@Valid @RequestBody PostDto postDto) {
 
-    PostDto createdPostDto = postService.createPost(postDto, userDetails);
+    PostDto createdPostDto = postService.createPost(postDto);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdPostDto).build());
   }
 
   @PutMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Valid @RequestBody PostDto postDto,
-      @AuthenticationPrincipal UserDetails userDetails) {
+  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Valid @RequestBody PostDto postDto) {
 
-    Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto, userDetails);
+    Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(updatedPostDto).build());
   }
 
   @DeleteMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> deletePost(@PathVariable String postId, @AuthenticationPrincipal UserDetails userDetails) {
+  public ResponseEntity<SuccessResponse> deletePost(@PathVariable String postId) {
 
-    postService.deletePost(postId, userDetails);
+    postService.deletePost(postId);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.DELETED).build());
   }

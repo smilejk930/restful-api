@@ -4,43 +4,41 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
+import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
 import kr.app.restfulapi.domain.sample.post.dto.PostDto;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
 import kr.app.restfulapi.domain.sample.post.repository.PostRepository;
+import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
+import kr.app.restfulapi.global.util.SecurityContextHelper;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
-  // TODO 해당하는 USER_ID로 검색
-
   private final PostRepository postRepository;
 
   @Transactional(readOnly = true)
-  public Page<PostDto> getAllPost(PostDto postDto, Pageable pageable, UserDetails userDetails) {
-
-    // User user = User.builder().userId("1").build();// TODO USER_ID 추후 변경
+  public Page<PostDto> getAllPost(PostDto postDto, Pageable pageable) {
 
     return postRepository.findAllWithCriteria(postDto.toEntity(), pageable).map(PostDto::toDto);
   }
 
   @Transactional(readOnly = true)
-  public Optional<PostDto> getPostById(String postId, UserDetails userDetails) {
+  public Optional<PostDto> getPostById(String postId) {
 
-    Optional<PostDto> optPostDto = postRepository.findByPostIdAndDeleteAt(postId, "N").map(PostDto::toDto);
+    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+
+    Optional<PostDto> optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(PostDto::toDto);
 
     return optPostDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
 
   @Transactional
-  public PostDto createPost(PostDto postDto, UserDetails userDetails) {
+  public PostDto createPost(PostDto postDto) {
 
-    // User user = User.builder().userId("1").build();// TODO USER_ID 추후 변경
     Post post = postDto.toEntity();
     Post savedPost = postRepository.save(post);
 
@@ -48,12 +46,14 @@ public class PostService {
   }
 
   @Transactional
-  public Optional<PostDto> updatePost(String postId, PostDto postDto, UserDetails userDetails) {
+  public Optional<PostDto> updatePost(String postId, PostDto postDto) {
 
-    Optional<PostDto> optPostDto = postRepository.findByPostIdAndDeleteAt(postId, "N").map(post -> {
+    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+
+    Optional<PostDto> optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(post -> {
       post.setSj(postDto.sj());
       post.setCn(postDto.cn());
-      post.setUpdusrId("1");// TODO USER_ID 추후 변경
+      post.setUpdusrId(userPrincipal.getUserId());
       post.setUpdtDt(LocalDateTime.now());
 
       return PostDto.toDto(post);
@@ -63,11 +63,13 @@ public class PostService {
   }
 
   @Transactional
-  public boolean deletePost(String postId, UserDetails userDetails) {
+  public boolean deletePost(String postId) {
 
-    return postRepository.findByPostIdAndDeleteAt(postId, "N").map(post -> {
+    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+
+    return postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(post -> {
       post.setDeleteAt("Y");
-      post.setUpdusrId("1");// TODO USER_ID 추후 변경
+      post.setUpdusrId(userPrincipal.getUserId());
       post.setUpdtDt(LocalDateTime.now());
 
       return true;

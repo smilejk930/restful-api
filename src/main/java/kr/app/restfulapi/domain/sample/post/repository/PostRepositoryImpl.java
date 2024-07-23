@@ -11,9 +11,11 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.app.restfulapi.global.util.QuerydslUtils;
+import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
 import kr.app.restfulapi.domain.sample.post.entity.QPost;
+import kr.app.restfulapi.global.util.QuerydslUtils;
+import kr.app.restfulapi.global.util.SecurityContextHelper;
 import lombok.RequiredArgsConstructor;
 
 /***
@@ -47,9 +49,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
    */
   private BooleanExpression buildWhereClause(Post criteria) {
 
+    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+
     BooleanExpression whereClause = qPost.isNotNull();
 
     whereClause = whereClause.and(qPost.deleteAt.eq("N"));
+    whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserId()));
     whereClause = StringUtils.hasText(criteria.getSj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSj())) : whereClause;
     whereClause = StringUtils.hasText(criteria.getCn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getCn())) : whereClause;
 
