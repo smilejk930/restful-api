@@ -12,6 +12,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -46,7 +47,9 @@ public class JwtTokenProvider {
 
     Map<String, Object> claims = new HashMap<>();
 
+    // TOKEN에 정보 주입
     claims.put("loginId", userPrincipal.getLoginId());
+    claims.put("authorities", userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
 
     return Jwts.builder()
         .issuer(siteDomain)
