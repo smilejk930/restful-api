@@ -49,6 +49,7 @@ public class JwtTokenProvider {
 
     // TOKEN에 정보 주입
     claims.put("loginId", userPrincipal.getLoginId());
+    claims.put("userNm", userPrincipal.getUserNm());
     claims.put("authorities", userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
 
     return Jwts.builder()
