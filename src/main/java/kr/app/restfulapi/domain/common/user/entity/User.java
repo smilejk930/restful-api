@@ -49,7 +49,8 @@ public class User extends BaseEntity {
   @Column(length = 100, nullable = false)
   private String password;
 
-  @ManyToMany(fetch = FetchType.EAGER) // TODO LAZY했을때 CustomUserDetailsService의 optUser.map(UserPrincipal::create)에서 에러 발생 추후 확인 바람
+  // @ManyToMany(fetch = FetchType.EAGER) // TODO LAZY했을때 CustomUserDetailsService의 optUser.map(UserPrincipal::create)에서 에러 발생 추후 확인 바람
+  @ManyToMany(fetch = FetchType.LAZY) // CustomUserDetailsService에서 해당 세션이 닫히지 않게 @Transactional(readOnly = true) 설정하여 roles에 접근시 로딩할 수 있게 변경
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 

@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import kr.app.restfulapi.domain.common.user.entity.User;
 import kr.app.restfulapi.domain.common.user.repository.UserRepository;
 import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
@@ -27,6 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
    * @return 조회된 사용자 정보를 담고 있는 UserDetails 객체
    * @throws UsernameNotFoundException 주어진 로그인 아이디에 해당하는 사용자가 없을 경우 발생
    */
+  @Transactional(readOnly = true)
   @Override
   public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
     Optional<User> optUser = userRepository.findByLoginId(loginId);
