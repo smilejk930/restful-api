@@ -46,7 +46,7 @@ public class ResourceRepositoryAnotherImpl implements ResourceRepositoryCustom {
   }
 
   private List<Resource> buildResourceTree(List<Resource> allResources) {
-    Map<Long, Resource> resourceMap = new HashMap<>();
+    Map<String, Resource> resourceMap = new HashMap<>();
     List<Resource> rootResources = new ArrayList<>();
 
     // 모든 리소스를 Map에 넣습니다.

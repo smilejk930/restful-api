@@ -1,8 +1,8 @@
 package kr.app.restfulapi.domain.common.role.entity;
 
+import io.hypersistence.utils.hibernate.id.Tsid;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -25,8 +25,9 @@ import lombok.Setter;
 public class ResourceRole {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long resourceRoleId;
+  @Tsid
+  @Column(length = 13, columnDefinition = "CHAR(13)")
+  private String resourceRoleId;
 
   @ManyToOne
   @JoinColumn(name = "resource_id")

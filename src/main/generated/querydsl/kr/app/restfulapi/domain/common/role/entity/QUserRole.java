@@ -26,7 +26,7 @@ public class QUserRole extends EntityPathBase<UserRole> {
 
     public final kr.app.restfulapi.domain.common.user.entity.QUser user;
 
-    public final NumberPath<Long> userRoleId = createNumber("userRoleId", Long.class);
+    public final StringPath userRoleId = createString("userRoleId");
 
     public QUserRole(String variable) {
         this(UserRole.class, forVariable(variable), INITS);

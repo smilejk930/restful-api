@@ -2,10 +2,9 @@ package kr.app.restfulapi.domain.common.role.entity;
 
 import java.util.HashSet;
 import java.util.Set;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -28,8 +27,9 @@ import lombok.Setter;
 public class Role {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long roleId;
+  @Tsid
+  @Column(length = 13, columnDefinition = "CHAR(13)")
+  private String roleId;
 
   @Column(name = "name", nullable = false, unique = true)
   private String name;

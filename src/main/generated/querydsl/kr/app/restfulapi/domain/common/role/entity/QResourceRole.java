@@ -24,7 +24,7 @@ public class QResourceRole extends EntityPathBase<ResourceRole> {
 
     public final kr.app.restfulapi.domain.common.resource.entity.QResource resource;
 
-    public final NumberPath<Long> resourceRoleId = createNumber("resourceRoleId", Long.class);
+    public final StringPath resourceRoleId = createString("resourceRoleId");
 
     public final QRole role;
 
