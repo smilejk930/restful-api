@@ -14,7 +14,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import kr.app.restfulapi.domain.common.role.entity.Role;
-import kr.app.restfulapi.global.entity.BaseEntity;
+import kr.app.restfulapi.global.entity.BaseAuditingEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User extends BaseEntity {
+public class User extends BaseAuditingEntity {
 
   @Id
   @Tsid
