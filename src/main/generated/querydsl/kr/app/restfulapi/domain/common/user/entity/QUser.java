@@ -20,7 +20,7 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-    public final kr.app.restfulapi.global.entity.QBaseEntity _super = new kr.app.restfulapi.global.entity.QBaseEntity(this);
+    public final kr.app.restfulapi.global.entity.QBaseAuditingEntity _super = new kr.app.restfulapi.global.entity.QBaseAuditingEntity(this);
 
     //inherited
     public final StringPath lastServerNm = _super.lastServerNm;

@@ -10,16 +10,16 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QBaseEntity is a Querydsl query type for BaseEntity
+ * QBaseAuditingEntity is a Querydsl query type for BaseAuditingEntity
  */
 @Generated("com.querydsl.codegen.DefaultSupertypeSerializer")
-public class QBaseEntity extends EntityPathBase<BaseEntity> {
+public class QBaseAuditingEntity extends EntityPathBase<BaseAuditingEntity> {
 
-    private static final long serialVersionUID = 433916861L;
+    private static final long serialVersionUID = -95768892L;
 
-    public static final QBaseEntity baseEntity = new QBaseEntity("baseEntity");
+    public static final QBaseAuditingEntity baseAuditingEntity = new QBaseAuditingEntity("baseAuditingEntity");
 
-    public final QBaseUpdtEntity _super = new QBaseUpdtEntity(this);
+    public final QBaseAuditingUpdtEntity _super = new QBaseAuditingUpdtEntity(this);
 
     //inherited
     public final StringPath lastServerNm = _super.lastServerNm;
@@ -39,16 +39,16 @@ public class QBaseEntity extends EntityPathBase<BaseEntity> {
     //inherited
     public final StringPath updusrId = _super.updusrId;
 
-    public QBaseEntity(String variable) {
-        super(BaseEntity.class, forVariable(variable));
+    public QBaseAuditingEntity(String variable) {
+        super(BaseAuditingEntity.class, forVariable(variable));
     }
 
-    public QBaseEntity(Path<? extends BaseEntity> path) {
+    public QBaseAuditingEntity(Path<? extends BaseAuditingEntity> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QBaseEntity(PathMetadata metadata) {
-        super(BaseEntity.class, metadata);
+    public QBaseAuditingEntity(PathMetadata metadata) {
+        super(BaseAuditingEntity.class, metadata);
     }
 
 }
