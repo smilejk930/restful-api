@@ -33,6 +33,7 @@ public class PostController {
 
   // TODO 게시글 등록 파일등록도 같이, 수정 시에는 파일 삭제가 됐다면 삭제될 파일들 리스트를 가지고 파일 삭제해야함
   // TODO 게시글 삭제 시 파일들도 삭제
+  // TODO 임시저장 만들기
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto, @ModelAttribute PostSearchDto searchDto,
