@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import kr.app.restfulapi.domain.sample.post.dto.PostDto;
+import kr.app.restfulapi.domain.sample.post.dto.PostSearchDto;
 import kr.app.restfulapi.domain.sample.post.service.PostService;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
@@ -34,7 +35,7 @@ public class PostController {
   // TODO 게시글 삭제 시 파일들도 삭제
 
   @GetMapping
-  public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto,
+  public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto, @ModelAttribute PostSearchDto searchDto,
       @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable) {
 
     Page<PostDto> postDtoList = postService.getAllPost(postDto, pageable);
