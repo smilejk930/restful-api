@@ -8,11 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.app.restfulapi.domain.common.role.util.RoleGroup;
+import kr.app.restfulapi.domain.common.user.entity.QUser;
 import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
 import kr.app.restfulapi.domain.sample.post.entity.QPost;
@@ -29,6 +31,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
   private final JPAQueryFactory queryFactory;
   private QPost qPost = QPost.post;
+  private QUser qUser = QUser.user;
 
   @Override
   @Transactional(readOnly = true)
@@ -38,10 +41,30 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     OrderSpecifier<?>[] orderSpecifiers = QuerydslUtils.getSortOrder(new PathBuilder<>(QPost.class, qPost.getMetadata()), pageable.getSort());
 
+    /*
     List<Post> results =
         queryFactory.selectFrom(qPost).where(whereClause).orderBy(orderSpecifiers).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
-
+        
     Long totalCount = queryFactory.select(qPost.count()).from(qPost).where(whereClause).fetchOne();
+    */
+    List<Tuple> tupleResults = queryFactory.select(qPost, qUser.userNm)
+        .from(qPost)
+        .leftJoin(qUser)
+        .on(qPost.registerId.eq(qUser.userId))
+        .where(whereClause)
+        .orderBy(orderSpecifiers)
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize())
+        .fetch();
+
+    List<Post> results = tupleResults.stream().map(tuple -> {
+      Post post = tuple.get(qPost);
+      post.setUserNm(tuple.get(qUser.userNm));
+      return post;
+    }).toList();
+
+    Long totalCount =
+        queryFactory.select(qPost.count()).from(qPost).leftJoin(qUser).on(qPost.registerId.eq(qUser.userId)).where(whereClause).fetchOne();
 
     return new PageImpl<>(results, pageable, totalCount);
   }
@@ -83,8 +106,22 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
       whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserId()));
     }
-    Post result = queryFactory.selectFrom(qPost).where(whereClause).fetchOne();
-    return Optional.ofNullable(result);
+
+    // Post result = queryFactory.selectFrom(qPost).where(whereClause).fetchOne();
+
+    return queryFactory.select(qPost, qUser.userNm)
+        .from(qPost)
+        .leftJoin(qUser)
+        .on(qPost.registerId.eq(qUser.userId))
+        .where(whereClause)
+        .fetch()
+        .stream()
+        .map(tuple -> {
+          Post post = tuple.get(qPost);
+          post.setUserNm(tuple.get(qUser.userNm));
+          return post;
+        })
+        .findFirst();// Optional<Post>를 반환
   }
 
 }
