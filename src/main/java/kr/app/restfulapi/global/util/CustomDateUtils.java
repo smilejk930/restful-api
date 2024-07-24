@@ -62,4 +62,12 @@ public class CustomDateUtils {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     return now.format(formatter);
   }
+
+  /**
+   * @return yyyy-MM-dd
+   */
+  public static String getFormatYmdDate(LocalDateTime localDateTime) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    return localDateTime.format(formatter);
+  }
 }
