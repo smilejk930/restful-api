@@ -4,7 +4,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 
 /**
- * 등록에 대한 생성자와 생성 시간 자동 기록
+ * 등록/수정에 대한 생성자와 생성 시간 자동 기록
  * 
  * @MappedSuperclass
  *                   애노테이션은 JPA에서 매핑된 슈퍼클래스임을 나타냅니다.
@@ -17,6 +17,6 @@ import lombok.Getter;
  */
 @Getter
 @MappedSuperclass
-public abstract class BaseEntity extends BaseUpdtEntity {
+public abstract class BaseAuditingEntity extends BaseAuditingUpdtEntity {
 
 }
