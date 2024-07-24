@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import kr.app.restfulapi.global.entity.BaseEntity;
+import kr.app.restfulapi.global.entity.BaseAuditingEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Post extends BaseEntity {
+public class Post extends BaseAuditingEntity {
 
   @Comment("게시글아이디")
   @Id

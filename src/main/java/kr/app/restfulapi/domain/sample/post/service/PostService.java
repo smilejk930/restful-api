@@ -1,6 +1,5 @@
 package kr.app.restfulapi.domain.sample.post.service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,8 +60,6 @@ public class PostService {
     Optional<PostDto> optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(post -> {
       post.setSj(postDto.sj());
       post.setCn(postDto.cn());
-      post.setUpdusrId(userPrincipal.getUserId());
-      post.setUpdtDt(LocalDateTime.now());
 
       return PostDto.toDto(post);
     });
@@ -74,11 +71,8 @@ public class PostService {
   public boolean deletePost(String postId) {
 
     return postRepository.findByPostId(postId).map(post -> {
-      UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
       post.setDeleteAt("Y");
-      post.setUpdusrId(userPrincipal.getUserId());
-      post.setUpdtDt(LocalDateTime.now());
-
+      
       return true;
     }).orElseThrow(ResourceNotFoundException::new);
   }
