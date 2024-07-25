@@ -114,7 +114,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
-  /* DTO validation 오류 발생 시 */
+  /* @Validated 또는 @Valid 사용하여 오류 발생 시 */
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
