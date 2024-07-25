@@ -11,7 +11,7 @@ spring:
 
   #profile(e.g. dev, prod, test, qa, ...)
   profiles:
-    active: dev
+    active: dev, srvr
     
   #H2 콘솔 사용 설정
   #h2:
