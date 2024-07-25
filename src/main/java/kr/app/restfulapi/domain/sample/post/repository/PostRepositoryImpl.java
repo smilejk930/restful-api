@@ -85,8 +85,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
       whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserId()));
     }
-    whereClause = StringUtils.hasText(criteria.getSj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSj())) : whereClause;
-    whereClause = StringUtils.hasText(criteria.getCn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getCn())) : whereClause;
+    whereClause =
+        StringUtils.hasText(criteria.getSrchDto().sj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSrchDto().sj())) : whereClause;
+    whereClause =
+        StringUtils.hasText(criteria.getSrchDto().cn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getSrchDto().cn())) : whereClause;
 
     return whereClause;
   }

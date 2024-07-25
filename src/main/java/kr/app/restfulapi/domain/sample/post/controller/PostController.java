@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import kr.app.restfulapi.domain.sample.post.dto.PostDto;
-import kr.app.restfulapi.domain.sample.post.dto.PostSearchDto;
+import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
+import kr.app.restfulapi.domain.sample.post.dto.PostRspnsDto;
+import kr.app.restfulapi.domain.sample.post.dto.PostSrchDto;
 import kr.app.restfulapi.domain.sample.post.service.PostService;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
@@ -36,10 +37,10 @@ public class PostController {
   // TODO 게시글 삭제 시 파일들도 삭제
 
   @GetMapping
-  public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto, @ModelAttribute PostSearchDto searchDto,
+  public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostSrchDto srchDto,
       @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-    Page<PostDto> postDtoList = postService.getAllPost(postDto, pageable);
+    Page<PostRspnsDto> postRspnsDtoList = postService.getAllPost(srchDto, pageable);
     /*
     List<EntityModel<PostDto>> models = postDtoList.stream().map(data -> {
       Link detailLink = null;
@@ -47,15 +48,15 @@ public class PostController {
       return EntityModel.of(data, detailLink);
     }).toList();*/
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(postDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(postRspnsDtoList).build());
   }
 
   @GetMapping("/{postId}")
   public ResponseEntity<SuccessResponse> getPostById(@PathVariable String postId) {
 
-    Optional<PostDto> optPostDto = postService.getPostById(postId);
+    Optional<PostRspnsDto> optPostRspnsDto = postService.getPostById(postId);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(optPostDto).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(optPostRspnsDto).build());
 
     /*return optPostDto.map(data -> {
        EntityModel<PostDto> model = EntityModel.of(data);
@@ -65,41 +66,42 @@ public class PostController {
   }
 
   @PostMapping
-  public ResponseEntity<SuccessResponse> createPost(@Validated @RequestBody PostDto postDto) {
+  public ResponseEntity<SuccessResponse> createPost(@Validated @RequestBody PostReqstDto postReqstDto) {
 
-    return processCreatPost(postDto, "N");
+    return processCreatPost(postReqstDto, "N");
   }
 
   @PostMapping("/submit")
-  public ResponseEntity<SuccessResponse> submitCreatePost(@Validated(FinalSubmit.class) @RequestBody PostDto postDto) {
+  public ResponseEntity<SuccessResponse> submitCreatePost(@Validated(FinalSubmit.class) @RequestBody PostReqstDto postReqstDto) {
 
-    return processCreatPost(postDto, "Y");
+    return processCreatPost(postReqstDto, "Y");
   }
 
-  private ResponseEntity<SuccessResponse> processCreatPost(PostDto postDto, String sbmsnYn) {
+  private ResponseEntity<SuccessResponse> processCreatPost(PostReqstDto postReqstDto, String sbmsnYn) {
 
-    PostDto createdPostDto = postService.createPost(postDto, sbmsnYn);
+    PostRspnsDto postRspnsDto = postService.createPost(postReqstDto, sbmsnYn);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdPostDto).build());
+    return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(postRspnsDto).build());
   }
 
   @PutMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Validated @RequestBody PostDto postDto) {
+  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Validated @RequestBody PostReqstDto postReqstDto) {
 
-    return processUpdatePost(postId, postDto, "N");
+    return processUpdatePost(postId, postReqstDto, "N");
   }
 
   @PutMapping("/submit/{postId}")
-  public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postId, @Validated(FinalSubmit.class) @RequestBody PostDto postDto) {
+  public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postId,
+      @Validated(FinalSubmit.class) @RequestBody PostReqstDto postReqstDto) {
 
-    return processUpdatePost(postId, postDto, "Y");
+    return processUpdatePost(postId, postReqstDto, "Y");
   }
 
-  private ResponseEntity<SuccessResponse> processUpdatePost(String postId, PostDto postDto, String sbmsnYn) {
+  private ResponseEntity<SuccessResponse> processUpdatePost(String postId, PostReqstDto postReqstDto, String sbmsnYn) {
 
-    Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto, sbmsnYn);
+    Optional<PostRspnsDto> optPostRspnsDto = postService.updatePost(postId, postReqstDto, sbmsnYn);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(updatedPostDto).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(optPostRspnsDto).build());
   }
 
   @DeleteMapping("/{postId}")
