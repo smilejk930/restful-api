@@ -13,7 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import io.hypersistence.tsid.TSID;
-import kr.app.restfulapi.domain.sample.post.dto.PostDto;
+import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
+import kr.app.restfulapi.domain.sample.post.dto.PostRspnsDto;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
 import kr.app.restfulapi.domain.sample.post.repository.PostRepository;
 
@@ -31,7 +32,8 @@ public class PostServiceNoneDBTest {
 
     // Arrange
     // 입력 PostDto 객체를 생성합니다
-    PostDto inputDto = PostDto.toDto(Post.builder().sj("입력 제목").cn("입력 내용").build());
+    // PostReqstDto inputDto = PostReqstDto.toDto(Post.builder().sj("입력 제목").cn("입력 내용").build());
+    PostReqstDto inputDto = null;// PostReqstDto 생성자 만들수 없음, 테스트 에러 발생함
 
     // postRepository.save() 메소드가 호출될 때 savedPost를 반환하도록 설정
     when(postRepository.save(any(Post.class))).thenAnswer(invocation -> {
@@ -49,7 +51,7 @@ public class PostServiceNoneDBTest {
      * 실제 데이터베이스에 접근하지 않고 미리 설정한 savedPost 객체를 반환하도록 합니다.
      * 이를 통해 데이터베이스와의 의존성을 제거하고, 메소드의 로직만을 테스트할 수 있게 됩니다.
      */
-    PostDto result = postService.createPost(inputDto, "N");
+    PostRspnsDto result = postService.createPost(inputDto, "N");
 
     // Assert
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.

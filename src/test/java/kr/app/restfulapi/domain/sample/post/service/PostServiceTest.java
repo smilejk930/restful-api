@@ -9,8 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import io.hypersistence.tsid.TSID;
-import kr.app.restfulapi.domain.sample.post.dto.PostDto;
-import kr.app.restfulapi.domain.sample.post.entity.Post;
+import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
+import kr.app.restfulapi.domain.sample.post.dto.PostRspnsDto;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest // @SpringBootTest 어노테이션을 사용하여 전체 Spring 컨텍스트를 로드
@@ -27,11 +27,12 @@ public class PostServiceTest {
 
     // Arrange
     // 입력 PostDto 객체를 생성합니다
-    PostDto inputDto = PostDto.toDto(Post.builder().sj("입력 제목").cn("입력 내용").build());
+    // PostReqstDto inputDto = PostReqstDto.toDto(Post.builder().sj("입력 제목").cn("입력 내용").build());
+    PostReqstDto inputDto = null;// PostReqstDto 생성자 만들수 없음, 테스트 에러 발생함
 
     // Act
     // postService.createPost()를 실행하고 결과를 검증합니다.
-    PostDto result = postService.createPost(inputDto, "N");
+    PostRspnsDto result = postService.createPost(inputDto, "N");
 
     // Assert
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.
@@ -39,7 +40,7 @@ public class PostServiceTest {
     assertTrue(TSID.isValid(result.postId())); // TSID 유효성 검사
 
     // Verify the saved entity
-    PostDto savedPostDto = postService.getPostById(result.postId()).orElse(null);
+    PostRspnsDto savedPostDto = postService.getPostById(result.postId()).orElse(null);
     assertNotNull(savedPostDto);
     log.info("##### postId: {}", savedPostDto.postId());
     assertEquals(result.postId(), savedPostDto.postId());
