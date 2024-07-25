@@ -8,6 +8,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,7 @@ public class AuthContorller {
   private final UserService userService;
 
   @PostMapping("/login")
-  public ResponseEntity<SuccessResponse> authenticateUser(@Valid @RequestBody LoginDto loginDto) throws Exception {
+  public ResponseEntity<SuccessResponse> authenticateUser(@Validated @RequestBody LoginDto loginDto) throws Exception {
     try {
 
       // AuthenticationManager를 사용하여 인증 수행
