@@ -4,10 +4,9 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.LastModifiedDate;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
@@ -30,7 +29,8 @@ public class FileData extends BaseEntity {
 
   @Comment("파일아이디")
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
+  @Tsid
+  @Column(length = 13, columnDefinition = "CHAR(13)")
   private String fileId;
 
   @Comment("파일명")
@@ -42,7 +42,7 @@ public class FileData extends BaseEntity {
   private String fileGroupNm;
 
   @Comment("참조아이디")
-  @Column(nullable = false)
+  @Column(length = 13, columnDefinition = "CHAR(13)", nullable = false)
   private String refrnId;
 
   @Comment("파일섹션값")
