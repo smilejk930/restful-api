@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import kr.app.restfulapi.domain.sample.post.dto.PostSrchDto;
 import kr.app.restfulapi.global.entity.BaseAuditingEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -69,6 +70,9 @@ public class Post extends BaseAuditingEntity {
 
   @Transient // JPA가 이 필드를 데이터베이스 컬럼으로 인식하지 않도록 하기 위해 @Transient를 사용
   private String userNm;
+
+  @Transient
+  private PostSrchDto srchDto;
 
   // @Comment("사용자아이디")
   // @ManyToOne(fetch = FetchType.LAZY)
