@@ -1,6 +1,6 @@
 package kr.app.restfulapi.global.response.error.exception;
 
-import java.util.Objects;
+import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -43,13 +43,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(BusinessException.class)
   protected final ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
     ErrorResponse errorResponse;
-    if (null != request && !Objects.isNull(ex.getErrors())) {
-      ex.getErrors().stream().forEach(error -> log.error(error.getReason()));
-      errorResponse =
-          ErrorResponse.errorStatus().status(ex.getStatus()).errors(FieldError.of(null, ex.getMessage(), request.getDescription(false))).build();
-    } else {
-      errorResponse = ErrorResponse.errorStatus().status(ex.getStatus()).errors(ex.getErrors()).build();
+    List<FieldError> errors = ex.getErrors();
+    if (errors != null && errors.size() == 1) {
+      errors = errors.stream()
+          .filter(error -> "N/A".equals(error.getField()) && "N/A".equals(error.getValue()))
+          .flatMap(error -> FieldError.of(null, request.getDescription(false), error.getReason()).stream())// flatMap()을 사용하여 중첩된 리스트를 평탄화합니다.
+                                                                                                           // FieldError.of()가 List<FieldError>를
+                                                                                                           // 반환하므로, flatMap()을 통해 각 리스트의 요소를 스트림으로
+                                                                                                           // 변환하고 이를 평탄화
+          .toList(); // Stream을 List로 수집
+
+      // 만약 필터링 후 리스트가 비어있다면 원래의 에러 리스트를 유지
+      if (errors.isEmpty()) {
+        errors = ex.getErrors();
+      }
     }
+    errorResponse = ErrorResponse.errorStatus().status(ex.getStatus()).errors(errors).build();
     return new ResponseEntity<>(errorResponse, ex.getStatus().getStatus());
   }
 
