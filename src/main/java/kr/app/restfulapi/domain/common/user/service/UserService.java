@@ -39,8 +39,6 @@ public class UserService {
     }
 
     User user = userDto.toEntity();
-    // user.setPassword("{bcrypt}" + securityConfig.passwordEncoder().encode(user.getPassword()));
-    // TODO 패스워드가 DB에 어떻게 저장되는지 확인 필요
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     User savedUser = userRepository.save(user);
 
