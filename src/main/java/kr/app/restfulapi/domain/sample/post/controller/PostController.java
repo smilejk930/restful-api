@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,12 +17,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
 import kr.app.restfulapi.domain.sample.post.dto.PostDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostSearchDto;
 import kr.app.restfulapi.domain.sample.post.service.PostService;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
+import kr.app.restfulapi.global.validation.ValidationGroups.FinalSubmit;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,7 +34,6 @@ public class PostController {
 
   // TODO 게시글 등록 파일등록도 같이, 수정 시에는 파일 삭제가 됐다면 삭제될 파일들 리스트를 가지고 파일 삭제해야함
   // TODO 게시글 삭제 시 파일들도 삭제
-  // TODO 임시저장 만들기
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostDto postDto, @ModelAttribute PostSearchDto searchDto,
@@ -65,17 +65,39 @@ public class PostController {
   }
 
   @PostMapping
-  public ResponseEntity<SuccessResponse> createPost(@Valid @RequestBody PostDto postDto) {
+  public ResponseEntity<SuccessResponse> createPost(@Validated @RequestBody PostDto postDto) {
 
-    PostDto createdPostDto = postService.createPost(postDto);
+    return processCreatPost(postDto, "N");
+  }
+
+  @PostMapping("/submit")
+  public ResponseEntity<SuccessResponse> submitCreatePost(@Validated(FinalSubmit.class) @RequestBody PostDto postDto) {
+
+    return processCreatPost(postDto, "Y");
+  }
+
+  private ResponseEntity<SuccessResponse> processCreatPost(PostDto postDto, String sbmsnYn) {
+
+    PostDto createdPostDto = postService.createPost(postDto, sbmsnYn);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdPostDto).build());
   }
 
   @PutMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Valid @RequestBody PostDto postDto) {
+  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Validated @RequestBody PostDto postDto) {
 
-    Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto);
+    return processUpdatePost(postId, postDto, "N");
+  }
+
+  @PutMapping("/submit/{postId}")
+  public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postId, @Validated(FinalSubmit.class) @RequestBody PostDto postDto) {
+
+    return processUpdatePost(postId, postDto, "Y");
+  }
+
+  private ResponseEntity<SuccessResponse> processUpdatePost(String postId, PostDto postDto, String sbmsnYn) {
+
+    Optional<PostDto> updatedPostDto = postService.updatePost(postId, postDto, sbmsnYn);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(updatedPostDto).build());
   }

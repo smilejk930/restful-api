@@ -1,5 +1,6 @@
 package kr.app.restfulapi.domain.sample.post.entity;
 
+import java.time.LocalDateTime;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -52,6 +53,19 @@ public class Post extends BaseAuditingEntity {
   @Column(length = 1, nullable = false)
   @Builder.Default
   private String deleteAt = "N";
+
+  @Comment("전문길이")
+  @Column(columnDefinition = "NUMERIC(10)")
+  private Integer telgmLen;
+
+  @Comment("제출여부")
+  @ColumnDefault("'N'")
+  @Column(length = 1, nullable = false)
+  @Builder.Default
+  private String sbmsnYn = "N";
+
+  @Comment("제출일시")
+  private LocalDateTime sbmsnDt;
 
   @Transient // JPA가 이 필드를 데이터베이스 컬럼으로 인식하지 않도록 하기 위해 @Transient를 사용
   private String userNm;

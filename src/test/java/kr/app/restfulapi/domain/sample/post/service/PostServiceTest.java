@@ -31,7 +31,7 @@ public class PostServiceTest {
 
     // Act
     // postService.createPost()를 실행하고 결과를 검증합니다.
-    PostDto result = postService.createPost(inputDto);
+    PostDto result = postService.createPost(inputDto, "N");
 
     // Assert
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.

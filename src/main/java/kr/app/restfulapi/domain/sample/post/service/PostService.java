@@ -1,5 +1,6 @@
 package kr.app.restfulapi.domain.sample.post.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,36 +45,50 @@ public class PostService {
   }
 
   @Transactional
-  public PostDto createPost(PostDto postDto) {
+  public PostDto createPost(PostDto postDto, String sbmsnYn) {
 
     Post post = postDto.toEntity();
+    post.setSbmsnYn(sbmsnYn);
+    if ("Y".equals(sbmsnYn)) {
+      post.setSbmsnDt(LocalDateTime.now());
+    }
     Post savedPost = postRepository.save(post);
 
     return PostDto.toDto(savedPost);
   }
 
   @Transactional
-  public Optional<PostDto> updatePost(String postId, PostDto postDto) {
+  public Optional<PostDto> updatePost(String postId, PostDto postDto, String sbmsnYn) {
 
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
 
-    Optional<PostDto> optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(post -> {
+    Optional<Post> optPost = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId())
+        .map(Optional::ofNullable)
+        .orElseThrow(ResourceNotFoundException::new);
+
+    Optional<PostDto> optPostDto = optPost.filter(post -> "N".equals(post.getSbmsnYn())).map(post -> {
       post.setSj(postDto.sj());
       post.setCn(postDto.cn());
+      post.setSbmsnYn(sbmsnYn);
+      if ("Y".equals(sbmsnYn)) {
+        post.setSbmsnDt(LocalDateTime.now());
+      }
 
       return PostDto.toDto(post);
     });
 
-    return optPostDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
+    return optPostDto.map(Optional::of).orElseThrow(() -> new ResourceNotFoundException("해당 게시글은 이미 제출되었습니다."));
   }
 
   @Transactional
   public boolean deletePost(String postId) {
 
-    return postRepository.findByPostId(postId).map(post -> {
+    Optional<Post> optPost = postRepository.findByPostId(postId).map(Optional::ofNullable).orElseThrow(ResourceNotFoundException::new);
+
+    return optPost.filter(post -> "N".equals(post.getSbmsnYn())).map(post -> {
       post.setDeleteAt("Y");
-      
+
       return true;
-    }).orElseThrow(ResourceNotFoundException::new);
+    }).orElseThrow(() -> new ResourceNotFoundException("해당 게시글은 이미 제출되었습니다."));
   }
 }

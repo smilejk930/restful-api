@@ -49,7 +49,7 @@ public class PostServiceNoneDBTest {
      * 실제 데이터베이스에 접근하지 않고 미리 설정한 savedPost 객체를 반환하도록 합니다.
      * 이를 통해 데이터베이스와의 의존성을 제거하고, 메소드의 로직만을 테스트할 수 있게 됩니다.
      */
-    PostDto result = postService.createPost(inputDto);
+    PostDto result = postService.createPost(inputDto, "N");
 
     // Assert
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.

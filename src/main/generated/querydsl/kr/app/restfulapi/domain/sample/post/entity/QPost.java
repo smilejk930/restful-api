@@ -39,7 +39,13 @@ public class QPost extends EntityPathBase<Post> {
     //inherited
     public final StringPath registServerNm = _super.registServerNm;
 
+    public final DateTimePath<java.time.LocalDateTime> sbmsnDt = createDateTime("sbmsnDt", java.time.LocalDateTime.class);
+
+    public final StringPath sbmsnYn = createString("sbmsnYn");
+
     public final StringPath sj = createString("sj");
+
+    public final NumberPath<Integer> telgmLen = createNumber("telgmLen", Integer.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
