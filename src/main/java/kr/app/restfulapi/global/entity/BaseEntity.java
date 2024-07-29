@@ -1,7 +1,10 @@
 package kr.app.restfulapi.global.entity;
 
 import jakarta.persistence.MappedSuperclass;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * 등록에 대한 생성자와 생성 시간 자동 기록
@@ -17,6 +20,8 @@ import lombok.Getter;
  */
 @Getter
 @MappedSuperclass
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder(toBuilder = true)
 public abstract class BaseEntity extends BaseUpdtEntity {
 
 }
