@@ -1,7 +1,7 @@
 package kr.app.restfulapi.domain.common.file.dto;
 
 import org.apache.commons.lang3.ObjectUtils;
-import kr.app.restfulapi.domain.common.file.entity.FileData;
+import kr.app.restfulapi.global.entity.BaseFileEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class FileDataInit {
+public class FileReqstDto<T extends BaseFileEntity> {
 
   private String fileGroupNm;
   private String refrnId;
   private String fileSectValue;
 
-  public FileData toEntity() {
-    return FileData.builder().fileGroupNm(fileGroupNm).refrnId(refrnId).fileSectValue(fileSectValue).build();
+  @SuppressWarnings("unchecked")
+  public T toEntity(T fileEntity) {
+    return (T) fileEntity.toBuilder().fileGroupNm(fileGroupNm).refrnId(refrnId).fileSectValue(fileSectValue).build();
   }
 
   public boolean isAnyNullOfRequiredlField() {

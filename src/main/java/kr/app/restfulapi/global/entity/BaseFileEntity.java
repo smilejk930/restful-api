@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.common.file.entity;
+package kr.app.restfulapi.global.entity;
 
 import java.time.LocalDateTime;
 import org.hibernate.annotations.ColumnDefault;
@@ -6,26 +6,23 @@ import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.LastModifiedDate;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
-import kr.app.restfulapi.global.entity.BaseEntity;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Entity
-@Table(indexes = {@Index(name = "idx_finm", columnList = "finm"), @Index(name = "idx_regist_dt", columnList = "regist_dt")})
 @Getter
 @Setter
+@MappedSuperclass
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
-public class FileData extends BaseEntity {
+public abstract class BaseFileEntity extends BaseEntity {
+
+  public abstract BaseFileEntity.BaseFileEntityBuilder<?, ?> toBuilder();
 
   @Comment("파일아이디")
   @Id

@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.common.file.entity;
+package kr.app.restfulapi.global.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -10,16 +10,16 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QFileData is a Querydsl query type for FileData
+ * QBaseFileEntity is a Querydsl query type for BaseFileEntity
  */
-@Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QFileData extends EntityPathBase<FileData> {
+@Generated("com.querydsl.codegen.DefaultSupertypeSerializer")
+public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
 
-    private static final long serialVersionUID = 1674882945L;
+    private static final long serialVersionUID = 880763737L;
 
-    public static final QFileData fileData = new QFileData("fileData");
+    public static final QBaseFileEntity baseFileEntity = new QBaseFileEntity("baseFileEntity");
 
-    public final kr.app.restfulapi.global.entity.QBaseEntity _super = new kr.app.restfulapi.global.entity.QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     public final StringPath deleteAt = createString("deleteAt");
 
@@ -67,16 +67,16 @@ public class QFileData extends EntityPathBase<FileData> {
     //inherited
     public final StringPath updusrId = _super.updusrId;
 
-    public QFileData(String variable) {
-        super(FileData.class, forVariable(variable));
+    public QBaseFileEntity(String variable) {
+        super(BaseFileEntity.class, forVariable(variable));
     }
 
-    public QFileData(Path<? extends FileData> path) {
+    public QBaseFileEntity(Path<? extends BaseFileEntity> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QFileData(PathMetadata metadata) {
-        super(FileData.class, metadata);
+    public QBaseFileEntity(PathMetadata metadata) {
+        super(BaseFileEntity.class, metadata);
     }
 
 }
