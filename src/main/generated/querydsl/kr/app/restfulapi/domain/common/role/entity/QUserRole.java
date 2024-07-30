@@ -22,9 +22,9 @@ public class QUserRole extends EntityPathBase<UserRole> {
 
     public static final QUserRole userRole = new QUserRole("userRole");
 
-    public final QRole role;
+    public final kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser gnrlUser;
 
-    public final kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser user;
+    public final QRole role;
 
     public final StringPath userRoleId = createString("userRoleId");
 
@@ -46,8 +46,8 @@ public class QUserRole extends EntityPathBase<UserRole> {
 
     public QUserRole(Class<? extends UserRole> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.gnrlUser = inits.isInitialized("gnrlUser") ? new kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser(forProperty("gnrlUser")) : null;
         this.role = inits.isInitialized("role") ? new QRole(forProperty("role")) : null;
-        this.user = inits.isInitialized("user") ? new kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser(forProperty("user")) : null;
     }
 
 }
