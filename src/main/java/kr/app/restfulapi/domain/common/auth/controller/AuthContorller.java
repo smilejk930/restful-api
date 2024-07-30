@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
-import kr.app.restfulapi.domain.common.auth.dto.JwtResponseDto;
+import kr.app.restfulapi.domain.common.auth.dto.JwtRspnsDto;
 import kr.app.restfulapi.domain.common.auth.dto.LgnDto;
 import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserDto;
 import kr.app.restfulapi.domain.common.user.gnrl.service.GnrlUserService;
@@ -47,7 +47,7 @@ public class AuthContorller {
 
       String jwt = tokenProvider.generateToken(authentication);
       log.info("User logged in successfully: {}", lgnDto.lgnId());
-      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(new JwtResponseDto(jwt)).build());
+      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(new JwtRspnsDto(jwt)).build());
     } catch (BadCredentialsException ex) {
       log.warn("Login attempt failed for user: {}", lgnDto.lgnId());
       throw new BadCredentialsException(FieldErrorReason.BAD_CREDENTIALS.getReason());

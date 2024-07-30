@@ -1,10 +1,10 @@
 package kr.app.restfulapi.domain.common.auth.dto;
 
-public class JwtResponseDto {
+public class JwtRspnsDto {
   private String accessToken;
   private String tokenType = "Bearer";
 
-  public JwtResponseDto(String accessToken) {
+  public JwtRspnsDto(String accessToken) {
     this.accessToken = accessToken;
   }
 
