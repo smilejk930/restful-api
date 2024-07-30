@@ -112,7 +112,7 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
   @Transactional(readOnly = true)
   public Optional<FileRspnsDto> getFile(String fileId) {
 
-    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(FileRspnsDto::toDto);
+    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileIdAndDelYn(fileId, "N").map(FileRspnsDto::toDto);
 
     return optFileRspnsDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
@@ -120,7 +120,7 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
   @Transactional
   public Optional<FileRspnsDto> getFileDownload(String fileId) {
 
-    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileIdAndDeleteAt(fileId, "N").map(fileEntity -> {
+    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileIdAndDelYn(fileId, "N").map(fileEntity -> {
       fileEntity.setDwldCo(fileEntity.getDwldCo() + 1);
 
       return FileRspnsDto.toDto(fileEntity);

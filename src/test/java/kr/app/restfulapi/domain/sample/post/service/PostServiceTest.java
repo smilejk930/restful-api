@@ -27,7 +27,7 @@ public class PostServiceTest {
 
     // Arrange
     // 입력 PostDto 객체를 생성합니다
-    // PostReqstDto inputDto = PostReqstDto.toDto(Post.builder().sj("입력 제목").cn("입력 내용").build());
+    // PostReqstDto inputDto = PostReqstDto.toDto(Post.builder().ttl("입력 제목").cn("입력 내용").build());
     PostReqstDto inputDto = null;// PostReqstDto 생성자 만들수 없음, 테스트 에러 발생함
 
     // Act
@@ -36,20 +36,20 @@ public class PostServiceTest {
 
     // Assert
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.
-    assertNotNull(result.postId());
-    assertTrue(TSID.isValid(result.postId())); // TSID 유효성 검사
+    assertNotNull(result.postTsid());
+    assertTrue(TSID.isValid(result.postTsid())); // TSID 유효성 검사
 
     // Verify the saved entity
-    PostRspnsDto savedPostDto = postService.getPostById(result.postId()).orElse(null);
+    PostRspnsDto savedPostDto = postService.getPostById(result.postTsid()).orElse(null);
     assertNotNull(savedPostDto);
-    log.info("##### postId: {}", savedPostDto.postId());
-    assertEquals(result.postId(), savedPostDto.postId());
-    assertEquals(result.sj(), savedPostDto.sj());
+    log.info("##### postTsid: {}", savedPostDto.postTsid());
+    assertEquals(result.postTsid(), savedPostDto.postTsid());
+    assertEquals(result.ttl(), savedPostDto.ttl());
     assertEquals(result.cn(), savedPostDto.cn());
 
     // TSID의 시간 정보 검증
     long currentTime = System.currentTimeMillis();
-    long tsidTime = TSID.from(result.postId()).getUnixMilliseconds();
+    long tsidTime = TSID.from(result.postTsid()).getUnixMilliseconds();
     assertTrue(Math.abs(currentTime - tsidTime) < 2000); // 2초 이내의 오차 허용
   }
 }

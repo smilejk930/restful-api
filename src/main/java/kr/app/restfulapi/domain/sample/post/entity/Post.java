@@ -22,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "post",
     // uniqueConstraints = {@UniqueConstraint(columnNames = {"user_tsid"}, name = "fk_user_tsid")},
-    indexes = {@Index(name = "idx_sj", columnList = "sj"), @Index(name = "idx_reg_dt", columnList = "reg_dt")})
+    indexes = {@Index(name = "idx_ttl", columnList = "ttl"), @Index(name = "idx_reg_dt", columnList = "reg_dt")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,7 +30,7 @@ import lombok.Setter;
 @Builder
 public class Post extends BaseAuditingEntity {
 
-  @Comment("게시글아이디")
+  @Comment("게시글식별번호")
   @Id
   // Resolved [java.lang.NullPointerException: Cannot invoke "cubrid.jdbc.driver.CUBRIDConnection.createCUBRIDException(int, java.lang.Throwable)"
   // because "this.con" is null]
@@ -39,11 +39,11 @@ public class Post extends BaseAuditingEntity {
   // @GeneratedValue(strategy = GenerationType.UUID)
   @Tsid
   @Column(length = 13, columnDefinition = "CHAR(13)")
-  private String postId;
+  private String postTsid;
 
   @Comment("제목")
   @Column(length = 200, nullable = false)
-  private String sj;
+  private String ttl;
 
   @Comment("내용")
   @Column(length = 4000, nullable = false)
@@ -53,7 +53,7 @@ public class Post extends BaseAuditingEntity {
   @ColumnDefault("'N'")
   @Column(length = 1, nullable = false)
   @Builder.Default
-  private String deleteAt = "N";
+  private String delYn = "N";
 
   @Comment("전문길이")
   @Column(columnDefinition = "NUMERIC(10)")
@@ -78,6 +78,6 @@ public class Post extends BaseAuditingEntity {
   // @ManyToOne(fetch = FetchType.LAZY)
   // @JoinColumn(name = "user_tsid",
   // name = "wrter_id", referencedColumnName = "userTsid",
-  // foreignKey = @ForeignKey(name = "fk_user_info_to_post"))
-  // private User user;
+  // foreignKey = @ForeignKey(name = "fk_gnrl_user_to_post"))
+  // private GnrlUser gnrlUser;
 }

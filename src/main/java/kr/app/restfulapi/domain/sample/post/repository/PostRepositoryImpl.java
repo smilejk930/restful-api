@@ -79,14 +79,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     BooleanExpression whereClause = qPost.isNotNull();
 
-    whereClause = whereClause.and(qPost.deleteAt.eq("N"));
+    whereClause = whereClause.and(qPost.delYn.eq("N"));
 
     // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
     if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
       whereClause = whereClause.and(qPost.rgtrTsid.eq(userPrincipal.getUserTsid()));
     }
     whereClause =
-        StringUtils.hasText(criteria.getSrchDto().sj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSrchDto().sj())) : whereClause;
+        StringUtils.hasText(criteria.getSrchDto().ttl()) ? whereClause.and(qPost.ttl.containsIgnoreCase(criteria.getSrchDto().ttl())) : whereClause;
     whereClause =
         StringUtils.hasText(criteria.getSrchDto().cn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getSrchDto().cn())) : whereClause;
 
@@ -95,14 +95,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<Post> findByPostId(String postId) {
+  public Optional<Post> findByPostTsid(String postTsid) {
 
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
 
     BooleanExpression whereClause = qPost.isNotNull();
 
-    whereClause = whereClause.and(qPost.deleteAt.eq("N"));
-    whereClause = whereClause.and(qPost.postId.eq(postId));
+    whereClause = whereClause.and(qPost.delYn.eq("N"));
+    whereClause = whereClause.and(qPost.postTsid.eq(postTsid));
 
     // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
     if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {

@@ -90,16 +90,16 @@ public class UserJpaResource {
   }
 
   // 사용자의 게시물을 조회하는 메소드
-  @GetMapping("/jpa/users/{id}/posts/{postId}")
-  public EntityModel<Post> retrieveOnePostForUser(@PathVariable int id, @PathVariable int postId) {
+  @GetMapping("/jpa/users/{id}/posts/{postTsid}")
+  public EntityModel<Post> retrieveOnePostForUser(@PathVariable int id, @PathVariable int postTsid) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
 
-    Optional<Post> post = postRepository.findById(postId);
+    Optional<Post> post = postRepository.findById(postTsid);
     if (post.isEmpty() || post.get().getUser().getId() != user.get().getId()) {
-      throw new UserNotFoundException(String.format("POST[%s] not found", postId));
+      throw new UserNotFoundException(String.format("POST[%s] not found", postTsid));
     }
 
     /*
@@ -133,18 +133,18 @@ public class UserJpaResource {
   }
 
   // 사용자의 게시물을 삭제하는 메소드
-  @DeleteMapping("/jpa/users/{id}/posts/{postId}")
-  public void deletePostForUser(@PathVariable int id, @PathVariable int postId) {
+  @DeleteMapping("/jpa/users/{id}/posts/{postTsid}")
+  public void deletePostForUser(@PathVariable int id, @PathVariable int postTsid) {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
       throw new UserNotFoundException(String.format("ID[%s] not found", id));
     }
 
-    Optional<Post> post = postRepository.findById(postId);
+    Optional<Post> post = postRepository.findById(postTsid);
     if (post.isEmpty() || post.get().getUser().getId() != user.get().getId()) {
-      throw new UserNotFoundException(String.format("POST[%s] not found", postId));
+      throw new UserNotFoundException(String.format("POST[%s] not found", postTsid));
     }
 
-    postRepository.deleteById(postId);
+    postRepository.deleteById(postTsid);
   }
 }

@@ -5,8 +5,8 @@ import kr.app.restfulapi.domain.sample.post.entity.Post;
 import kr.app.restfulapi.global.util.CustomDateUtils;
 
 public record PostRspnsDto(
-    String postId,
-    String sj,
+    String postTsid,
+    String ttl,
     String cn,
     Integer telgmLen,
     String userNm,
@@ -15,8 +15,8 @@ public record PostRspnsDto(
 
   public static PostRspnsDto toDto(Post post) {
     return new PostRspnsDto(
-        post.getPostId(),
-        post.getSj(),
+        post.getPostTsid(),
+        post.getTtl(),
         post.getCn(),
         post.getTelgmLen(),
         Objects.toString(post.getUserNm(), "-"),

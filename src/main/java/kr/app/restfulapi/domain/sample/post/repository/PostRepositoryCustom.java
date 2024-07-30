@@ -9,5 +9,5 @@ public interface PostRepositoryCustom {
 
   Page<Post> findAllWithCriteria(Post post, Pageable pageable);
 
-  Optional<Post> findByPostId(String postId);
+  Optional<Post> findByPostTsid(String postTsid);
 }

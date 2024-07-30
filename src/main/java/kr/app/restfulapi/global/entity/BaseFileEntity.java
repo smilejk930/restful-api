@@ -50,7 +50,7 @@ public abstract class BaseFileEntity extends BaseEntity {
   @ColumnDefault("'N'")
   @Column(length = 1, nullable = false)
   @Builder.Default
-  private String deleteAt = "N";
+  private String delYn = "N";
 
   @Comment("파일순번")
   @ColumnDefault("0")

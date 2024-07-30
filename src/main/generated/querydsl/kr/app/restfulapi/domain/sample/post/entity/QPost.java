@@ -23,7 +23,7 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath cn = createString("cn");
 
-    public final StringPath deleteAt = createString("deleteAt");
+    public final StringPath delYn = createString("delYn");
 
     //inherited
     public final StringPath lastSrvrNm = _super.lastSrvrNm;
@@ -34,7 +34,7 @@ public class QPost extends EntityPathBase<Post> {
     //inherited
     public final StringPath mdfrTsid = _super.mdfrTsid;
 
-    public final StringPath postId = createString("postId");
+    public final StringPath postTsid = createString("postTsid");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
@@ -49,9 +49,9 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath sbmsnYn = createString("sbmsnYn");
 
-    public final StringPath sj = createString("sj");
-
     public final NumberPath<Integer> telgmLen = createNumber("telgmLen", Integer.class);
+
+    public final StringPath ttl = createString("ttl");
 
     public QPost(String variable) {
         super(Post.class, forVariable(variable));

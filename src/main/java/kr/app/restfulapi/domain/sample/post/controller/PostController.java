@@ -44,17 +44,17 @@ public class PostController {
     /*
     List<EntityModel<PostDto>> models = postDtoList.stream().map(data -> {
       Link detailLink = null;
-      detailLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPostById(data.postId(), userDetails)).withRel("detailLink");
+      detailLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPostById(data.postTsid(), userDetails)).withRel("detailLink");
       return EntityModel.of(data, detailLink);
     }).toList();*/
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(postRspnsDtoList).build());
   }
 
-  @GetMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> getPostById(@PathVariable String postId) {
+  @GetMapping("/{postTsid}")
+  public ResponseEntity<SuccessResponse> getPostById(@PathVariable String postTsid) {
 
-    Optional<PostRspnsDto> optPostRspnsDto = postService.getPostById(postId);
+    Optional<PostRspnsDto> optPostRspnsDto = postService.getPostById(postTsid);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(optPostRspnsDto).build());
 
@@ -84,30 +84,30 @@ public class PostController {
     return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(postRspnsDto).build());
   }
 
-  @PutMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postId, @Validated @RequestBody PostReqstDto postReqstDto) {
+  @PutMapping("/{postTsid}")
+  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postTsid, @Validated @RequestBody PostReqstDto postReqstDto) {
 
-    return processUpdatePost(postId, postReqstDto, "N");
+    return processUpdatePost(postTsid, postReqstDto, "N");
   }
 
-  @PutMapping("/submit/{postId}")
-  public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postId,
+  @PutMapping("/submit/{postTsid}")
+  public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postTsid,
       @Validated(FinalSubmit.class) @RequestBody PostReqstDto postReqstDto) {
 
-    return processUpdatePost(postId, postReqstDto, "Y");
+    return processUpdatePost(postTsid, postReqstDto, "Y");
   }
 
-  private ResponseEntity<SuccessResponse> processUpdatePost(String postId, PostReqstDto postReqstDto, String sbmsnYn) {
+  private ResponseEntity<SuccessResponse> processUpdatePost(String postTsid, PostReqstDto postReqstDto, String sbmsnYn) {
 
-    Optional<PostRspnsDto> optPostRspnsDto = postService.updatePost(postId, postReqstDto, sbmsnYn);
+    Optional<PostRspnsDto> optPostRspnsDto = postService.updatePost(postTsid, postReqstDto, sbmsnYn);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(optPostRspnsDto).build());
   }
 
-  @DeleteMapping("/{postId}")
-  public ResponseEntity<SuccessResponse> deletePost(@PathVariable String postId) {
+  @DeleteMapping("/{postTsid}")
+  public ResponseEntity<SuccessResponse> deletePost(@PathVariable String postTsid) {
 
-    postService.deletePost(postId);
+    postService.deletePost(postTsid);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.DELETED).build());
   }

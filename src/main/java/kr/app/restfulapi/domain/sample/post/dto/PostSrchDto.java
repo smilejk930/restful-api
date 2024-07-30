@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
 
 public record PostSrchDto(
-    String sj,
+    String ttl,
     String cn,
     String userNm,
     String sbmsnYn,

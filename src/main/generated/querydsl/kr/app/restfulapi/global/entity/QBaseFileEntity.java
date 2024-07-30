@@ -21,7 +21,7 @@ public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final StringPath deleteAt = createString("deleteAt");
+    public final StringPath delYn = createString("delYn");
 
     public final NumberPath<Long> dwldCo = createNumber("dwldCo", Long.class);
 

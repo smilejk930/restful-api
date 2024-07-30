@@ -32,14 +32,14 @@ public class PostServiceNoneDBTest {
 
     // Arrange
     // 입력 PostDto 객체를 생성합니다
-    // PostReqstDto inputDto = PostReqstDto.toDto(Post.builder().sj("입력 제목").cn("입력 내용").build());
+    // PostReqstDto inputDto = PostReqstDto.toDto(Post.builder().ttl("입력 제목").cn("입력 내용").build());
     PostReqstDto inputDto = null;// PostReqstDto 생성자 만들수 없음, 테스트 에러 발생함
 
     // postRepository.save() 메소드가 호출될 때 savedPost를 반환하도록 설정
     when(postRepository.save(any(Post.class))).thenAnswer(invocation -> {
       Post post = invocation.getArgument(0);
-      post.setPostId(TSID.fast().toString()); // TSID 생성 시뮬레이션
-      post.setSj("입력 제목");
+      post.setPostTsid(TSID.fast().toString()); // TSID 생성 시뮬레이션
+      post.setTtl("입력 제목");
       post.setCn("입력 내용");
       return post;
     });
@@ -55,14 +55,14 @@ public class PostServiceNoneDBTest {
 
     // Assert
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.
-    assertNotNull(result.postId());
-    assertTrue(TSID.isValid(result.postId())); // TSID 유효성 검사
-    assertEquals(inputDto.sj(), result.sj());
+    assertNotNull(result.postTsid());
+    assertTrue(TSID.isValid(result.postTsid())); // TSID 유효성 검사
+    assertEquals(inputDto.ttl(), result.ttl());
     assertEquals(inputDto.cn(), result.cn());
 
     // TSID의 시간 정보 검증
     long currentTime = System.currentTimeMillis();
-    long tsidTime = TSID.from(result.postId()).getUnixMilliseconds();
+    long tsidTime = TSID.from(result.postTsid()).getUnixMilliseconds();
     assertTrue(Math.abs(currentTime - tsidTime) < 1000); // 1초 이내의 오차 허용
 
     // postRepository.save() 메소드가 정확히 한 번 호출되었는지 검증합니다.

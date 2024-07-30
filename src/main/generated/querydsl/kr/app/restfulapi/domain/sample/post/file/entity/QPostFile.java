@@ -22,7 +22,7 @@ public class QPostFile extends EntityPathBase<PostFile> {
     public final kr.app.restfulapi.global.entity.QBaseFileEntity _super = new kr.app.restfulapi.global.entity.QBaseFileEntity(this);
 
     //inherited
-    public final StringPath deleteAt = _super.deleteAt;
+    public final StringPath delYn = _super.delYn;
 
     //inherited
     public final NumberPath<Long> dwldCo = _super.dwldCo;
