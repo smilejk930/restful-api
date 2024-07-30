@@ -2,7 +2,6 @@ package kr.app.restfulapi.global.response.error.exception;
 
 import java.util.List;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,7 +17,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-import kr.app.restfulapi.domain.sample.edu.user.UserNotFoundException;
 import kr.app.restfulapi.global.response.error.ErrorResponse;
 import kr.app.restfulapi.global.response.error.ErrorStatus;
 import kr.app.restfulapi.global.response.error.FieldError;
@@ -115,13 +113,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
   }
   */
-  /* User가 존재하지 않을 때 */
-  @ExceptionHandler(UserNotFoundException.class)
-  protected final ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) {
-    ErrorResponse errorResponse =
-        ErrorResponse.errorStatus().status(ErrorStatus.NOT_FOUND).errors(FieldError.of(null, ex.getMessage(), request.getDescription(false))).build();
-    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-  }
 
   /* @Validated 또는 @Valid 사용하여 오류 발생 시 */
   @Override
