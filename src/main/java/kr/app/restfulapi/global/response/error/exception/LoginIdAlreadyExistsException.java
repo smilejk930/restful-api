@@ -8,6 +8,6 @@ public class LoginIdAlreadyExistsException extends BusinessException {
   private static final long serialVersionUID = 1L;
 
   public LoginIdAlreadyExistsException(String value) {
-    super(ErrorStatus.BAD_REQUEST, FieldError.of("loginId", value, FieldErrorReason.LOGINID_ALREADY_EXISTS));
+    super(ErrorStatus.BAD_REQUEST, FieldError.of("lgnId", value, FieldErrorReason.LOGINID_ALREADY_EXISTS));
   }
 }

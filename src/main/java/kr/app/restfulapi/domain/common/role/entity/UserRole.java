@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import kr.app.restfulapi.domain.common.user.entity.User;
+import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,8 +30,8 @@ public class UserRole {
   private String userRoleId;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  private User user;
+  @JoinColumn(name = "user_tsid", nullable = false)
+  private GnrlUser user;
 
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)

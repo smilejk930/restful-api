@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import kr.app.restfulapi.domain.common.user.service.CustomUserDetailsService;
+import kr.app.restfulapi.domain.common.user.gnrl.service.CustomUserDetailsService;
 import kr.app.restfulapi.global.filter.DynamicAuthorizationFilter;
 import kr.app.restfulapi.global.filter.GlobalExceptionTranslationFilter;
 import kr.app.restfulapi.global.filter.JwtAuthenticationFilter;

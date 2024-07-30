@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import kr.app.restfulapi.domain.common.resource.entity.Resource;
-import kr.app.restfulapi.domain.common.user.entity.User;
+import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,7 +38,7 @@ public class Role {
   private String description;
 
   @ManyToMany(mappedBy = "roles")
-  private Set<User> users = new HashSet<>();
+  private Set<GnrlUser> users = new HashSet<>();
 
   @ManyToMany(mappedBy = "roles")
   private Set<Resource> resources = new HashSet<>();

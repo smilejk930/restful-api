@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.common.user.entity;
+package kr.app.restfulapi.domain.common.user.gnrl.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -11,23 +11,23 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QUser is a Querydsl query type for User
+ * QGnrlUser is a Querydsl query type for GnrlUser
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QUser extends EntityPathBase<User> {
+public class QGnrlUser extends EntityPathBase<GnrlUser> {
 
-    private static final long serialVersionUID = -1193235115L;
+    private static final long serialVersionUID = -249367381L;
 
-    public static final QUser user = new QUser("user");
+    public static final QGnrlUser gnrlUser = new QGnrlUser("gnrlUser");
 
     public final kr.app.restfulapi.global.entity.QBaseAuditingEntity _super = new kr.app.restfulapi.global.entity.QBaseAuditingEntity(this);
 
     //inherited
     public final StringPath lastServerNm = _super.lastServerNm;
 
-    public final StringPath loginId = createString("loginId");
+    public final StringPath lgnId = createString("lgnId");
 
-    public final StringPath password = createString("password");
+    public final StringPath pswd = createString("pswd");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
@@ -46,20 +46,20 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final StringPath updusrId = _super.updusrId;
 
-    public final StringPath userId = createString("userId");
-
     public final StringPath userNm = createString("userNm");
 
-    public QUser(String variable) {
-        super(User.class, forVariable(variable));
+    public final StringPath userTsid = createString("userTsid");
+
+    public QGnrlUser(String variable) {
+        super(GnrlUser.class, forVariable(variable));
     }
 
-    public QUser(Path<? extends User> path) {
+    public QGnrlUser(Path<? extends GnrlUser> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QUser(PathMetadata metadata) {
-        super(User.class, metadata);
+    public QGnrlUser(PathMetadata metadata) {
+        super(GnrlUser.class, metadata);
     }
 
 }

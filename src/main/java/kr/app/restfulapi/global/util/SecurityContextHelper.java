@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import kr.app.restfulapi.domain.common.role.util.RoleName;
-import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.global.response.error.exception.UnauthorizedException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

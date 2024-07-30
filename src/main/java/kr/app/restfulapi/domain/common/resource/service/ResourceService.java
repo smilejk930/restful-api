@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.app.restfulapi.domain.common.resource.entity.Resource;
 import kr.app.restfulapi.domain.common.resource.repository.ResourceRepository;
 import kr.app.restfulapi.domain.common.role.entity.Role;
-import kr.app.restfulapi.domain.common.user.entity.User;
+import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import kr.app.restfulapi.global.cache.CacheNames;
 import lombok.RequiredArgsConstructor;
 
@@ -67,9 +67,9 @@ public class ResourceService {
 
   }
 
-  @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "#user.loginId")
+  @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "#user.lgnId")
   @Transactional(readOnly = true)
-  public List<Resource> getUserAccessibleResources(User user) {
+  public List<Resource> getUserAccessibleResources(GnrlUser user) {
     List<String> userRoles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
 
     return resourceRepository.findResourceTreeByUserRoles(userRoles);

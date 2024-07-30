@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import kr.app.restfulapi.domain.common.auth.dto.JwtResponseDto;
-import kr.app.restfulapi.domain.common.auth.dto.LoginDto;
-import kr.app.restfulapi.domain.common.user.dto.UserDto;
-import kr.app.restfulapi.domain.common.user.service.UserService;
+import kr.app.restfulapi.domain.common.auth.dto.LgnDto;
+import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserDto;
+import kr.app.restfulapi.domain.common.user.gnrl.service.GnrlUserService;
 import kr.app.restfulapi.global.response.error.FieldErrorReason;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
@@ -33,27 +33,26 @@ public class AuthContorller {
 
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider tokenProvider;
-  private final UserService userService;
+  private final GnrlUserService gnrlUserService;
 
   @PostMapping("/login")
-  public ResponseEntity<SuccessResponse> authenticateUser(@Validated @RequestBody LoginDto loginDto) throws Exception {
+  public ResponseEntity<SuccessResponse> authenticateUser(@Validated @RequestBody LgnDto lgnDto) throws Exception {
     try {
 
       // AuthenticationManager를 사용하여 인증 수행
-      Authentication authentication =
-          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.loginId(), loginDto.password()));
+      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(lgnDto.lgnId(), lgnDto.pswd()));
 
       // 인증 성공 시 SecurityContext에 인증 정보 저장
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
       String jwt = tokenProvider.generateToken(authentication);
-      log.info("User logged in successfully: {}", loginDto.loginId());
+      log.info("User logged in successfully: {}", lgnDto.lgnId());
       return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(new JwtResponseDto(jwt)).build());
     } catch (BadCredentialsException ex) {
-      log.warn("Login attempt failed for user: {}", loginDto.loginId());
+      log.warn("Login attempt failed for user: {}", lgnDto.lgnId());
       throw new BadCredentialsException(FieldErrorReason.BAD_CREDENTIALS.getReason());
     } catch (LockedException ex) {
-      log.warn("Locked account attempt to login: {}", loginDto.loginId());
+      log.warn("Locked account attempt to login: {}", lgnDto.lgnId());
       throw new LockedException("Account is locked");
     } catch (Exception ex) {
       throw new Exception("An error occurred during login");
@@ -61,8 +60,8 @@ public class AuthContorller {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<SuccessResponse> createUser(@Valid @RequestBody UserDto userDto) {
-    UserDto createdUserDto = userService.createUser(userDto);
+  public ResponseEntity<SuccessResponse> createGnrlUser(@Valid @RequestBody GnrlUserDto gnrlUserDto) {
+    GnrlUserDto createdUserDto = gnrlUserService.createGnrlUser(gnrlUserDto);
     return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdUserDto).build());
   }
 }

@@ -19,7 +19,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ public class JwtTokenProvider {
     Map<String, Object> claims = new HashMap<>();
 
     // TOKEN에 정보 주입
-    claims.put("loginId", userPrincipal.getLoginId());
+    claims.put("lgnId", userPrincipal.getLgnId());
     claims.put("userNm", userPrincipal.getUserNm());
     claims.put("authorities", userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
 
@@ -63,9 +63,9 @@ public class JwtTokenProvider {
         .compact();
   }
 
-  public Optional<String> getLoginIdFromJWT(String token) {
+  public Optional<String> getLgnIdFromJWT(String token) {
     try {
-      return Optional.of(extractClaim(token, claims -> claims.get("loginId", String.class)));
+      return Optional.of(extractClaim(token, claims -> claims.get("lgnId", String.class)));
     } catch (NullPointerException | JwtException ex) {
       log.error(ex.getMessage());
       return Optional.empty();
@@ -98,10 +98,10 @@ public class JwtTokenProvider {
   }
 
   // TODO jwt-해당 메소드가 필요한지 판단 필요
-  public boolean validateToken(String token, String loginId) {
-    Optional<String> optLoginId = getLoginIdFromJWT(token);
-    if (optLoginId.isPresent()) {
-      return optLoginId.get().equals(loginId) && !isTokenExpired(token);
+  public boolean validateToken(String token, String lgnId) {
+    Optional<String> optLgnId = getLgnIdFromJWT(token);
+    if (optLgnId.isPresent()) {
+      return optLgnId.get().equals(lgnId) && !isTokenExpired(token);
     } else {
       return false;
     }

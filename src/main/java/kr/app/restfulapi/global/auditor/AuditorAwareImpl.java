@@ -32,9 +32,9 @@ public class AuditorAwareImpl implements AuditorAware<String> {
   public Optional<String> getCurrentAuditor() {
 
     try {
-      // SecurityContextHelper를 사용하여 현재 인증된 사용자의 사용자아이디를 가져옵니다.
-      String userId = SecurityContextHelper.getUserPrincipal().getUserId();
-      return Optional.ofNullable(userId);
+      // SecurityContextHelper를 사용하여 현재 인증된 사용자의 사용자식별번호를 가져옵니다.
+      String userTsid = SecurityContextHelper.getUserPrincipal().getUserTsid();
+      return Optional.ofNullable(userTsid);
     } catch (UnauthorizedException e) {
       // 인증되지 않은 경우 예외 처리
       return Optional.empty();

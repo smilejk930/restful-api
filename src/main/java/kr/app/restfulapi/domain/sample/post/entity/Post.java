@@ -21,7 +21,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "post",
-    // uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id"}, name = "fk_user_id")},
+    // uniqueConstraints = {@UniqueConstraint(columnNames = {"user_tsid"}, name = "fk_user_tsid")},
     indexes = {@Index(name = "idx_sj", columnList = "sj"), @Index(name = "idx_regist_dt", columnList = "regist_dt")})
 @Getter
 @Setter
@@ -74,10 +74,10 @@ public class Post extends BaseAuditingEntity {
   @Transient
   private PostSrchDto srchDto;
 
-  // @Comment("사용자아이디")
+  // @Comment("사용자식별번호")
   // @ManyToOne(fetch = FetchType.LAZY)
-  // @JoinColumn(name = "user_id",
-  // name = "wrter_id", referencedColumnName = "userId",
+  // @JoinColumn(name = "user_tsid",
+  // name = "wrter_id", referencedColumnName = "userTsid",
   // foreignKey = @ForeignKey(name = "fk_user_info_to_post"))
   // private User user;
 }

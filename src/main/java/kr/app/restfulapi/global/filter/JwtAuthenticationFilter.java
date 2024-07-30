@@ -14,7 +14,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.app.restfulapi.domain.common.user.service.CustomUserDetailsService;
+import kr.app.restfulapi.domain.common.user.gnrl.service.CustomUserDetailsService;
 import kr.app.restfulapi.global.response.error.exception.JwtAuthenticationException;
 import kr.app.restfulapi.global.response.error.exception.JwtTokenException;
 import kr.app.restfulapi.global.util.JwtTokenProvider;
@@ -41,17 +41,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           throw new JwtTokenException("Invalid JWT token");
         }
 
-        Optional<String> optLoginId = tokenProvider.getLoginIdFromJWT(jwt);
+        Optional<String> optLgnId = tokenProvider.getLgnIdFromJWT(jwt);
 
-        if (optLoginId.isEmpty()) {
-          throw new JwtTokenException("Could not find loginId in JWT token");
+        if (optLgnId.isEmpty()) {
+          throw new JwtTokenException("Could not find lgnId in JWT token");
         }
 
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(optLoginId.get());
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(optLgnId.get());
 
         if (userDetails == null) {
           // 유효한 사용자가 아닌 경우 로그를 남기고 인증을 설정하지 않습니다.
-          throw new UsernameNotFoundException("User not found for Login Id: " + optLoginId.get());
+          throw new UsernameNotFoundException("User not found for Login Id: " + optLgnId.get());
         }
 
         // TODO 어떤 역할을 하는지 확인해야함

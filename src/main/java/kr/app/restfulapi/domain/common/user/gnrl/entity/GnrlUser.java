@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.common.user.entity;
+package kr.app.restfulapi.domain.common.user.gnrl.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,23 +23,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users", indexes = {@Index(name = "idx_user_nm", columnList = "user_nm")})
+@Table(indexes = {@Index(name = "idx_user_nm", columnList = "user_nm")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User extends BaseAuditingEntity {
+public class GnrlUser extends BaseAuditingEntity {
 
   @Id
   @Tsid
   @Column(length = 13, columnDefinition = "CHAR(13)")
-  @Comment("사용자아이디")
-  private String userId;
+  @Comment("사용자식별번호")
+  private String userTsid;
 
   @Comment("로그인아이디")
   @Column(length = 20, nullable = false, unique = true)
-  private String loginId;
+  private String lgnId;
 
   @Comment("사용자명")
   @Column(length = 100, nullable = false)
@@ -47,10 +47,10 @@ public class User extends BaseAuditingEntity {
 
   @Comment("비밀번호")
   @Column(length = 100, nullable = false)
-  private String password;
+  private String pswd;
 
   @ManyToMany(fetch = FetchType.LAZY) // CustomUserDetailsService에서 해당 세션이 닫히지 않게 @Transactional(readOnly = true) 설정하여 roles에 접근시 로딩할 수 있게 변경
-  @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+  @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_tsid"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
   /**

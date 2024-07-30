@@ -22,7 +22,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,7 +50,7 @@ class JwtTokenProviderTest {
 
   @Test
   void extractAllClaims() {
-    assertEquals("smilejk9301", tokenProvider.getLoginIdFromJWT(generateToken2()));
+    assertEquals("smilejk9301", tokenProvider.getLgnIdFromJWT(generateToken2()));
   }
 
   @Test
@@ -76,9 +76,9 @@ class JwtTokenProviderTest {
   @Test
   String generateToken_ShouldCreateValidToken() {
     // Arrange
-    String loginId = "testUser";
+    String lgnId = "testUser";
     when(authentication.getPrincipal()).thenReturn(userPrincipal);
-    when(userPrincipal.getLoginId()).thenReturn(loginId);
+    when(userPrincipal.getLgnId()).thenReturn(lgnId);
 
     // Act
     String token = tokenProvider.generateToken(authentication);
@@ -90,7 +90,7 @@ class JwtTokenProviderTest {
     // Claims claims = Jwts.parser().verifyWith(tokenProvider.getSecretKey()).build().parseSignedClaims(token).getPayload();
     /*
     assertEquals(siteDomain, claims.getIssuer());
-    assertEquals(loginId, claims.get("loginId"));
+    assertEquals(lgnId, claims.get("lgnId"));
     assertNotNull(claims.getIssuedAt());
     assertNotNull(claims.getExpiration());
     */
@@ -109,7 +109,7 @@ class JwtTokenProviderTest {
   String generateToken2() {
     Map<String, Object> claims = new HashMap<>();
 
-    claims.put("loginId2", userPrincipal.getLoginId());
+    claims.put("lgnId2", userPrincipal.getLgnId());
 
     String jws = Jwts.builder()
         .issuer(siteDomain)

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostRspnsDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostSrchDto;
@@ -37,7 +37,7 @@ public class PostService {
       optPostDto = postRepository.findByPostIdAndDeleteAt(postId, "N").map(PostDto::toDto);
     } else {
       UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
-      optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId()).map(PostDto::toDto);
+      optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserTsid()).map(PostDto::toDto);
     }
     */
 
@@ -64,7 +64,7 @@ public class PostService {
 
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
 
-    Optional<Post> optPost = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserId())
+    Optional<Post> optPost = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserTsid())
         .map(Optional::ofNullable)
         .orElseThrow(ResourceNotFoundException::new);
 

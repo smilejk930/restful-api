@@ -16,7 +16,7 @@ import kr.app.restfulapi.domain.common.resource.entity.Resource;
 import kr.app.restfulapi.domain.common.resource.service.ResourceService;
 import kr.app.restfulapi.domain.common.resource.util.ResourceAccessType;
 import kr.app.restfulapi.domain.common.role.entity.Role;
-import kr.app.restfulapi.domain.common.user.util.UserPrincipal;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.global.response.error.exception.BusinessException;
 import kr.app.restfulapi.global.response.error.exception.ForbiddenException;
 import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
@@ -36,7 +36,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
-    String loginId = null;
+    String lgnId = null;
     String url = request.getRequestURI();
     String method = request.getMethod();
 
@@ -70,7 +70,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
       }
 
       UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-      loginId = userPrincipal.getLoginId();
+      lgnId = userPrincipal.getLgnId();
 
       Set<Role> resourceRoles = matchedResource.getRoles();
 
@@ -84,15 +84,15 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
           .anyMatch(role -> authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals(role.getName())));
 
       if (!hasPermission) {
-        throw new ForbiddenException("Access Denied for user: " + loginId);
+        throw new ForbiddenException("Access Denied for user: " + lgnId);
       }
 
       filterChain.doFilter(request, response);
     } catch (ResourceNotFoundException | UnauthorizedException | ForbiddenException ex) {
-      log.error("Authorization error for user: " + loginId, ex);
+      log.error("Authorization error for user: " + lgnId, ex);
       throw ex; // Re-throw to be handled by GlobalExceptionHandler
     } catch (Exception ex) {
-      log.error("Unexpected error occurred during dynamic authorization for user: " + loginId, ex);
+      log.error("Unexpected error occurred during dynamic authorization for user: " + lgnId, ex);
       throw new BusinessException(ex, "Internal Server Error");
     }
   }
