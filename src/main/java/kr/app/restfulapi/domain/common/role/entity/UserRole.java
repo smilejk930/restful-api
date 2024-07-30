@@ -31,7 +31,7 @@ public class UserRole {
 
   @ManyToOne
   @JoinColumn(name = "user_tsid", nullable = false)
-  private GnrlUser user;
+  private GnrlUser gnrlUser;
 
   @ManyToOne
   @JoinColumn(name = "role_id", nullable = false)

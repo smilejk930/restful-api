@@ -61,7 +61,7 @@ public class AuthContorller {
 
   @PostMapping("/signup")
   public ResponseEntity<SuccessResponse> createGnrlUser(@Valid @RequestBody GnrlUserDto gnrlUserDto) {
-    GnrlUserDto createdUserDto = gnrlUserService.createGnrlUser(gnrlUserDto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdUserDto).build());
+    GnrlUserDto createdGnrlUserDto = gnrlUserService.createGnrlUser(gnrlUserDto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdGnrlUserDto).build());
   }
 }

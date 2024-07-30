@@ -31,7 +31,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
   private final JPAQueryFactory queryFactory;
   private QPost qPost = QPost.post;
-  private QGnrlUser gnrlUser = QGnrlUser.gnrlUser;
+  private QGnrlUser qGnrlUser = QGnrlUser.gnrlUser;
 
   @Override
   @Transactional(readOnly = true)
@@ -47,10 +47,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         
     Long totalCount = queryFactory.select(qPost.count()).from(qPost).where(whereClause).fetchOne();
     */
-    List<Tuple> tupleResults = queryFactory.select(qPost, gnrlUser.userNm)
+    List<Tuple> tupleResults = queryFactory.select(qPost, qGnrlUser.userNm)
         .from(qPost)
-        .leftJoin(gnrlUser)
-        .on(qPost.rgtrTsid.eq(gnrlUser.userTsid))
+        .leftJoin(qGnrlUser)
+        .on(qPost.rgtrTsid.eq(qGnrlUser.userTsid))
         .where(whereClause)
         .orderBy(orderSpecifiers)
         .offset(pageable.getOffset())
@@ -59,12 +59,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     List<Post> results = tupleResults.stream().map(tuple -> {
       Post post = tuple.get(qPost);
-      post.setUserNm(tuple.get(gnrlUser.userNm));
+      post.setUserNm(tuple.get(qGnrlUser.userNm));
       return post;
     }).toList();
 
     Long totalCount =
-        queryFactory.select(qPost.count()).from(qPost).leftJoin(gnrlUser).on(qPost.rgtrTsid.eq(gnrlUser.userTsid)).where(whereClause).fetchOne();
+        queryFactory.select(qPost.count()).from(qPost).leftJoin(qGnrlUser).on(qPost.rgtrTsid.eq(qGnrlUser.userTsid)).where(whereClause).fetchOne();
 
     return new PageImpl<>(results, pageable, totalCount);
   }
@@ -111,16 +111,16 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     // Post result = queryFactory.selectFrom(qPost).where(whereClause).fetchOne();
 
-    return queryFactory.select(qPost, gnrlUser.userNm)
+    return queryFactory.select(qPost, qGnrlUser.userNm)
         .from(qPost)
-        .leftJoin(gnrlUser)
-        .on(qPost.rgtrTsid.eq(gnrlUser.userTsid))
+        .leftJoin(qGnrlUser)
+        .on(qPost.rgtrTsid.eq(qGnrlUser.userTsid))
         .where(whereClause)
         .fetch()
         .stream()
         .map(tuple -> {
           Post post = tuple.get(qPost);
-          post.setUserNm(tuple.get(gnrlUser.userNm));
+          post.setUserNm(tuple.get(qGnrlUser.userNm));
           return post;
         })
         .findFirst();// Optional<Post>를 반환

@@ -38,7 +38,7 @@ public class Role {
   private String description;
 
   @ManyToMany(mappedBy = "roles")
-  private Set<GnrlUser> users = new HashSet<>();
+  private Set<GnrlUser> gnrlUser = new HashSet<>();
 
   @ManyToMany(mappedBy = "roles")
   private Set<Resource> resources = new HashSet<>();

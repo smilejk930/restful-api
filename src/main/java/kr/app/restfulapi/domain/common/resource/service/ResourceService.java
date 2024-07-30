@@ -67,10 +67,10 @@ public class ResourceService {
 
   }
 
-  @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "#user.lgnId")
+  @Cacheable(value = CacheNames.RESOURCE_PERMISSIONS, key = "#gnrlUser.lgnId")
   @Transactional(readOnly = true)
-  public List<Resource> getUserAccessibleResources(GnrlUser user) {
-    List<String> userRoles = user.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+  public List<Resource> getUserAccessibleResources(GnrlUser gnrlUser) {
+    List<String> userRoles = gnrlUser.getRoles().stream().map(Role::getName).collect(Collectors.toList());
 
     return resourceRepository.findResourceTreeByUserRoles(userRoles);
   }
