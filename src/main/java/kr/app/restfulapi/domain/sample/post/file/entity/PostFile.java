@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.sample.post.entity;
+package kr.app.restfulapi.domain.sample.post.file.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;

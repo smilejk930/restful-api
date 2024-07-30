@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.sample.post.entity;
+package kr.app.restfulapi.domain.sample.post.file.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QPostFile extends EntityPathBase<PostFile> {
 
-    private static final long serialVersionUID = -1963404484L;
+    private static final long serialVersionUID = -1379767936L;
 
     public static final QPostFile postFile = new QPostFile("postFile");
 

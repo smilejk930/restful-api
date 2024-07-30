@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostRspnsDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostSrchDto;
-import kr.app.restfulapi.domain.sample.post.entity.PostFile;
 import kr.app.restfulapi.domain.sample.post.service.PostService;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
@@ -38,7 +37,7 @@ public class PostController {
   // TODO 게시글 삭제 시 파일들도 삭제
 
   @GetMapping
-  public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostFile file, @ModelAttribute PostSrchDto srchDto,
+  public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostSrchDto srchDto,
       @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable) {
 
     Page<PostRspnsDto> postRspnsDtoList = postService.getAllPost(srchDto, pageable);
