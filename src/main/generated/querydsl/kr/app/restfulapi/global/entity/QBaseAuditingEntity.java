@@ -19,25 +19,25 @@ public class QBaseAuditingEntity extends EntityPathBase<BaseAuditingEntity> {
 
     public static final QBaseAuditingEntity baseAuditingEntity = new QBaseAuditingEntity("baseAuditingEntity");
 
-    public final QBaseAuditingUpdtEntity _super = new QBaseAuditingUpdtEntity(this);
+    public final QBaseAuditingMdfcnEntity _super = new QBaseAuditingMdfcnEntity(this);
 
     //inherited
-    public final StringPath lastServerNm = _super.lastServerNm;
+    public final StringPath lastSrvrNm = _super.lastSrvrNm;
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
+    public final DateTimePath<java.time.LocalDateTime> mdfcnDt = _super.mdfcnDt;
 
     //inherited
-    public final StringPath registerId = _super.registerId;
+    public final StringPath mdfrTsid = _super.mdfrTsid;
 
     //inherited
-    public final StringPath registServerNm = _super.registServerNm;
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
+    public final StringPath regSrvrNm = _super.regSrvrNm;
 
     //inherited
-    public final StringPath updusrId = _super.updusrId;
+    public final StringPath rgtrTsid = _super.rgtrTsid;
 
     public QBaseAuditingEntity(String variable) {
         super(BaseAuditingEntity.class, forVariable(variable));

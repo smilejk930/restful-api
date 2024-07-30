@@ -14,12 +14,12 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
-public abstract class BaseUpdtEntity extends BaseAuditingRegistEntity {
+public abstract class BaseMdfcnEntity extends BaseAuditingRegEntity {
 
-  @Comment("수정자아이디")
-  private String updusrId;
+  @Comment("수정자식별번호")
+  private String mdfrTsid;
 
   @Comment("수정일시")
-  private LocalDateTime updtDt;
+  private LocalDateTime mdfcnDt;
 
 }

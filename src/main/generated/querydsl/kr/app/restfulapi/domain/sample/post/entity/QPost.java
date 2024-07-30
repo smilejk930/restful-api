@@ -26,18 +26,24 @@ public class QPost extends EntityPathBase<Post> {
     public final StringPath deleteAt = createString("deleteAt");
 
     //inherited
-    public final StringPath lastServerNm = _super.lastServerNm;
+    public final StringPath lastSrvrNm = _super.lastSrvrNm;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> mdfcnDt = _super.mdfcnDt;
+
+    //inherited
+    public final StringPath mdfrTsid = _super.mdfrTsid;
 
     public final StringPath postId = createString("postId");
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     //inherited
-    public final StringPath registerId = _super.registerId;
+    public final StringPath regSrvrNm = _super.regSrvrNm;
 
     //inherited
-    public final StringPath registServerNm = _super.registServerNm;
+    public final StringPath rgtrTsid = _super.rgtrTsid;
 
     public final DateTimePath<java.time.LocalDateTime> sbmsnDt = createDateTime("sbmsnDt", java.time.LocalDateTime.class);
 
@@ -46,12 +52,6 @@ public class QPost extends EntityPathBase<Post> {
     public final StringPath sj = createString("sj");
 
     public final NumberPath<Integer> telgmLen = createNumber("telgmLen", Integer.class);
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
-
-    //inherited
-    public final StringPath updusrId = _super.updusrId;
 
     public QPost(String variable) {
         super(Post.class, forVariable(variable));

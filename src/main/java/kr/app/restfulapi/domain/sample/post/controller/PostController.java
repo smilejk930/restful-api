@@ -38,7 +38,7 @@ public class PostController {
 
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostSrchDto srchDto,
-      @PageableDefault(size = 10, sort = "registDt", direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 10, sort = "regDt", direction = Sort.Direction.DESC) Pageable pageable) {
 
     Page<PostRspnsDto> postRspnsDtoList = postService.getAllPost(srchDto, pageable);
     /*

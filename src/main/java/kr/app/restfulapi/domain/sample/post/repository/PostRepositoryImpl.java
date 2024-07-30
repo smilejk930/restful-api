@@ -50,7 +50,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     List<Tuple> tupleResults = queryFactory.select(qPost, gnrlUser.userNm)
         .from(qPost)
         .leftJoin(gnrlUser)
-        .on(qPost.registerId.eq(gnrlUser.userTsid))
+        .on(qPost.rgtrTsid.eq(gnrlUser.userTsid))
         .where(whereClause)
         .orderBy(orderSpecifiers)
         .offset(pageable.getOffset())
@@ -64,7 +64,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     }).toList();
 
     Long totalCount =
-        queryFactory.select(qPost.count()).from(qPost).leftJoin(gnrlUser).on(qPost.registerId.eq(gnrlUser.userTsid)).where(whereClause).fetchOne();
+        queryFactory.select(qPost.count()).from(qPost).leftJoin(gnrlUser).on(qPost.rgtrTsid.eq(gnrlUser.userTsid)).where(whereClause).fetchOne();
 
     return new PageImpl<>(results, pageable, totalCount);
   }
@@ -83,7 +83,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
     if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
-      whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserTsid()));
+      whereClause = whereClause.and(qPost.rgtrTsid.eq(userPrincipal.getUserTsid()));
     }
     whereClause =
         StringUtils.hasText(criteria.getSrchDto().sj()) ? whereClause.and(qPost.sj.containsIgnoreCase(criteria.getSrchDto().sj())) : whereClause;
@@ -106,7 +106,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
     if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
-      whereClause = whereClause.and(qPost.registerId.eq(userPrincipal.getUserTsid()));
+      whereClause = whereClause.and(qPost.rgtrTsid.eq(userPrincipal.getUserTsid()));
     }
 
     // Post result = queryFactory.selectFrom(qPost).where(whereClause).fetchOne();
@@ -114,7 +114,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     return queryFactory.select(qPost, gnrlUser.userNm)
         .from(qPost)
         .leftJoin(gnrlUser)
-        .on(qPost.registerId.eq(gnrlUser.userTsid))
+        .on(qPost.rgtrTsid.eq(gnrlUser.userTsid))
         .where(whereClause)
         .fetch()
         .stream()

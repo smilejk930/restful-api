@@ -17,13 +17,13 @@ public class ServerEntityListener {
 
   @PrePersist // 등록 시
   public void prePersist(BaseServerEntity entity) {
-    if (entity.getRegistServerNm() == null) {
-      entity.setRegistServerNm(serverConfig.getName());
+    if (entity.getRegSrvrNm() == null) {
+      entity.setRegSrvrNm(serverConfig.getName());
     }
   }
 
   @PreUpdate // 수정 시
   public void preUpdate(BaseServerEntity entity) {
-    entity.setLastServerNm(serverConfig.getName());
+    entity.setLastSrvrNm(serverConfig.getName());
   }
 }

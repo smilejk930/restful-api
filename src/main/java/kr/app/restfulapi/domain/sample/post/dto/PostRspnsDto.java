@@ -11,7 +11,7 @@ public record PostRspnsDto(
     Integer telgmLen,
     String userNm,
     String sbmsnYn,
-    String registYmd) {
+    String regYmd) {
 
   public static PostRspnsDto toDto(Post post) {
     return new PostRspnsDto(
@@ -21,6 +21,6 @@ public record PostRspnsDto(
         post.getTelgmLen(),
         Objects.toString(post.getUserNm(), "-"),
         post.getSbmsnYn(),
-        CustomDateUtils.getFormatYmdDate(post.getRegistDt()));
+        CustomDateUtils.getFormatYmdDate(post.getRegDt()));
   }
 }

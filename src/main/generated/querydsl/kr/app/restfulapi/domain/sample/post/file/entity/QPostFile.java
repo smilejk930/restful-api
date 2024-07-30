@@ -61,25 +61,25 @@ public class QPostFile extends EntityPathBase<PostFile> {
     public final DateTimePath<java.time.LocalDateTime> fileSynchrnDt = _super.fileSynchrnDt;
 
     //inherited
-    public final StringPath lastServerNm = _super.lastServerNm;
+    public final StringPath lastSrvrNm = _super.lastSrvrNm;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> mdfcnDt = _super.mdfcnDt;
+
+    //inherited
+    public final StringPath mdfrTsid = _super.mdfrTsid;
 
     //inherited
     public final StringPath refrnId = _super.refrnId;
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     //inherited
-    public final StringPath registerId = _super.registerId;
+    public final StringPath regSrvrNm = _super.regSrvrNm;
 
     //inherited
-    public final StringPath registServerNm = _super.registServerNm;
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
-
-    //inherited
-    public final StringPath updusrId = _super.updusrId;
+    public final StringPath rgtrTsid = _super.rgtrTsid;
 
     public QPostFile(String variable) {
         super(PostFile.class, forVariable(variable));

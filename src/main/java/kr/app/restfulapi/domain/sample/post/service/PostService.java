@@ -37,7 +37,7 @@ public class PostService {
       optPostDto = postRepository.findByPostIdAndDeleteAt(postId, "N").map(PostDto::toDto);
     } else {
       UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
-      optPostDto = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserTsid()).map(PostDto::toDto);
+      optPostDto = postRepository.findByPostIdAndDeleteAtAndRgtrTsid(postId, "N", userPrincipal.getUserTsid()).map(PostDto::toDto);
     }
     */
 
@@ -64,7 +64,7 @@ public class PostService {
 
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
 
-    Optional<Post> optPost = postRepository.findByPostIdAndDeleteAtAndRegisterId(postId, "N", userPrincipal.getUserTsid())
+    Optional<Post> optPost = postRepository.findByPostIdAndDeleteAtAndRgtrTsid(postId, "N", userPrincipal.getUserTsid())
         .map(Optional::ofNullable)
         .orElseThrow(ResourceNotFoundException::new);
 

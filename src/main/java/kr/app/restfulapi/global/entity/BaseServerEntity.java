@@ -21,9 +21,9 @@ public abstract class BaseServerEntity {
 
   @Comment("등록서버명")
   @Column(length = 100)
-  private String registServerNm;
+  private String regSrvrNm;
 
   @Comment("최종서버명")
   @Column(length = 100)
-  private String lastServerNm;
+  private String lastSrvrNm;
 }

@@ -23,28 +23,28 @@ public class QGnrlUser extends EntityPathBase<GnrlUser> {
     public final kr.app.restfulapi.global.entity.QBaseAuditingEntity _super = new kr.app.restfulapi.global.entity.QBaseAuditingEntity(this);
 
     //inherited
-    public final StringPath lastServerNm = _super.lastServerNm;
+    public final StringPath lastSrvrNm = _super.lastSrvrNm;
 
     public final StringPath lgnId = createString("lgnId");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> mdfcnDt = _super.mdfcnDt;
+
+    //inherited
+    public final StringPath mdfrTsid = _super.mdfrTsid;
 
     public final StringPath pswd = createString("pswd");
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> registDt = _super.registDt;
+    public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     //inherited
-    public final StringPath registerId = _super.registerId;
+    public final StringPath regSrvrNm = _super.regSrvrNm;
 
     //inherited
-    public final StringPath registServerNm = _super.registServerNm;
+    public final StringPath rgtrTsid = _super.rgtrTsid;
 
     public final SetPath<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole> roles = this.<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole>createSet("roles", kr.app.restfulapi.domain.common.role.entity.Role.class, kr.app.restfulapi.domain.common.role.entity.QRole.class, PathInits.DIRECT2);
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> updtDt = _super.updtDt;
-
-    //inherited
-    public final StringPath updusrId = _super.updusrId;
 
     public final StringPath userNm = createString("userNm");
 

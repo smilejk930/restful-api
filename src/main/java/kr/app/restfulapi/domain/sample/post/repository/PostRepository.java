@@ -10,5 +10,5 @@ public interface PostRepository extends JpaRepository<Post, String>, PostReposit
 
   Optional<Post> findByPostIdAndDeleteAt(String postId, String deleteAt);
 
-  Optional<Post> findByPostIdAndDeleteAtAndRegisterId(String postId, String deleteAt, String registerId);
+  Optional<Post> findByPostIdAndDeleteAtAndRgtrTsid(String postId, String deleteAt, String rgtrTsid);
 }

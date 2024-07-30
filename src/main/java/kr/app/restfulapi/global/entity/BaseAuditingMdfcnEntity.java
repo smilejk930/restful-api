@@ -13,16 +13,16 @@ import lombok.Getter;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseAuditingUpdtEntity extends BaseAuditingRegistEntity {
+public abstract class BaseAuditingMdfcnEntity extends BaseAuditingRegEntity {
 
-  @Comment("수정자아이디")
+  @Comment("수정자식별번호")
   @LastModifiedBy
   @Column(insertable = false)
-  private String updusrId;
+  private String mdfrTsid;
 
   @Comment("수정일시")
   @LastModifiedDate
   @Column(insertable = false)
-  private LocalDateTime updtDt;
+  private LocalDateTime mdfcnDt;
 
 }

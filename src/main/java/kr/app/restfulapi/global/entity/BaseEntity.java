@@ -22,6 +22,6 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
-public abstract class BaseEntity extends BaseUpdtEntity {
+public abstract class BaseEntity extends BaseMdfcnEntity {
 
 }

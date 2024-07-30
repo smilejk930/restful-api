@@ -18,16 +18,16 @@ import lombok.experimental.SuperBuilder;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(toBuilder = true)
-public abstract class BaseAuditingRegistEntity extends BaseServerEntity {
+public abstract class BaseAuditingRegEntity extends BaseServerEntity {
 
-  @Comment("등록자아이디")
+  @Comment("등록자식별번호")
   @CreatedBy
   @Column(updatable = false, nullable = false)
-  private String registerId;
+  private String rgtrTsid;
 
   @Comment("등록일시")
   @CreatedDate
   @Column(updatable = false, nullable = false)
-  private LocalDateTime registDt;
+  private LocalDateTime regDt;
 
 }

@@ -17,6 +17,6 @@ import lombok.Getter;
  */
 @Getter
 @MappedSuperclass
-public abstract class BaseAuditingEntity extends BaseAuditingUpdtEntity {
+public abstract class BaseAuditingEntity extends BaseAuditingMdfcnEntity {
 
 }

@@ -19,9 +19,9 @@ public class QBaseServerEntity extends EntityPathBase<BaseServerEntity> {
 
     public static final QBaseServerEntity baseServerEntity = new QBaseServerEntity("baseServerEntity");
 
-    public final StringPath lastServerNm = createString("lastServerNm");
+    public final StringPath lastSrvrNm = createString("lastSrvrNm");
 
-    public final StringPath registServerNm = createString("registServerNm");
+    public final StringPath regSrvrNm = createString("regSrvrNm");
 
     public QBaseServerEntity(String variable) {
         super(BaseServerEntity.class, forVariable(variable));
