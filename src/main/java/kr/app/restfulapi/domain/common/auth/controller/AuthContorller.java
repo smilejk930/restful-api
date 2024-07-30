@@ -36,7 +36,7 @@ public class AuthContorller {
   private final GnrlUserService gnrlUserService;
 
   @PostMapping("/login")
-  public ResponseEntity<SuccessResponse> authenticateUser(@Validated @RequestBody LgnDto lgnDto) throws Exception {
+  public ResponseEntity<SuccessResponse> authenticateGnrlUser(@Validated @RequestBody LgnDto lgnDto) throws Exception {
     try {
 
       // AuthenticationManager를 사용하여 인증 수행
