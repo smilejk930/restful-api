@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.common.auth.dto;
+package kr.app.restfulapi.domain.common.user.auth.dto;
 
 public class JwtRspnsDto {
   private String accessToken;

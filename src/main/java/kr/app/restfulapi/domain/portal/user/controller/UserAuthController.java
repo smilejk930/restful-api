@@ -1,6 +1,5 @@
-package kr.app.restfulapi.domain.common.auth.controller;
+package kr.app.restfulapi.domain.portal.user.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,11 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
-import kr.app.restfulapi.domain.common.auth.dto.JwtRspnsDto;
-import kr.app.restfulapi.domain.common.auth.dto.LgnDto;
-import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserDto;
-import kr.app.restfulapi.domain.common.user.gnrl.service.GnrlUserService;
+import kr.app.restfulapi.domain.common.user.auth.dto.JwtRspnsDto;
+import kr.app.restfulapi.domain.common.user.auth.dto.LgnDto;
 import kr.app.restfulapi.global.response.error.FieldErrorReason;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
@@ -25,18 +21,20 @@ import kr.app.restfulapi.global.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 로그인/로그아웃 관련 컨트롤러
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
-public class AuthContorller {
+@RequestMapping("/user")
+public class UserAuthController {
 
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider tokenProvider;
-  private final GnrlUserService gnrlUserService;
 
   @PostMapping("/login")
-  public ResponseEntity<SuccessResponse> authenticateGnrlUser(@Validated @RequestBody LgnDto lgnDto) throws Exception {
+  public ResponseEntity<SuccessResponse> loginGnrlUser(@Validated @RequestBody LgnDto lgnDto) throws Exception {
     try {
 
       // AuthenticationManager를 사용하여 인증 수행
@@ -59,9 +57,9 @@ public class AuthContorller {
     }
   }
 
-  @PostMapping("/signup")
-  public ResponseEntity<SuccessResponse> createGnrlUser(@Valid @RequestBody GnrlUserDto gnrlUserDto) {
-    GnrlUserDto createdGnrlUserDto = gnrlUserService.createGnrlUser(gnrlUserDto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdGnrlUserDto).build());
+  @PostMapping("/logout")
+  public ResponseEntity<SuccessResponse> logoutGnrlUser(@Validated @RequestBody LgnDto lgnDto) throws Exception {
+    // TODO LOGOUT 구현
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(null).build());
   }
 }

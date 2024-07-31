@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.common.auth.dto;
+package kr.app.restfulapi.domain.common.user.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
