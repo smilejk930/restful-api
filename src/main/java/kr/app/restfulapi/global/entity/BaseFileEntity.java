@@ -24,9 +24,9 @@ public abstract class BaseFileEntity extends BaseEntity {
 
   public abstract BaseFileEntity.BaseFileEntityBuilder<?, ?> toBuilder();
 
-  @Comment("파일아이디")
   @Id
   @Tsid
+  @Comment("파일아이디")
   @Column(length = 13, columnDefinition = "CHAR(13)")
   private String fileId;
 
@@ -47,14 +47,14 @@ public abstract class BaseFileEntity extends BaseEntity {
   private String fileSectValue;
 
   @Comment("삭제여부")
+  @Column(length = 1, nullable = false, columnDefinition = "CHAR(1)")
   @ColumnDefault("'N'")
-  @Column(length = 1, nullable = false)
   @Builder.Default
   private String delYn = "N";
 
   @Comment("파일순번")
-  @ColumnDefault("0")
   @Column(nullable = false)
+  @ColumnDefault("0")
   @Builder.Default
   private Long fileSn = 0L;
 
@@ -75,14 +75,14 @@ public abstract class BaseFileEntity extends BaseEntity {
   private Long fileSize;
 
   @Comment("다운로드횟수")
-  @ColumnDefault("0")
   @Column(nullable = false)
+  @ColumnDefault("0")
   @Builder.Default
   private Long dwldCo = 0L;
 
   @Comment("파일동기화코드")
-  @ColumnDefault("'FSC001'")
   @Column(nullable = false)
+  @ColumnDefault("'FSC001'")
   @Builder.Default
   private String fileSynchrnCode = "FSC001";
 

@@ -17,7 +17,7 @@ public abstract class BaseAuditingMdfcnEntity extends BaseAuditingRegEntity {
 
   @Comment("수정자식별번호")
   @LastModifiedBy
-  @Column(insertable = false)
+  @Column(insertable = false, length = 13, columnDefinition = "CHAR(13)")
   private String mdfrTsid;
 
   @Comment("수정일시")

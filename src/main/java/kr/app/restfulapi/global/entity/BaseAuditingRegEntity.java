@@ -22,7 +22,7 @@ public abstract class BaseAuditingRegEntity extends BaseServerEntity {
 
   @Comment("등록자식별번호")
   @CreatedBy
-  @Column(updatable = false, nullable = false)
+  @Column(updatable = false, nullable = false, length = 13, columnDefinition = "CHAR(13)")
   private String rgtrTsid;
 
   @Comment("등록일시")

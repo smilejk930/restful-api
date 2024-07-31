@@ -33,8 +33,8 @@ public class GnrlUser extends BaseAuditingEntity {
 
   @Id
   @Tsid
-  @Column(length = 13, columnDefinition = "CHAR(13)")
   @Comment("사용자식별번호")
+  @Column(length = 13, columnDefinition = "CHAR(13)")
   private String userTsid;
 
   @Comment("로그인아이디")

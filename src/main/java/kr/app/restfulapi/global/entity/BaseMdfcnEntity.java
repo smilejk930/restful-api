@@ -2,6 +2,7 @@ package kr.app.restfulapi.global.entity;
 
 import java.time.LocalDateTime;
 import org.hibernate.annotations.Comment;
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 public abstract class BaseMdfcnEntity extends BaseAuditingRegEntity {
 
   @Comment("수정자식별번호")
+  @Column(length = 13, columnDefinition = "CHAR(13)")
   private String mdfrTsid;
 
   @Comment("수정일시")

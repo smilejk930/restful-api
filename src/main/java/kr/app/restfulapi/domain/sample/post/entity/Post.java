@@ -30,7 +30,6 @@ import lombok.Setter;
 @Builder
 public class Post extends BaseAuditingEntity {
 
-  @Comment("게시글식별번호")
   @Id
   // Resolved [java.lang.NullPointerException: Cannot invoke "cubrid.jdbc.driver.CUBRIDConnection.createCUBRIDException(int, java.lang.Throwable)"
   // because "this.con" is null]
@@ -38,6 +37,7 @@ public class Post extends BaseAuditingEntity {
   // @GeneratedValue(strategy = GenerationType.AUTO)
   // @GeneratedValue(strategy = GenerationType.UUID)
   @Tsid
+  @Comment("게시글식별번호")
   @Column(length = 13, columnDefinition = "CHAR(13)")
   private String postTsid;
 
@@ -50,8 +50,8 @@ public class Post extends BaseAuditingEntity {
   private String cn;
 
   @Comment("삭제여부")
+  @Column(length = 1, nullable = false, columnDefinition = "CHAR(1)")
   @ColumnDefault("'N'")
-  @Column(length = 1, nullable = false)
   @Builder.Default
   private String delYn = "N";
 
@@ -60,8 +60,8 @@ public class Post extends BaseAuditingEntity {
   private Integer telgmLen;
 
   @Comment("제출여부")
+  @Column(length = 1, nullable = false, columnDefinition = "CHAR(1)")
   @ColumnDefault("'N'")
-  @Column(length = 1, nullable = false)
   @Builder.Default
   private String sbmsnYn = "N";
 
