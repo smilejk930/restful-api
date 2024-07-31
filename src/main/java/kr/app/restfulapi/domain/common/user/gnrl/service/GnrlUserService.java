@@ -4,7 +4,7 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserDto;
+import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserReqstDto;
 import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import kr.app.restfulapi.domain.common.user.gnrl.repository.GnrlUserRepository;
 import kr.app.restfulapi.global.response.error.FieldErrorReason;
@@ -21,28 +21,28 @@ public class GnrlUserService {
   private final PasswordEncoder passwordEncoder;
 
   @Transactional(readOnly = true)
-  public Optional<GnrlUserDto> getGnrlUserByLgnId(String lgnId) {
+  public Optional<GnrlUserReqstDto> getGnrlUserByLgnId(String lgnId) {
 
-    Optional<GnrlUserDto> optGnrlUserDto = gnrlUserRepository.findByLgnId(lgnId).map(GnrlUserDto::toDto);
+    Optional<GnrlUserReqstDto> optGnrlUserDto = gnrlUserRepository.findByLgnId(lgnId).map(GnrlUserReqstDto::toDto);
 
     return optGnrlUserDto.map(Optional::of).orElseThrow(() -> new ResourceNotFoundException("lgnId", lgnId, FieldErrorReason.USER_NOT_FOUND));
   }
 
   @Transactional
-  public GnrlUserDto createGnrlUser(GnrlUserDto gnrlUserDto) {
+  public GnrlUserReqstDto createGnrlUser(GnrlUserReqstDto gnrlUserReqstDto) {
 
-    if (gnrlUserRepository.findByLgnId(gnrlUserDto.lgnId()).isPresent()) {
-      throw new LoginIdAlreadyExistsException(gnrlUserDto.lgnId());
+    if (gnrlUserRepository.findByLgnId(gnrlUserReqstDto.lgnId()).isPresent()) {
+      throw new LoginIdAlreadyExistsException(gnrlUserReqstDto.lgnId());
     }
-    if (!isValidPassword(gnrlUserDto.pswd())) {
-      throw new InvalidPasswordException(gnrlUserDto.pswd());
+    if (!isValidPassword(gnrlUserReqstDto.pswd())) {
+      throw new InvalidPasswordException(gnrlUserReqstDto.pswd());
     }
 
-    GnrlUser gnrlUser = gnrlUserDto.toEntity();
+    GnrlUser gnrlUser = gnrlUserReqstDto.toEntity();
     gnrlUser.setPswd(passwordEncoder.encode(gnrlUser.getPswd()));
     GnrlUser savedGnrlUser = gnrlUserRepository.save(gnrlUser);
 
-    return GnrlUserDto.toDto(savedGnrlUser);
+    return GnrlUserReqstDto.toDto(savedGnrlUser);
   }
 
   // TODO 비밀번호 정책 검증 로직
