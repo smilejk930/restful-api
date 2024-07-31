@@ -40,14 +40,6 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
     String url = request.getRequestURI();
     String method = request.getMethod();
 
-    // /api/auth/** 패턴 체크
-    /*
-    if (antPathMatcher.match("/api/auth/**", url)) {
-      // /api/auth/** 패턴의 요청은 필터 검사를 건너뛰고 다음 필터로 진행
-      filterChain.doFilter(request, response);
-      return;
-    }
-    */
     try {
       // TODO URL 사용여부 추가
       List<Resource> resources = resourceService.getAllResource();

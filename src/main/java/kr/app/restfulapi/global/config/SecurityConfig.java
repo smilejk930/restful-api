@@ -43,15 +43,13 @@ public class SecurityConfig {
     http.csrf(csrf -> csrf.disable())
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        // .authorizeHttpRequests(authz -> authz.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated())
-        // dynamicAuthorizationFilter에서 DB로 동적 조회를 통해 관리하기에 필요 없어짐.
         .authenticationProvider(authenticationProvider())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterAfter(dynamicAuthorizationFilter, JwtAuthenticationFilter.class)
         .addFilterBefore(globalExceptionTranslationFilter, ExceptionTranslationFilter.class)// 필터에서의 전역 exception 처리
-        .exceptionHandling(exceptionHandling -> exceptionHandling
-            .authenticationEntryPoint(securityExceptionHandler) /* AuthenticationEntryPoint는 인증되지 않은 사용자가 보안된 리소스에 접근하려 할 때 호출 */
-            .accessDeniedHandler(securityExceptionHandler)) // AccessDeniedHandler는 인증된 사용자가 권한이 없는 리소스에 접근하려 할 때 호출
+        .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(securityExceptionHandler) // AuthenticationEntryPoint는 인증되지
+                                                                                                                     // 않은 사용자가 보안된 리소스에 접근하려 할 때 호출
+            .accessDeniedHandler(securityExceptionHandler)) // DeniedHandler는 인증된 사용자가 권한이 없는 리소스에 접근하려 할 때 호출
         .userDetailsService(userDetailsService) // UserDetailsService 설정
     ;
 
