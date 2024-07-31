@@ -1,4 +1,0 @@
-#어플리케이션이 운영되는 서버명
-server-type:
-  name: CVLCPT #민원
-  #name: PBADMS #행정
