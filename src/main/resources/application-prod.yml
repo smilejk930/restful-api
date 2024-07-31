@@ -1,16 +1,17 @@
 #운영버전 설정
+
 #logging
 logging:
   level:
     org:
       springframework: info
-
+  
+#file upload path
+file:
+  upload-dir: D:/develop/restful-api-file
+  
 #custom properties
 currency-service:
   url: http://prod.com/currency
   username: prodName
   key: prodKey
-  
-#file upload path
-file:
-  upload-dir: D:/develop/restful-api-file
