@@ -2,6 +2,7 @@ package kr.app.restfulapi.global.response.error.exception;
 
 import java.util.List;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -35,7 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.INTERNAL_SERVER_ERROR)
         .errors(FieldError.of(null, request.getDescription(false), "N/A"))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.INTERNAL_SERVER_ERROR.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @ExceptionHandler(BusinessException.class)
@@ -57,7 +58,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       }
     }
     errorResponse = ErrorResponse.errorStatus().status(ex.getStatus()).errors(errors).build();
-    return new ResponseEntity<>(errorResponse, ex.getStatus().getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @ExceptionHandler(AuthenticationException.class)
@@ -66,14 +67,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.UNAUTHORIZED)
         .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
     ErrorResponse errorResponse =
         ErrorResponse.errorStatus().status(ErrorStatus.FORBIDDEN).errors(FieldError.of(null, ex.getMessage(), request.getDescription(false))).build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.FORBIDDEN.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @ExceptionHandler(JwtAuthenticationException.class)
@@ -82,7 +83,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.UNAUTHORIZED)
         .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @ExceptionHandler(BadCredentialsException.class)
@@ -91,7 +92,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.UNAUTHORIZED)
         .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @ExceptionHandler(LockedException.class)
@@ -100,7 +101,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.UNAUTHORIZED)
         .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   /*
@@ -110,7 +111,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.UNAUTHORIZED)
         .errors(FieldError.of(null, ex.getMessage(), request.getDescription(false)))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.UNAUTHORIZED.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
   */
 
@@ -119,7 +120,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status,
       WebRequest request) {
     ErrorResponse errorResponse = ErrorResponse.errorStatus().status(ErrorStatus.BAD_REQUEST).errors(FieldError.of(ex.getBindingResult())).build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.BAD_REQUEST.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @Override
@@ -127,7 +128,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       WebRequest request) {
     ErrorResponse errorResponse =
         ErrorResponse.httpStatusCode().status(status).errors(FieldError.of(null, request.getDescription(false), ex.getMessage())).build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @Override
@@ -135,7 +136,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       HttpStatusCode status, WebRequest request) {
     ErrorResponse errorResponse =
         ErrorResponse.httpStatusCode().status(status).errors(FieldError.of("HTTP METHOD", ex.getMethod(), ex.getMessage())).build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @Override
@@ -145,7 +146,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.HTTP_MESSAGE_NOT_READABLE)
         .errors(FieldError.of("HTTP BODY", request.getDescription(false), ex.getMessage()))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.HTTP_MESSAGE_NOT_READABLE.getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
   @Override
@@ -155,7 +156,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         .status(ErrorStatus.BAD_REQUEST)
         .errors(FieldError.of(null, request.getDescription(false), ex.getMessage()))
         .build();
-    return new ResponseEntity<>(errorResponse, ErrorStatus.find(status).getStatus());
+    return new ResponseEntity<>(errorResponse, HttpStatus.OK);
   }
 
 }
