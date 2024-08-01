@@ -1,12 +1,17 @@
 package kr.app.restfulapi.domain.common.user.gnrl.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import io.hypersistence.tsid.TSID;
 import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserReqstDto;
+import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserRspnsDto;
 import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import kr.app.restfulapi.domain.common.user.gnrl.repository.GnrlUserRepository;
+import kr.app.restfulapi.domain.common.user.gnrl.repository.UserAuthrtRepository;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserAcntSttsType;
 import kr.app.restfulapi.global.response.error.FieldErrorReason;
 import kr.app.restfulapi.global.response.error.exception.InvalidPasswordException;
 import kr.app.restfulapi.global.response.error.exception.LoginIdAlreadyExistsException;
@@ -18,18 +23,19 @@ import lombok.RequiredArgsConstructor;
 public class GnrlUserService {
 
   private final GnrlUserRepository gnrlUserRepository;
+  private final UserAuthrtRepository userAuthrtRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Transactional(readOnly = true)
-  public Optional<GnrlUserReqstDto> getGnrlUserByLgnId(String lgnId) {
+  public Optional<GnrlUserRspnsDto> getGnrlUserByLgnId(String lgnId) {
 
-    Optional<GnrlUserReqstDto> optGnrlUserDto = gnrlUserRepository.findByLgnId(lgnId).map(GnrlUserReqstDto::toDto);
+    Optional<GnrlUserRspnsDto> optGnrlUserRspnsDto = gnrlUserRepository.findByLgnId(lgnId).map(GnrlUserRspnsDto::toDto);
 
-    return optGnrlUserDto.map(Optional::of).orElseThrow(() -> new ResourceNotFoundException("lgnId", lgnId, FieldErrorReason.USER_NOT_FOUND));
+    return optGnrlUserRspnsDto.map(Optional::of).orElseThrow(() -> new ResourceNotFoundException("lgnId", lgnId, FieldErrorReason.USER_NOT_FOUND));
   }
 
   @Transactional
-  public GnrlUserReqstDto createGnrlUser(GnrlUserReqstDto gnrlUserReqstDto) {
+  public GnrlUserRspnsDto createGnrlUser(GnrlUserReqstDto gnrlUserReqstDto) {
 
     if (gnrlUserRepository.findByLgnId(gnrlUserReqstDto.lgnId()).isPresent()) {
       throw new LoginIdAlreadyExistsException(gnrlUserReqstDto.lgnId());
@@ -39,10 +45,21 @@ public class GnrlUserService {
     }
 
     GnrlUser gnrlUser = gnrlUserReqstDto.toEntity();
+
+    gnrlUser.setUserTsid(TSID.fast().toString());
+    gnrlUser.setRgtrTsid(gnrlUser.getUserTsid());
     gnrlUser.setPswd(passwordEncoder.encode(gnrlUser.getPswd()));
+    gnrlUser.setUserAcntSttsCd(UserAcntSttsType.UAS001);// TODO 추후 사용자 가입할 때 UAS002로 변경해야함
+    gnrlUser.setJoinDt(LocalDateTime.now());
     GnrlUser savedGnrlUser = gnrlUserRepository.save(gnrlUser);
 
-    return GnrlUserReqstDto.toDto(savedGnrlUser);
+    // 사용자유형 등록
+    gnrlUserReqstDto.toUserAuthrtEntities(savedGnrlUser).forEach(userAuthrt -> {
+      userAuthrt.setRgtrTsid(userAuthrt.getUserTsid());
+      userAuthrtRepository.save(userAuthrt);
+    });
+
+    return GnrlUserRspnsDto.toDto(savedGnrlUser);
   }
 
   // TODO 비밀번호 정책 검증 로직

@@ -25,8 +25,10 @@ public class UserPrincipal implements UserDetails {
   private Collection<? extends GrantedAuthority> authorities;
 
   public static UserPrincipal create(GnrlUser gnrlUser) {
-    List<GrantedAuthority> authorities =
-        gnrlUser.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    List<GrantedAuthority> authorities = gnrlUser.getUserAuthrts()
+        .stream()
+        .map(userAuthrt -> new SimpleGrantedAuthority(userAuthrt.getUserTypeCd().name()))
+        .collect(Collectors.toList());
 
     return UserPrincipal.builder()
         .userTsid(gnrlUser.getUserTsid())

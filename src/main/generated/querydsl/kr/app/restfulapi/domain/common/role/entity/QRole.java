@@ -22,8 +22,6 @@ public class QRole extends EntityPathBase<Role> {
 
     public final StringPath description = createString("description");
 
-    public final SetPath<kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser, kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser> gnrlUsers = this.<kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser, kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser>createSet("gnrlUsers", kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser.class, kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser.class, PathInits.DIRECT2);
-
     public final StringPath name = createString("name");
 
     public final SetPath<kr.app.restfulapi.domain.common.resource.entity.Resource, kr.app.restfulapi.domain.common.resource.entity.QResource> resources = this.<kr.app.restfulapi.domain.common.resource.entity.Resource, kr.app.restfulapi.domain.common.resource.entity.QResource>createSet("resources", kr.app.restfulapi.domain.common.resource.entity.Resource.class, kr.app.restfulapi.domain.common.resource.entity.QResource.class, PathInits.DIRECT2);

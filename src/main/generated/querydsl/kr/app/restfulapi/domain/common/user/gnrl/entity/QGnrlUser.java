@@ -22,10 +22,52 @@ public class QGnrlUser extends EntityPathBase<GnrlUser> {
 
     public final kr.app.restfulapi.global.entity.QBaseAuditingEntity _super = new kr.app.restfulapi.global.entity.QBaseAuditingEntity(this);
 
+    public final StringPath ahrztKeyNo = createString("ahrztKeyNo");
+
+    public final StringPath bzentyMngrYn = createString("bzentyMngrYn");
+
+    public final StringPath bzentyTsid = createString("bzentyTsid");
+
+    public final StringPath cardNo = createString("cardNo");
+
+    public final StringPath ciNo = createString("ciNo");
+
+    public final StringPath diNo = createString("diNo");
+
+    public final StringPath emlAddr = createString("emlAddr");
+
+    public final StringPath emlRcptnAgreYmd = createString("emlRcptnAgreYmd");
+
+    public final StringPath emlRcptnAgreYn = createString("emlRcptnAgreYn");
+
+    public final StringPath fxno = createString("fxno");
+
+    public final DateTimePath<java.time.LocalDateTime> joinDt = createDateTime("joinDt", java.time.LocalDateTime.class);
+
+    public final StringPath katalkRcptnAgreYmd = createString("katalkRcptnAgreYmd");
+
+    public final StringPath katalkRcptnAgreYn = createString("katalkRcptnAgreYn");
+
     //inherited
     public final StringPath lastSrvrNm = _super.lastSrvrNm;
 
+    public final DateTimePath<java.time.LocalDateTime> lgnDt = createDateTime("lgnDt", java.time.LocalDateTime.class);
+
+    public final NumberPath<Integer> lgnFailNmtm = createNumber("lgnFailNmtm", Integer.class);
+
     public final StringPath lgnId = createString("lgnId");
+
+    public final DateTimePath<java.time.LocalDateTime> lgnLckDt = createDateTime("lgnLckDt", java.time.LocalDateTime.class);
+
+    public final StringPath lgnLckYn = createString("lgnLckYn");
+
+    public final StringPath ltrMsgRcptnAgreYmd = createString("ltrMsgRcptnAgreYmd");
+
+    public final StringPath ltrMsgRcptnAgreYn = createString("ltrMsgRcptnAgreYn");
+
+    public final StringPath mbtlCertKeyNo = createString("mbtlCertKeyNo");
+
+    public final StringPath mbtlnum = createString("mbtlnum");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> mdfcnDt = _super.mdfcnDt;
@@ -33,7 +75,13 @@ public class QGnrlUser extends EntityPathBase<GnrlUser> {
     //inherited
     public final StringPath mdfrTsid = _super.mdfrTsid;
 
+    public final StringPath prvcUtlzAgreYmd = createString("prvcUtlzAgreYmd");
+
+    public final StringPath prvcUtlzAgreYn = createString("prvcUtlzAgreYn");
+
     public final StringPath pswd = createString("pswd");
+
+    public final StringPath pswdChgYmd = createString("pswdChgYmd");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
@@ -44,7 +92,11 @@ public class QGnrlUser extends EntityPathBase<GnrlUser> {
     //inherited
     public final StringPath rgtrTsid = _super.rgtrTsid;
 
-    public final SetPath<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole> roles = this.<kr.app.restfulapi.domain.common.role.entity.Role, kr.app.restfulapi.domain.common.role.entity.QRole>createSet("roles", kr.app.restfulapi.domain.common.role.entity.Role.class, kr.app.restfulapi.domain.common.role.entity.QRole.class, PathInits.DIRECT2);
+    public final StringPath telno = createString("telno");
+
+    public final EnumPath<kr.app.restfulapi.domain.common.user.gnrl.util.UserAcntSttsType> userAcntSttsCd = createEnum("userAcntSttsCd", kr.app.restfulapi.domain.common.user.gnrl.util.UserAcntSttsType.class);
+
+    public final SetPath<UserAuthrt, QUserAuthrt> userAuthrts = this.<UserAuthrt, QUserAuthrt>createSet("userAuthrts", UserAuthrt.class, QUserAuthrt.class, PathInits.DIRECT2);
 
     public final StringPath userNm = createString("userNm");
 
