@@ -43,7 +43,7 @@ public record GnrlUserReqstDto(
 
   public List<UserAuthrt> toUserAuthrtEntities(GnrlUser gnrlUser) {
     return userTypeCds.stream()
-        .map(userType -> UserAuthrt.builder().userTsid(gnrlUser.getUserTsid()).gnrlUser(gnrlUser).userTypeCd(userType).build())
+        .map(userTypeCd -> UserAuthrt.builder().userTsid(gnrlUser.getUserTsid()).gnrlUser(gnrlUser).userTypeCd(userTypeCd).build())
         .collect(Collectors.toList());
   }
 }
