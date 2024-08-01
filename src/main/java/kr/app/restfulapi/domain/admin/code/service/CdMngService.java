@@ -33,7 +33,7 @@ public class CdMngService {
 
     CdGroup cdGroup = cdGroupRepository.findByCdGroupNm(cdGroupNm).orElseThrow(ResourceNotFoundException::new);
 
-    Sort sort = Sort.by(Sort.Direction.ASC, "cdSeq");
+    Sort sort = Sort.by(Sort.Direction.DESC, "cdNm");
     List<Cd> cdList = cdRepository.findAllByCdGroupNm(cdGroupNm, sort);
 
     String cdSeNm = cdGroup.getCdSeNm();
@@ -70,7 +70,7 @@ public class CdMngService {
     if (cdList.isEmpty()) {
       return cdSeNm + String.format("%03d", 1);
     } else {
-      String lastCdNm = cdList.getLast().getCdNm();
+      String lastCdNm = cdList.getFirst().getCdNm();
       String lastCdNumberStr = lastCdNm.substring(cdSeNm.length());
       Integer lastCdNumber = Integer.parseInt(lastCdNumberStr);
       lastCdNumber++;
