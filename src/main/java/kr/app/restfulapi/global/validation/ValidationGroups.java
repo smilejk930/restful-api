@@ -28,4 +28,23 @@ public class ValidationGroups {
    */
   public interface FinalSubmit {
   }
+
+  /**
+   * 등록 작업을 위한 검증 그룹입니다.
+   * <p>
+   * 등록 시나리오에서 데이터를 검증할 때 이 그룹을 사용합니다.
+   * </p>
+   */
+  public interface Create {
+  }
+
+
+  /**
+   * 수정 작업을 위한 검증 그룹입니다.
+   * <p>
+   * 수정 시나리오에서 데이터를 검증할 때 이 그룹을 사용합니다.
+   * </p>
+   */
+  public interface Update {
+  }
 }
