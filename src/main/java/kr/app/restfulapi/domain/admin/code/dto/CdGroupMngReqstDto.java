@@ -16,7 +16,7 @@ public record CdGroupMngReqstDto(
     @Size(min = 1, max = 50, message = "코드한글명은 {min}자 이상, {max}자 이하로 입력해주세요.", groups = {Create.class, Update.class}) String cdKornNm,
 
     @NotBlank(message = "코드구분명은 필수 입력값입니다.", groups = {Create.class})
-    @Size(min = 3, max = 3, message = "코드구분명은 정확히 {max}여야 입니다.", groups = {Create.class}) String cdSeNm,
+    @Size(min = 3, max = 3, message = "코드구분명은 정확히 {max}자 입니다.", groups = {Create.class}) String cdSeNm,
 
     String cdExpln,
 
