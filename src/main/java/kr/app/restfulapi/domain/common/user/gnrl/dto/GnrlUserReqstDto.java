@@ -24,7 +24,7 @@ public record GnrlUserReqstDto(
     String emlAddr,
     String telno,
     String fxno,
-    @NotEmpty(message = "사용자유형은 1개 이상 선택해야 합니다.") List<UserType> userTypes) {
+    @NotEmpty(message = "사용자유형은 1개 이상 선택해야 합니다.") List<UserType> userTypeCds) {
 
   public GnrlUser toEntity() {
     return GnrlUser.builder()
@@ -42,7 +42,7 @@ public record GnrlUserReqstDto(
   }
 
   public List<UserAuthrt> toUserAuthrtEntities(GnrlUser gnrlUser) {
-    return userTypes.stream()
+    return userTypeCds.stream()
         .map(userType -> UserAuthrt.builder().userTsid(gnrlUser.getUserTsid()).gnrlUser(gnrlUser).userTypeCd(userType).build())
         .collect(Collectors.toList());
   }
