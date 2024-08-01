@@ -1,11 +1,11 @@
 package kr.app.restfulapi.domain.portal.user.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.validation.Valid;
 import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserReqstDto;
 import kr.app.restfulapi.domain.common.user.gnrl.service.GnrlUserService;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
@@ -25,7 +25,7 @@ public class UserAccountController {
   private final GnrlUserService gnrlUserService;
 
   @PostMapping("/signup")
-  public ResponseEntity<SuccessResponse> signupGnrlUser(@Valid
+  public ResponseEntity<SuccessResponse> signupGnrlUser(@Validated
   @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
     GnrlUserReqstDto createdGnrlUserDto = gnrlUserService.createGnrlUser(gnrlUserReqstDto);
 
@@ -33,7 +33,7 @@ public class UserAccountController {
   }
 
   @PostMapping("/unregister")
-  public ResponseEntity<SuccessResponse> unregisterGnrlUser(@Valid
+  public ResponseEntity<SuccessResponse> unregisterGnrlUser(@Validated
   @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
     // TODO 회원탈퇴 기능 구현
 
