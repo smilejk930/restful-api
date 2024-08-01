@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import kr.app.restfulapi.domain.admin.code.dto.CdMngSrchDto;
@@ -32,11 +33,11 @@ public class Cd extends BaseAuditingEntity {
 
   @Id
   @Comment("코드그룹명")
-  @Column(name = "cd_group_nm", length = 100, nullable = false)
   private String cdGroupNm;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "cd_group_nm", insertable = false, updatable = false)
+  @MapsId("cdGroupNm") // 복합 키의 일부로 사용되는 외래 키를 매핑
+  @JoinColumn(name = "cd_group_nm", columnDefinition = "VARCHAR(100)")
   private CdGroup cdGroup;
 
   @Id
