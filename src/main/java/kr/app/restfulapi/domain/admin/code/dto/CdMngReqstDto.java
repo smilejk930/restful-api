@@ -22,6 +22,6 @@ public record CdMngReqstDto(
     @Pattern(regexp = "[YN]", message = "사용여부는 Y 또는 N 이어야 합니다.") String useYn) {
 
   public Cd toEntity() {
-    return Cd.builder().cdKornNm(cdKornNm).upCdNm(upCdNm).cdSeq(cdSeq).useYn(useYn).build();
+    return Cd.builder().cdKornNm(cdKornNm).upCdNm(upCdNm).cdSeq(cdSeq).cdExpln(cdExpln).useYn(useYn).build();
   }
 }
