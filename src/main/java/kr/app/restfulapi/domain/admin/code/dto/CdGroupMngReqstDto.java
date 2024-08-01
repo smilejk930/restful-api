@@ -20,6 +20,7 @@ public record CdGroupMngReqstDto(
 
     String cdExpln,
 
+    @NotBlank(message = "사용여부는 필수 입력값입니다.")
     @Size(max = 1, message = "사용여부는 {max}자 입니다.", groups = {Create.class, Update.class})
     @Pattern(regexp = "[YN]", message = "사용여부는 Y 또는 N 이어야 합니다.", groups = {Create.class, Update.class}) String useYn){
 
