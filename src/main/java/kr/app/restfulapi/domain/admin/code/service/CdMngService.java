@@ -70,7 +70,7 @@ public class CdMngService {
     if (cdList.isEmpty()) {
       return cdSeNm + String.format("%03d", 1);
     } else {
-      String lastCdNm = cdList.get(cdList.size() - 1).getCdNm();
+      String lastCdNm = cdList.getLast().getCdNm();
       String lastCdNumberStr = lastCdNm.substring(cdSeNm.length());
       Integer lastCdNumber = Integer.parseInt(lastCdNumberStr);
       lastCdNumber++;
