@@ -8,7 +8,7 @@ import kr.app.restfulapi.domain.common.code.entity.CdGroup;
 @Repository
 public interface CdGroupRepository extends JpaRepository<CdGroup, String>, CdGroupRepositoryCustom {
 
-  Optional<CdGroup> findByCdGroupNmAndUseYn(String cdGroupNm, String useYn);
-
   Optional<CdGroup> findByCdGroupNm(String cdGroupNm);
+
+  Optional<CdGroup> findByCdGroupNmAndUseYn(String cdGroupNm, String useYn);
 }

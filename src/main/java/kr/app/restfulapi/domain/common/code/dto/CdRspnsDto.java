@@ -11,6 +11,6 @@ public record CdRspnsDto(
     String cdExpln) {
 
   public static CdRspnsDto toDto(Cd cd) {
-    return new CdRspnsDto(cd.getCdGroup().getCdGroupNm(), cd.getCdNm(), cd.getCdKornNm(), cd.getUpCdNm(), cd.getCdSeq(), cd.getCdExpln());
+    return new CdRspnsDto(cd.getCdGroupNm(), cd.getCdNm(), cd.getCdKornNm(), cd.getUpCdNm(), cd.getCdSeq(), cd.getCdExpln());
   }
 }

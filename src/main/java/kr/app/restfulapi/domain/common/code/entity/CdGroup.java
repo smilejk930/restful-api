@@ -9,9 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import kr.app.restfulapi.domain.admin.code.dto.CdGroupMngSrchDto;
+import kr.app.restfulapi.domain.common.code.dto.CdGroupSrchDto;
 import kr.app.restfulapi.global.entity.BaseAuditingEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -53,7 +55,11 @@ public class CdGroup extends BaseAuditingEntity {
   private String useYn = "Y";
 
   @OneToMany(mappedBy = "cdGroup", fetch = FetchType.LAZY)
+  @OrderBy("cdSeq ASC") // cdSeq를 오름차순으로 정렬
   private Set<Cd> cds = new HashSet<>();
+
+  @Transient
+  private CdGroupSrchDto srchDto;
 
   @Transient
   private CdGroupMngSrchDto mngSrchDto;

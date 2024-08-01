@@ -1,10 +1,7 @@
 package kr.app.restfulapi.domain.admin.code.controller;
 
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import kr.app.restfulapi.domain.admin.code.dto.CdGroupMngReqstDto;
-import kr.app.restfulapi.domain.admin.code.dto.CdGroupMngRspnsDto;
-import kr.app.restfulapi.domain.admin.code.dto.CdGroupMngSrchDto;
+import kr.app.restfulapi.domain.admin.code.dto.CdMngReqstDto;
+import kr.app.restfulapi.domain.admin.code.dto.CdMngRspnsDto;
+import kr.app.restfulapi.domain.admin.code.dto.CdMngSrchDto;
 import kr.app.restfulapi.domain.admin.code.service.CdMngService;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
-import kr.app.restfulapi.global.validation.ValidationGroups.Create;
-import kr.app.restfulapi.global.validation.ValidationGroups.Update;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -32,29 +27,28 @@ public class CdMngController {
 
   private final CdMngService cdMngService;
 
-  @GetMapping("/{postTsid}")
-  public ResponseEntity<SuccessResponse> getAllCd(@ModelAttribute CdGroupMngSrchDto srchDto,
-      @PageableDefault(size = 10, sort = "cdGroupNm", direction = Sort.Direction.DESC) Pageable pageable) {
+  @GetMapping("/{cdGroupNm}")
+  public ResponseEntity<SuccessResponse> getAllCdByCdGroupNm(@PathVariable String cdGroupNm, @ModelAttribute CdMngSrchDto srchDto) {
 
-    Page<CdGroupMngRspnsDto> cdGroupMngRspnsDtoList = cdMngService.getAllCdGroup(srchDto, pageable);
+    List<CdMngRspnsDto> cdMngRspnsDtoList = cdMngService.getAllCdByCdGroupNm(cdGroupNm, srchDto);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdGroupMngRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdMngRspnsDtoList).build());
   }
 
-  @PostMapping
-  public ResponseEntity<SuccessResponse> createCdGroup(@Validated(Create.class)
-  @RequestBody CdGroupMngReqstDto cdGroupMngReqstDto) {
-    CdGroupMngRspnsDto cdGroupMngRspnsDto = cdMngService.createCdGroup(cdGroupMngReqstDto);
+  @PostMapping("/{cdGroupNm}")
+  public ResponseEntity<SuccessResponse> createCdByCd(@PathVariable String cdGroupNm, @Validated
+  @RequestBody CdMngReqstDto cdMngReqstDto) {
+    CdMngRspnsDto cdMngRspnsDto = cdMngService.createCd(cdGroupNm, cdMngReqstDto);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.CREATED).data(cdGroupMngRspnsDto).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.CREATED).data(cdMngRspnsDto).build());
   }
 
-  @PutMapping("/{cdGroupNm}")
-  public ResponseEntity<SuccessResponse> updateCdGroup(@PathVariable String cdGroupNm, @Validated(Update.class)
-  @RequestBody CdGroupMngReqstDto cdGroupMngReqstDto) {
+  @PutMapping("/{cdGroupNm}/{cdNm}")
+  public ResponseEntity<SuccessResponse> updateCd(@PathVariable String cdGroupNm, @PathVariable String cdNm, @Validated
+  @RequestBody CdMngReqstDto cdMngReqstDto) {
 
-    Optional<CdGroupMngRspnsDto> optCdGroupMngRspnsDto = cdMngService.updateCdGroup(cdGroupNm, cdGroupMngReqstDto);
+    Optional<CdMngRspnsDto> optCdMngRspnsDto = cdMngService.updateCd(cdGroupNm, cdNm, cdMngReqstDto);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(optCdGroupMngRspnsDto).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.UPDATED).data(optCdMngRspnsDto).build());
   }
 }

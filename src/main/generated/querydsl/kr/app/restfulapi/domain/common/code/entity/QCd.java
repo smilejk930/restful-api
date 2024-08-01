@@ -28,6 +28,8 @@ public class QCd extends EntityPathBase<Cd> {
 
     public final QCdGroup cdGroup;
 
+    public final StringPath cdGroupNm = createString("cdGroupNm");
+
     public final StringPath cdKornNm = createString("cdKornNm");
 
     public final StringPath cdNm = createString("cdNm");

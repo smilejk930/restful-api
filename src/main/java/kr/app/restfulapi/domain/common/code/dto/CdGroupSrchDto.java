@@ -6,6 +6,6 @@ public record CdGroupSrchDto(
     String cdGroupNm) {
 
   public CdGroup toEntity() {
-    return CdGroup.builder().cdGroupNm(cdGroupNm).build();
+    return CdGroup.builder().srchDto(this).build();
   }
 }
