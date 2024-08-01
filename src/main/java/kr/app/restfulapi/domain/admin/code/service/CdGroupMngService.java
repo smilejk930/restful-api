@@ -10,6 +10,7 @@ import kr.app.restfulapi.domain.admin.code.dto.CdGroupMngRspnsDto;
 import kr.app.restfulapi.domain.admin.code.dto.CdGroupMngSrchDto;
 import kr.app.restfulapi.domain.common.code.entity.CdGroup;
 import kr.app.restfulapi.domain.common.code.repository.CdGroupRepository;
+import kr.app.restfulapi.global.response.error.exception.DuplicateKeyException;
 import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,12 @@ public class CdGroupMngService {
 
   @Transactional
   public CdGroupMngRspnsDto createCdGroup(CdGroupMngReqstDto cdGroupMngReqstDto) {
+
+    String cdGroupNm = cdGroupMngReqstDto.cdGroupNm();
+
+    if (cdGroupRepository.findByCdGroupNm(cdGroupNm).isPresent()) {
+      throw new DuplicateKeyException("입력한 코드그룹명이 존재합니다.");
+    }
 
     CdGroup savedCdGroup = cdGroupRepository.save(cdGroupMngReqstDto.toEntity());
 
