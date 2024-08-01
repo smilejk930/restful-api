@@ -15,6 +15,10 @@ public interface CdRepository extends JpaRepository<Cd, CdId>, CdRepositoryCusto
 
   List<Cd> findAllByCdGroupNmAndUseYn(String cdGroupNm, String useYn, Sort sort);
 
+  List<Cd> findAllByCdGroupNmAndUpCdNm(String cdGroupNm, String upCdNm, Sort sort);
+
+  List<Cd> findAllByCdGroupNmAndUpCdNmAndUseYn(String cdGroupNm, String upCdNm, String useYn, Sort sort);
+
   Optional<Cd> findByCdGroupNmAndCdNm(String cdGroupNm, String cdNm);
 
   Optional<Cd> findByCdGroupNmAndCdNmAndUseYn(String cdGroupNm, String cdNm, String useYn);
