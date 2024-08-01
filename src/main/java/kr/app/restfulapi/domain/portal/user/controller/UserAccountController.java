@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserReqstDto;
+import kr.app.restfulapi.domain.common.user.gnrl.dto.GnrlUserRspnsDto;
 import kr.app.restfulapi.domain.common.user.gnrl.service.GnrlUserService;
 import kr.app.restfulapi.global.response.success.SuccessResponse;
 import kr.app.restfulapi.global.response.success.SuccessStatus;
@@ -14,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 회원가입/탈퇴 관련 컨트롤러
+ * 사용자가입/탈퇴 관련 컨트롤러
  */
 @Slf4j
 @RestController
@@ -27,7 +28,7 @@ public class UserAccountController {
   @PostMapping("/signup")
   public ResponseEntity<SuccessResponse> signupGnrlUser(@Validated
   @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
-    GnrlUserReqstDto createdGnrlUserDto = gnrlUserService.createGnrlUser(gnrlUserReqstDto);
+    GnrlUserRspnsDto createdGnrlUserDto = gnrlUserService.createGnrlUser(gnrlUserReqstDto);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdGnrlUserDto).build());
   }
@@ -35,7 +36,7 @@ public class UserAccountController {
   @PostMapping("/unregister")
   public ResponseEntity<SuccessResponse> unregisterGnrlUser(@Validated
   @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
-    // TODO 회원탈퇴 기능 구현
+    // TODO 사용자탈퇴 기능 구현
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(null).build());
   }

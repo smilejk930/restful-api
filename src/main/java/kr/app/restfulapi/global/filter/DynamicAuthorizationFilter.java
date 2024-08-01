@@ -50,7 +50,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
           .orElseThrow(() -> new ResourceNotFoundException("No matching resource found for URL: " + url + " and method: " + method));
 
       if (matchedResource.getResourceAccessType().equals(ResourceAccessType.NON_MEMBERS)) {
-        log.debug("비회원 접근\n-url:{}\n-method:{}", url, method);
+        log.debug("비로그인 사용자 접근\n-url:{}\n-method:{}", url, method);
         filterChain.doFilter(request, response);
         return;
       }
