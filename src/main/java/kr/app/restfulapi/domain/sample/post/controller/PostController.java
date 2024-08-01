@@ -65,13 +65,15 @@ public class PostController {
   }
 
   @PostMapping
-  public ResponseEntity<SuccessResponse> createPost(@Validated @RequestBody PostReqstDto postReqstDto) {
+  public ResponseEntity<SuccessResponse> createPost(@Validated
+  @RequestBody PostReqstDto postReqstDto) {
 
     return processCreatPost(postReqstDto, "N");
   }
 
   @PostMapping("/submit")
-  public ResponseEntity<SuccessResponse> submitCreatePost(@Validated(FinalSubmit.class) @RequestBody PostReqstDto postReqstDto) {
+  public ResponseEntity<SuccessResponse> submitCreatePost(@Validated(FinalSubmit.class)
+  @RequestBody PostReqstDto postReqstDto) {
 
     return processCreatPost(postReqstDto, "Y");
   }
@@ -84,14 +86,15 @@ public class PostController {
   }
 
   @PutMapping("/{postTsid}")
-  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postTsid, @Validated @RequestBody PostReqstDto postReqstDto) {
+  public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postTsid, @Validated
+  @RequestBody PostReqstDto postReqstDto) {
 
     return processUpdatePost(postTsid, postReqstDto, "N");
   }
 
   @PutMapping("/submit/{postTsid}")
-  public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postTsid,
-      @Validated(FinalSubmit.class) @RequestBody PostReqstDto postReqstDto) {
+  public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postTsid, @Validated(FinalSubmit.class)
+  @RequestBody PostReqstDto postReqstDto) {
 
     return processUpdatePost(postTsid, postReqstDto, "Y");
   }

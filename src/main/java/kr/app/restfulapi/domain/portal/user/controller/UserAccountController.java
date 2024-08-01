@@ -25,14 +25,16 @@ public class UserAccountController {
   private final GnrlUserService gnrlUserService;
 
   @PostMapping("/signup")
-  public ResponseEntity<SuccessResponse> signupGnrlUser(@Valid @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
+  public ResponseEntity<SuccessResponse> signupGnrlUser(@Valid
+  @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
     GnrlUserReqstDto createdGnrlUserDto = gnrlUserService.createGnrlUser(gnrlUserReqstDto);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.CREATED).data(createdGnrlUserDto).build());
   }
 
   @PostMapping("/unregister")
-  public ResponseEntity<SuccessResponse> unregisterGnrlUser(@Valid @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
+  public ResponseEntity<SuccessResponse> unregisterGnrlUser(@Valid
+  @RequestBody GnrlUserReqstDto gnrlUserReqstDto) {
     // TODO 회원탈퇴 기능 구현
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(null).build());

@@ -34,11 +34,13 @@ public class UserAuthController {
   private final JwtTokenProvider tokenProvider;
 
   @PostMapping("/login")
-  public ResponseEntity<SuccessResponse> loginGnrlUser(@Validated @RequestBody LgnReqstDto lgnReqstDto) throws Exception {
+  public ResponseEntity<SuccessResponse> loginGnrlUser(@Validated
+  @RequestBody LgnReqstDto lgnReqstDto) throws Exception {
     try {
 
       // AuthenticationManager를 사용하여 인증 수행
-      Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(lgnReqstDto.lgnId(), lgnReqstDto.pswd()));
+      Authentication authentication =
+          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(lgnReqstDto.lgnId(), lgnReqstDto.pswd()));
 
       // 인증 성공 시 SecurityContext에 인증 정보 저장
       SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -58,7 +60,8 @@ public class UserAuthController {
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<SuccessResponse> logoutGnrlUser(@Validated @RequestBody LgnReqstDto lgnReqstDto) throws Exception {
+  public ResponseEntity<SuccessResponse> logoutGnrlUser(@Validated
+  @RequestBody LgnReqstDto lgnReqstDto) throws Exception {
     // TODO LOGOUT 구현
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(null).build());
   }
