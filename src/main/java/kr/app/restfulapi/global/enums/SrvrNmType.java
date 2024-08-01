@@ -1,6 +1,11 @@
 package kr.app.restfulapi.global.enums;
 
+/**
+ * 등록서버명, 최종서버명 등에 사용
+ */
 public enum SrvrNmType {
-  CVLCPT, // 민원
-  PBADMS // 행정
+  /** 민원 */
+  CVLCPT,
+  /** 행정 */
+  PBADMS
 }
