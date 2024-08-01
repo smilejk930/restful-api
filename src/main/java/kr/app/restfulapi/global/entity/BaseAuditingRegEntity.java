@@ -11,6 +11,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
@@ -20,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 public abstract class BaseAuditingRegEntity extends BaseServerEntity {
 
+  @Setter
   @Comment("등록자식별번호")
   @CreatedBy
   @Column(updatable = false, nullable = false, length = 13, columnDefinition = "CHAR(13)")

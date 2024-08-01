@@ -4,6 +4,7 @@ import java.util.Optional;
 import org.springframework.data.domain.AuditorAware;
 import kr.app.restfulapi.global.response.error.exception.UnauthorizedException;
 import kr.app.restfulapi.global.util.SecurityContextHelper;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * JPA Auditing을 위한 AuditorAware 구현 클래스입니다.
@@ -16,6 +17,7 @@ import kr.app.restfulapi.global.util.SecurityContextHelper;
  * SecurityContextHelper를 사용하여 현재 인증된 사용자의 정보를 가져옵니다.
  * </p>
  */
+@Slf4j
 public class AuditorAwareImpl implements AuditorAware<String> {
 
   /**
@@ -36,7 +38,9 @@ public class AuditorAwareImpl implements AuditorAware<String> {
       String userTsid = SecurityContextHelper.getUserPrincipal().getUserTsid();
       return Optional.ofNullable(userTsid);
     } catch (UnauthorizedException e) {
-      // 인증되지 않은 경우 예외 처리
+      log.warn("사용자 인증 처리가 되지 않아서 예외처리 발생");
+      log.warn("- 비로그인 사용자가 등록 또는 수정 처리하는 경우(사용자가입)");
+      log.warn("- 시스템에서 자동으로 처리할 경우");
       return Optional.empty();
     }
   }
