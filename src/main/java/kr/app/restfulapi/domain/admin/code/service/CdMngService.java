@@ -25,14 +25,7 @@ public class CdMngService {
   @Transactional(readOnly = true)
   public List<CdMngRspnsDto> getAllCdByCdGroupNm(String cdGroupNm, CdMngSrchDto srchDto) {
 
-    List<CdMngRspnsDto> cdMngRspnsDtoList =
-        cdRepository.findAllWithCriteria(cdGroupNm, srchDto.toEntity()).stream().map(CdMngRspnsDto::toDto).toList();
-
-    if (cdMngRspnsDtoList.isEmpty()) {
-      throw new ResourceNotFoundException();
-    }
-
-    return cdMngRspnsDtoList;
+    return cdRepository.findAllWithCriteria(cdGroupNm, srchDto.toEntity()).stream().map(CdMngRspnsDto::toDto).toList();
   }
 
   @Transactional
