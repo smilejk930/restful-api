@@ -12,10 +12,10 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.app.restfulapi.domain.common.resource.entity.Resource;
-import kr.app.restfulapi.domain.common.resource.service.ResourceService;
-import kr.app.restfulapi.domain.common.resource.util.ResourceAccessType;
-import kr.app.restfulapi.domain.common.role.entity.Role;
+import kr.app.restfulapi.domain.common.menu.entity.Menu;
+import kr.app.restfulapi.domain.common.menu.entity.MenuAuthrt;
+import kr.app.restfulapi.domain.common.menu.service.MenuService;
+import kr.app.restfulapi.domain.common.menu.util.MenuAcsAuthrtType;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.global.response.error.exception.BusinessException;
 import kr.app.restfulapi.global.response.error.exception.ForbiddenException;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DynamicAuthorizationFilter extends OncePerRequestFilter {
 
-  private final ResourceService resourceService;
+  private final MenuService menuService;
   private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
   @Override
@@ -42,14 +42,14 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
 
     try {
       // TODO URL 사용여부 추가
-      List<Resource> resources = resourceService.getAllResource();
+      List<Menu> menus = menuService.getAllMenu();
 
-      Resource matchedResource = resources.stream()
-          .filter(resource -> antPathMatcher.match(resource.getUrlPattern(), url) && resource.getHttpMethod().equalsIgnoreCase(method))
+      Menu matchedMenu = menus.stream()
+          .filter(menu -> antPathMatcher.match(menu.getUrlAddr(), url) && menu.getHttpDmndMethNm().equalsIgnoreCase(method))
           .findFirst()
           .orElseThrow(() -> new ResourceNotFoundException("No matching resource found for URL: " + url + " and method: " + method));
 
-      if (matchedResource.getResourceAccessType().equals(ResourceAccessType.NON_MEMBERS)) {
+      if (matchedMenu.getMenuAcsAuthrtCd().equals(MenuAcsAuthrtType.MAA003)) {
         log.debug("비로그인 사용자 접근\n-url:{}\n-method:{}", url, method);
         filterChain.doFilter(request, response);
         return;
@@ -64,16 +64,18 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
       UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
       lgnId = userPrincipal.getLgnId();
 
-      Set<Role> resourceRoles = matchedResource.getRoles();
+      Set<MenuAuthrt> menuAuthrts = matchedMenu.getMenuAuthrts();
 
-      if (resourceRoles == null || resourceRoles.isEmpty()) {
-        // 리소스에 역할이 지정되지 않은 경우의 처리
+      if (menuAuthrts == null || menuAuthrts.isEmpty()) {
+        // 메뉴에 역할이 지정되지 않은 경우의 처리
         filterChain.doFilter(request, response);
         return;
       }
 
-      boolean hasPermission = resourceRoles.stream()
-          .anyMatch(role -> authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals(role.getName())));
+      boolean hasPermission = menuAuthrts.stream()
+          .anyMatch(menuAuthrt -> authentication.getAuthorities()
+              .stream()
+              .anyMatch(authority -> authority.getAuthority().equals(menuAuthrt.getUserTypeCd())));
 
       if (!hasPermission) {
         throw new ForbiddenException("Access Denied for user: " + lgnId);

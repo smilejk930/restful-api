@@ -10,6 +10,8 @@ import kr.app.restfulapi.domain.common.menu.entity.Menu;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, String>, MenuRepositoryCustom {
 
+  List<Menu> findAll();
+
   List<Menu> findAllByMenuGroupCd(String menuGroupCd, Sort sort);
 
   Optional<Menu> findByMenuTsid(String menuTsid);
