@@ -4,6 +4,7 @@ import java.util.List;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import kr.app.restfulapi.domain.common.menu.entity.Menu;
@@ -19,9 +20,9 @@ public record MenuMngReqstDto(
     @NotBlank(message = "메뉴명은 필수 입력값입니다.")
     @Size(min = 3, max = 200, message = "메뉴명은 {min}자 이상, {max}자 이하로 입력해주세요.") String menuNm,
 
-    @NotEmpty(message = "메뉴유형코드는 필수 입력값입니다.") MenuType menuTypeCd,
+    @NotNull(message = "메뉴유형코드는 필수 입력값입니다.") MenuType menuTypeCd,
 
-    @NotEmpty(message = "메뉴접근권한코드는 필수 입력값입니다.") MenuAcsAuthrtType menuAcsAuthrtCd,
+    @NotNull(message = "메뉴접근권한코드는 필수 입력값입니다.") MenuAcsAuthrtType menuAcsAuthrtCd,
 
     @NotBlank(message = "HTTP요청메소드명은 필수 입력값입니다.")
     @Pattern(regexp = "GET|POST|PUT|DELETE", message = "유효한 HTTP요청메소드명을 입력해주세요 (GET, POST, PUT, DELETE).") String httpDmndMethNm,
