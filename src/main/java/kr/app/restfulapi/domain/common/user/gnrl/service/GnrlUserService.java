@@ -53,7 +53,7 @@ public class GnrlUserService {
     gnrlUser.setJoinDt(LocalDateTime.now());
     GnrlUser savedGnrlUser = gnrlUserRepository.save(gnrlUser);
 
-    // 사용자유형 등록
+    // 사용자권한에 사용자유형 등록
     gnrlUserReqstDto.toUserAuthrtEntities(savedGnrlUser).forEach(userAuthrt -> {
       userAuthrt.setRgtrTsid(userAuthrt.getUserTsid());
       userAuthrtRepository.save(userAuthrt);
