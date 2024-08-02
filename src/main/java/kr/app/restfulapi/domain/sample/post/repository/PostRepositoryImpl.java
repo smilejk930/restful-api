@@ -1,5 +1,6 @@
 package kr.app.restfulapi.domain.sample.post.repository;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -89,6 +90,16 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         StringUtils.hasText(criteria.getSrchDto().ttl()) ? whereClause.and(qPost.ttl.containsIgnoreCase(criteria.getSrchDto().ttl())) : whereClause;
     whereClause =
         StringUtils.hasText(criteria.getSrchDto().cn()) ? whereClause.and(qPost.cn.containsIgnoreCase(criteria.getSrchDto().cn())) : whereClause;
+    whereClause =
+        StringUtils.hasText(criteria.getSrchDto().userNm()) ? whereClause.and(qGnrlUser.userNm.containsIgnoreCase(criteria.getSrchDto().userNm()))
+            : whereClause;
+
+    if (criteria.getSrchDto().pstgBgngYmd() != null) {
+      whereClause = whereClause.and(qPost.regDt.goe(criteria.getSrchDto().pstgBgngYmd().atStartOfDay()));
+    }
+    if (criteria.getSrchDto().pstgEndYmd() != null) {
+      whereClause = whereClause.and(qPost.regDt.loe(criteria.getSrchDto().pstgEndYmd().atTime(LocalTime.MAX)));
+    }
 
     return whereClause;
   }
