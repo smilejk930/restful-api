@@ -1,7 +1,6 @@
 package kr.app.restfulapi.domain.admin.menu.dto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -61,6 +60,6 @@ public record MenuMngReqstDto(
   public List<MenuAuthrt> toMenuAuthrtEntities(Menu menu) {
     return userTypeCds.stream()
         .map(userTypeCd -> MenuAuthrt.builder().menuTsid(menu.getMenuTsid()).menu(menu).userTypeCd(userTypeCd).menuGroupCd(menuGroupCd).build())
-        .collect(Collectors.toList());
+        .toList();
   }
 }
