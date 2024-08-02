@@ -1,6 +1,8 @@
 package kr.app.restfulapi.domain.admin.menu.dto;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import kr.app.restfulapi.domain.common.menu.entity.Menu;
 import kr.app.restfulapi.domain.common.menu.entity.MenuAuthrt;
 import kr.app.restfulapi.domain.common.menu.util.MenuAcsAuthrtType;
@@ -39,7 +41,7 @@ public record MenuMngRspnsDto(
         menu.getUpMenuTsid(),
         menu.getParent(),
         menu.getChildren(),
-        menu.getMenuAuthrts().stream().toList(),
+        Optional.ofNullable(menu.getMenuAuthrts()).map(authrts -> authrts.stream().toList()).orElse(Collections.emptyList()),
         CustomDateUtils.getFormatYmdDate(menu.getRegDt()));
   }
 }

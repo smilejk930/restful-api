@@ -3,7 +3,6 @@ package kr.app.restfulapi.domain.admin.menu.dto;
 import java.util.List;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -41,7 +40,7 @@ public record MenuMngReqstDto(
     @Size(max = 1, message = "새창여부는 {max}자 입니다.")
     @Pattern(regexp = "[YN]", message = "새창여부는 Y 또는 N 이어야 합니다.") String npagYn,
 
-    @NotEmpty(message = "사용자유형은 1개 이상 선택해야 합니다.") List<UserType> userTypeCds) {
+    List<UserType> userTypeCds) {
 
   public Menu toEntity() {
     return Menu.builder()

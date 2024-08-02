@@ -12,6 +12,7 @@ import kr.app.restfulapi.domain.common.menu.entity.Menu;
 import kr.app.restfulapi.domain.common.menu.entity.MenuAuthrt;
 import kr.app.restfulapi.domain.common.menu.repository.MenuAuthrtRepository;
 import kr.app.restfulapi.domain.common.menu.repository.MenuRepository;
+import kr.app.restfulapi.domain.common.menu.util.MenuAcsAuthrtType;
 import kr.app.restfulapi.global.response.error.exception.DuplicateKeyException;
 import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -36,16 +37,21 @@ public class MenuMngService {
       throw new DuplicateKeyException("입력한 HTTP요청메소드명과 URL주소 존재합니다.");
     }
 
+    if (menuMngReqstDto.menuAcsAuthrtCd() == MenuAcsAuthrtType.MAA001 && menuMngReqstDto.userTypeCds().isEmpty()) {
+      throw new IllegalArgumentException("사용자유형은 1개 이상 선택해야 합니다.");
+    }
+
     Menu menu = menuMngReqstDto.toEntity();
     menu.setMenuGroupCd(menuGroupCd);
 
     Menu savedMenu = menuRepository.save(menu);
 
-    // 메뉴권한에 사용자유형 등록
-    List<MenuAuthrt> menuAuthrts = menuMngReqstDto.toMenuAuthrtEntities(savedMenu);
-    menuAuthrts.forEach(menuAuthrtRepository::save);
-
-    savedMenu.setMenuAuthrts(new HashSet<>(menuAuthrts));
+    if (menuMngReqstDto.menuAcsAuthrtCd() == MenuAcsAuthrtType.MAA001) {
+      // 메뉴권한에 사용자유형 등록
+      List<MenuAuthrt> menuAuthrts = menuMngReqstDto.toMenuAuthrtEntities(savedMenu);
+      menuAuthrts.forEach(menuAuthrtRepository::save);
+      savedMenu.setMenuAuthrts(new HashSet<>(menuAuthrts));
+    }
 
     return MenuMngRspnsDto.toDto(savedMenu);
   }
