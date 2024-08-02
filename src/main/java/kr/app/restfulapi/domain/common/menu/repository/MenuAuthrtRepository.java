@@ -8,4 +8,5 @@ import kr.app.restfulapi.domain.common.menu.entity.MenuAuthrtId;
 @Repository
 public interface MenuAuthrtRepository extends JpaRepository<MenuAuthrt, MenuAuthrtId> {
 
+  void deleteAllByMenuTsid(String menuTsid);
 }

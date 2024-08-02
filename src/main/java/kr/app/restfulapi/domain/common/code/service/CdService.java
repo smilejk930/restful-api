@@ -28,7 +28,7 @@ public class CdService {
   @Transactional(readOnly = true)
   public List<CdRspnsDto> getAllCdByCdGroupNmAndUpCdNm(String cdGroupNm, String upCdNm) {
 
-    Sort sort = Sort.by(Sort.Direction.ASC, "cdSeq");
+    Sort sort = Sort.by(Sort.Order.asc("cdSeq"));
     List<CdRspnsDto> cdRspnsDtoList =
         cdRepository.findAllByCdGroupNmAndUpCdNmAndUseYn(cdGroupNm, upCdNm, "Y", sort).stream().map(CdRspnsDto::toDto).toList();
 

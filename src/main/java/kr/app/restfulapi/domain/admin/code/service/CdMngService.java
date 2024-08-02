@@ -23,9 +23,16 @@ public class CdMngService {
   private final CdGroupRepository cdGroupRepository;
 
   @Transactional(readOnly = true)
-  public List<CdMngRspnsDto> getAllCdByCdGroupNm(String cdGroupNm, CdMngSrchDto srchDto) {
+  public List<CdMngRspnsDto> getAllCdByCdGroupNmAndWithCriteria(String cdGroupNm, CdMngSrchDto srchDto) {
 
     return cdRepository.findAllWithCriteria(cdGroupNm, srchDto.toEntity()).stream().map(CdMngRspnsDto::toDto).toList();
+  }
+
+  @Transactional(readOnly = true)
+  public List<CdMngRspnsDto> getAllCdByCdGroupNm(String cdGroupNm) {
+
+    Sort sort = Sort.by(Sort.Order.asc("cdSeq"));
+    return cdRepository.findAllByCdGroupNm(cdGroupNm, sort).stream().map(CdMngRspnsDto::toDto).toList();
   }
 
   @Transactional
@@ -33,7 +40,7 @@ public class CdMngService {
 
     CdGroup cdGroup = cdGroupRepository.findByCdGroupNm(cdGroupNm).orElseThrow(ResourceNotFoundException::new);
 
-    Sort sort = Sort.by(Sort.Direction.DESC, "cdNm");
+    Sort sort = Sort.by(Sort.Order.desc("cdNm"));
     List<Cd> cdList = cdRepository.findAllByCdGroupNm(cdGroupNm, sort);
 
     String cdSeNm = cdGroup.getCdSeNm();

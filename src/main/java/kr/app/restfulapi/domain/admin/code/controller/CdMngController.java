@@ -30,7 +30,7 @@ public class CdMngController {
   @GetMapping("/{cdGroupNm}")
   public ResponseEntity<SuccessResponse> getAllCdByCdGroupNm(@PathVariable String cdGroupNm, @ModelAttribute CdMngSrchDto srchDto) {
 
-    List<CdMngRspnsDto> cdMngRspnsDtoList = cdMngService.getAllCdByCdGroupNm(cdGroupNm, srchDto);
+    List<CdMngRspnsDto> cdMngRspnsDtoList = cdMngService.getAllCdByCdGroupNmAndWithCriteria(cdGroupNm, srchDto);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdMngRspnsDtoList).build());
   }
