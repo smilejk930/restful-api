@@ -1,6 +1,7 @@
 package kr.app.restfulapi.domain.common.user.gnrl.entity;
 
 import org.hibernate.annotations.Comment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -39,6 +40,7 @@ public class UserAuthrt extends BaseAuditingEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("userTsid") // 복합 키의 일부로 사용되는 외래 키를 매핑
   @JoinColumn(name = "user_tsid", columnDefinition = "CHAR(13)")
+  @JsonIgnore // Response 시 순환 참조를 피하기 위해 선언
   private GnrlUser gnrlUser;
 
   @Id

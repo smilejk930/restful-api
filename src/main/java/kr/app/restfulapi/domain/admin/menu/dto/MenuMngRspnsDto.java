@@ -24,7 +24,7 @@ public record MenuMngRspnsDto(
     List<MenuAuthrt> menuAuthrts,
     String regYmd) {
 
-  public static MenuMngRspnsDto toDto(Menu menu, List<MenuAuthrt> menuAuthrts) {
+  public static MenuMngRspnsDto toDto(Menu menu) {
     return new MenuMngRspnsDto(
         menu.getMenuTsid(),
         menu.getMenuGroupCd(),
@@ -39,7 +39,7 @@ public record MenuMngRspnsDto(
         menu.getUpMenuTsid(),
         menu.getParent(),
         menu.getChildren(),
-        menuAuthrts,
+        menu.getMenuAuthrts().stream().toList(),
         CustomDateUtils.getFormatYmdDate(menu.getRegDt()));
   }
 }

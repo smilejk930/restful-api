@@ -1,5 +1,6 @@
 package kr.app.restfulapi.domain.admin.menu.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Sort;
@@ -26,9 +27,7 @@ public class MenuMngService {
   public List<MenuMngRspnsDto> getAllMenuByMenuGroupCd(String menuGroupCd) {
 
     Sort sort = Sort.by(Sort.Order.asc("upMenuTsid"), Sort.Order.asc("menuSeq"));
-    return menuRepository.findAllByMenuGroupCd(menuGroupCd, sort).stream().map(menu -> {
-      return MenuMngRspnsDto.toDto(menu, menu.getMenuAuthrts().stream().toList());
-    }).toList();
+    return menuRepository.findAllByMenuGroupCd(menuGroupCd, sort).stream().map(MenuMngRspnsDto::toDto).toList();
   }
 
   @Transactional
@@ -46,7 +45,9 @@ public class MenuMngService {
     List<MenuAuthrt> menuAuthrts = menuMngReqstDto.toMenuAuthrtEntities(savedMenu);
     menuAuthrts.forEach(menuAuthrtRepository::save);
 
-    return MenuMngRspnsDto.toDto(savedMenu, menuAuthrts);
+    savedMenu.setMenuAuthrts(new HashSet<>(menuAuthrts));
+
+    return MenuMngRspnsDto.toDto(savedMenu);
   }
 
   @Transactional
@@ -73,6 +74,8 @@ public class MenuMngService {
     List<MenuAuthrt> menuAuthrts = menuMngReqstDto.toMenuAuthrtEntities(updatedMenu);
     menuAuthrts.forEach(menuAuthrtRepository::save);
 
-    return Optional.of(MenuMngRspnsDto.toDto(updatedMenu, menuAuthrts));
+    updatedMenu.setMenuAuthrts(new HashSet<>(menuAuthrts));
+
+    return Optional.of(MenuMngRspnsDto.toDto(updatedMenu));
   }
 }
