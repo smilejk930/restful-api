@@ -17,6 +17,7 @@ import kr.app.restfulapi.domain.common.menu.entity.MenuAuthrt;
 import kr.app.restfulapi.domain.common.menu.service.MenuService;
 import kr.app.restfulapi.domain.common.menu.util.MenuAcsAuthrtType;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserType;
 import kr.app.restfulapi.global.response.error.exception.BusinessException;
 import kr.app.restfulapi.global.response.error.exception.ForbiddenException;
 import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
@@ -64,7 +65,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
       UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
       lgnId = userPrincipal.getLgnId();
 
-      Set<MenuAuthrt> menuAuthrts = matchedMenu.getMenuAuthrts();
+      Set<MenuAuthrt> menuAuthrts = matchedMenu.getMenuAuthrts(); // FetchType.LAZY로 설정된 menuAuthrts 조회
 
       if (menuAuthrts == null || menuAuthrts.isEmpty()) {
         // 메뉴에 역할이 지정되지 않은 경우의 처리
@@ -75,9 +76,12 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
       boolean hasPermission = menuAuthrts.stream()
           .anyMatch(menuAuthrt -> authentication.getAuthorities()
               .stream()
-              .anyMatch(authority -> authority.getAuthority().equals(menuAuthrt.getUserTypeCd())));
+              .anyMatch(authority -> authority.getAuthority().equals(menuAuthrt.getUserTypeCd().name())));
 
-      if (!hasPermission) {
+      boolean isAdmin = userPrincipal.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals(UserType.USR000.name()));
+
+      /** 관리자권한을 가지고 있으면 권한체크 안함 */
+      if (!isAdmin && !hasPermission) {
         throw new ForbiddenException("Access Denied for user: " + lgnId);
       }
 
