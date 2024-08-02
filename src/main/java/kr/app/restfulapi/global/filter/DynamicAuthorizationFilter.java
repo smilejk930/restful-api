@@ -50,7 +50,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
           .findFirst()
           .orElseThrow(() -> new ResourceNotFoundException("No matching resource found for URL: " + url + " and method: " + method));
 
-      if (matchedMenu.getMenuAcsAuthrtCd().equals(MenuAcsAuthrtType.MAA003)) {
+      if (matchedMenu.getMenuAcsAuthrtCd() == MenuAcsAuthrtType.MAA003) {
         log.debug("비로그인 사용자 접근\n-url:{}\n-method:{}", url, method);
         filterChain.doFilter(request, response);
         return;
@@ -58,6 +58,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
 
       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+      // 로그인 사용자 확인
       if (authentication == null || !authentication.isAuthenticated()) {
         throw new UnauthorizedException();
       }
@@ -67,6 +68,7 @@ public class DynamicAuthorizationFilter extends OncePerRequestFilter {
 
       Set<MenuAuthrt> menuAuthrts = matchedMenu.getMenuAuthrts(); // FetchType.LAZY로 설정된 menuAuthrts 조회
 
+      // matchedMenu.getMenuAcsAuthrtCd() == MenuAcsAuthrtType.MAA002
       if (menuAuthrts == null || menuAuthrts.isEmpty()) {
         // 메뉴에 역할이 지정되지 않은 경우의 처리
         filterChain.doFilter(request, response);
