@@ -29,8 +29,9 @@ public class MenuMngController {
   private final CdMngService cdMngService;
 
   @GetMapping("/menuGroups")
-  public ResponseEntity<SuccessResponse> getAllCdByMenuGroupCd(@PathVariable String menuGroupCd) {
+  public ResponseEntity<SuccessResponse> getAllCdByMenuGroupCd() {
 
+    String menuGroupCd = "menu_group_cd";
     List<CdMngRspnsDto> cdMngRspnsDtoList = cdMngService.getAllCdByCdGroupNm(menuGroupCd);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdMngRspnsDtoList).build());
