@@ -1,7 +1,6 @@
 package kr.app.restfulapi.domain.common.user.gnrl.dto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -44,6 +43,6 @@ public record GnrlUserReqstDto(
   public List<UserAuthrt> toUserAuthrtEntities(GnrlUser gnrlUser) {
     return userTypeCds.stream()
         .map(userTypeCd -> UserAuthrt.builder().userTsid(gnrlUser.getUserTsid()).gnrlUser(gnrlUser).userTypeCd(userTypeCd).build())
-        .collect(Collectors.toList());
+        .toList();
   }
 }
