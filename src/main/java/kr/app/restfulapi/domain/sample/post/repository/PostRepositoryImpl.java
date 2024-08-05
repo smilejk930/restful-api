@@ -14,8 +14,8 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.app.restfulapi.domain.common.role.util.RoleGroup;
 import kr.app.restfulapi.domain.common.user.gnrl.entity.QGnrlUser;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserGroup;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
 import kr.app.restfulapi.domain.sample.post.entity.QPost;
@@ -82,8 +82,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     whereClause = whereClause.and(qPost.delYn.eq("N"));
 
-    // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
-    if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
+    // 관리자와 유지보수사업자의 권한을 가지고 있는지 확인
+    if (!SecurityContextHelper.hasAnyRole(UserGroup.ADMIN_GROUP)) {
       whereClause = whereClause.and(qPost.rgtrTsid.eq(userPrincipal.getUserTsid()));
     }
     whereClause =
@@ -115,8 +115,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     whereClause = whereClause.and(qPost.delYn.eq("N"));
     whereClause = whereClause.and(qPost.postTsid.eq(postTsid));
 
-    // RoleName.ADMIN와 RoleName.INTERMEDIATE_ADMIN 권한을 가지고 있는지 확인
-    if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
+    // 관리자와 유지보수사업자의 권한을 가지고 있는지 확인
+    if (!SecurityContextHelper.hasAnyRole(UserGroup.ADMIN_GROUP)) {
       whereClause = whereClause.and(qPost.rgtrTsid.eq(userPrincipal.getUserTsid()));
     }
 

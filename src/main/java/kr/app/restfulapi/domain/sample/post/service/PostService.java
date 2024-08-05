@@ -33,7 +33,7 @@ public class PostService {
 
     /*
     Optional<PostDto> optPostDto;
-    if (!SecurityContextHelper.hasAnyRole(RoleGroup.ADMIN_GROUP)) {
+    if (!SecurityContextHelper.hasAnyRole(UserGroup.ADMIN_GROUP)) {
       optPostDto = postRepository.findByPostTsidAndDelYn(postTsid, "N").map(PostDto::toDto);
     } else {
       UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();

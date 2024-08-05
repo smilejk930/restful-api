@@ -4,8 +4,8 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import kr.app.restfulapi.domain.common.role.util.RoleName;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserType;
 import kr.app.restfulapi.global.response.error.exception.UnauthorizedException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -46,12 +46,12 @@ public class SecurityContextHelper {
    * @param roles 확인할 역할 목록
    * @return 주어진 역할 중 하나라도 가지고 있으면 true, 그렇지 않으면 false
    */
-  public static boolean hasAnyRole(RoleName... roles) {
+  public static boolean hasAnyRole(UserType... userTypes) {
     UserPrincipal userPrincipal = getUserPrincipal();
     List<String> authorities = userPrincipal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
-    for (RoleName role : roles) {
-      if (authorities.contains(role.name())) {
+    for (UserType userType : userTypes) {
+      if (authorities.contains(userType.name())) {
         return true;
       }
     }
@@ -61,12 +61,12 @@ public class SecurityContextHelper {
   /**
    * 주어진 역할 그룹들 중 하나라도 현재 인증된 사용자가 가지고 있는지 확인합니다.
    * 
-   * @param roleGroup 확인할 역할 그룹 배열
+   * @param userGroup 확인할 역할 그룹 배열
    * @return 주어진 역할 그룹들 중 하나라도 가지고 있으면 true, 그렇지 않으면 false
    */
-  public static boolean hasAnyRoleFromGroups(RoleName[]... roleGroup) {
-    for (RoleName[] roles : roleGroup) {
-      if (hasAnyRole(roles)) {
+  public static boolean hasAnyRoleFromGroups(UserType[]... userGroup) {
+    for (UserType[] userTypes : userGroup) {
+      if (hasAnyRole(userTypes)) {
         return true;
       }
     }
