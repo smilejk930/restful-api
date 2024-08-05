@@ -1,7 +1,7 @@
 package kr.app.restfulapi.global.cache;
 
 public interface CacheNames {
-  String RESOURCE_PERMISSIONS = "resourcePermissions";
-  String USER_INFO = "userInfo";
+  String MENU_PERMISSIONS = "menuPermissions";
+  String GNRL_USER = "gnrlUser";
   String OTHER_CACHE = "otherCache";
 }

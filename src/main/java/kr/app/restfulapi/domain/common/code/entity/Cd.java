@@ -39,7 +39,7 @@ public class Cd extends BaseAuditingEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("cdGroupNm") // 복합 키의 일부로 사용되는 외래 키를 매핑
   @JoinColumn(name = "cd_group_nm", columnDefinition = "VARCHAR(100)")
-  @JsonIgnore // Response 시 순환 참조를 피하기 위해 선언
+  @JsonIgnore // 순환 참조를 피하기 위해 선언
   private CdGroup cdGroup;
 
   @Id

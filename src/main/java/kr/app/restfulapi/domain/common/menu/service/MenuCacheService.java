@@ -1,4 +1,4 @@
-package kr.app.restfulapi.domain.common.resource.service;
+package kr.app.restfulapi.domain.common.menu.service;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ResourceCacheService {
+public class MenuCacheService {
 
   private final CacheManager cacheManager;
 
-  public void clearResourceCache() {
-    cacheManager.getCache(CacheNames.RESOURCE_PERMISSIONS).clear();
+  public void clearMenuCache() {
+    cacheManager.getCache(CacheNames.MENU_PERMISSIONS).clear();
   }
 }

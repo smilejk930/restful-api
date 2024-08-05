@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 public enum CacheType {
 
   /** 메뉴 권한 */
-  RESOURCE_PERMISSIONS(
-      CacheNames.RESOURCE_PERMISSIONS, 1, TimeUnit.HOURS, 10000
+  MENU_PERMISSIONS(
+      CacheNames.MENU_PERMISSIONS, 1, TimeUnit.HOURS, 10000
   ),
   /** 일반사용자 */
-  USER_INFO(
-      CacheNames.USER_INFO, 30, TimeUnit.MINUTES, 1000
+  GNRL_USER(
+      CacheNames.GNRL_USER, 30, TimeUnit.MINUTES, 1000
   ),
   /** 기타 */
   OTHER_CACHE(

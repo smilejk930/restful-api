@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -91,11 +93,11 @@ public class Menu extends BaseAuditingEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "up_menu_tsid", foreignKey = @ForeignKey(name = "fk_menu_up_menu_tsid"), insertable = false, updatable = false)
-  // @JsonBackReference // 부모 엔티티를 참조하는 필드에 설정
+  @JsonBackReference // 부모 엔티티를 참조하는 필드에 설정(순환 참조를 피하기 위해 선언)
   private Menu parent;
 
   @OneToMany(mappedBy = "parent")
-  // @JsonManagedReference // 자식 엔티티들을 참조하는 필드에 설정
+  @JsonManagedReference // 자식 엔티티들을 참조하는 필드에 설정(순환 참조를 피하기 위해 선언)
   private List<Menu> children = new ArrayList<>();
 
   @OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
