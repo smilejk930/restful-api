@@ -9,7 +9,11 @@ logging:
 #file upload path
 file:
   upload-dir: D:/develop/restful-api-file
-  
+
+#CORS Configuration
+cors:
+  allowed-origins: https://uga.go.kr
+    
 #custom properties
 currency-service:
   url: http://prod.com/currency

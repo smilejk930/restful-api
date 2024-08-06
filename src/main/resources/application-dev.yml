@@ -27,7 +27,11 @@ management:
     web:
       exposure:
         include: '*'
-        
+
+#CORS Configuration
+cors:
+  allowed-origins: http://localhost:3000
+  
 #custom properties
 currency-service:
   url: http://dev.com/currency

@@ -1,6 +1,7 @@
 package kr.app.restfulapi.global.config;
 
 import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,9 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final DynamicAuthorizationFilter dynamicAuthorizationFilter;
 
+  @Value("${cors.allowed-origins}")
+  private String allowedOrigins;
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
@@ -49,7 +53,7 @@ public class SecurityConfig {
         .addFilterBefore(globalExceptionTranslationFilter, ExceptionTranslationFilter.class)// 필터에서의 전역 exception 처리
         .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(securityExceptionHandler) // AuthenticationEntryPoint는 인증되지
                                                                                                                      // 않은 사용자가 보안된 리소스에 접근하려 할 때 호출
-            .accessDeniedHandler(securityExceptionHandler)) // DeniedHandler는 인증된 사용자가 권한이 없는 리소스에 접근하려 할 때 호출
+            .accessDeniedHandler(securityExceptionHandler)) // AccessDeniedHandler는 인증된 사용자가 권한이 없는 리소스에 접근하려 할 때 호출
         .userDetailsService(userDetailsService) // UserDetailsService 설정
     ;
 
@@ -83,12 +87,12 @@ public class SecurityConfig {
   }
 
   /**
-   * 프레임 옵션 대신 CORS를 구성하여, 특정 도메인(여기서는 "http://your-frontend-domain.com")에서의 API 접근을 허용
+   * 프레임 옵션 대신 CORS를 구성하여, 특정 도메인에서의 API 접근을 허용
    */
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://your-frontend-domain.com")); // TODO 추후 변경 필요(FRONT 도메인으로 변경)
+    configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(Arrays.asList("*"));
     configuration.setAllowCredentials(true);
