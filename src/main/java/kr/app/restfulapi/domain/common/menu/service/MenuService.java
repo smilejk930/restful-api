@@ -1,17 +1,12 @@
 package kr.app.restfulapi.domain.common.menu.service;
 
 import java.util.List;
-import java.util.Optional;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import kr.app.restfulapi.domain.common.menu.entity.Menu;
 import kr.app.restfulapi.domain.common.menu.repository.MenuRepository;
 import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserType;
-import kr.app.restfulapi.global.cache.CacheNames;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -31,40 +26,13 @@ public class MenuService {
 
   // 이 메서드는 결과가 캐시되어 있지 않은 경우에만 실행
   // TODO 운영 시에 메뉴 캐시 적용
-  // @Cacheable(value = CacheNames.MENU_PERMISSIONS, key = "'allResources'")
+  // @Cacheable(value = CacheNames.MENU_PERMISSIONS, key = "'allMenus'")
   @Transactional(readOnly = true)
   public List<Menu> getAllMenu() {
     return menuRepository.findAll();
   }
 
-  // 이 메서드는 결과가 캐시되어 있지 않은 경우에만 실행
-  @Cacheable(value = CacheNames.MENU_PERMISSIONS, key = "#httpDmndMethNm + '-' + #urlAddr")
-  @Transactional(readOnly = true)
-  public Optional<Menu> findByHttpDmndMethNmAndUrlAddr(String httpDmndMethNm, String urlAddr) {
-    return menuRepository.findByHttpDmndMethNmAndUrlAddr(httpDmndMethNm, httpDmndMethNm);
-  }
-
-  // 이 메서드의 결과는 항상 캐시를 갱신
-  @CachePut(value = CacheNames.MENU_PERMISSIONS, key = "#menu.httpDmndMethNm + '-' + #menu.urlAddr")
-  @Transactional
-  public Menu save(Menu menu) {
-    return menuRepository.save(menu);
-  }
-
-  // 이 메서드가 실행되면 해당 캐시 항목을 제거
-  @CacheEvict(value = CacheNames.MENU_PERMISSIONS, key = "#menu.httpDmndMethNm + '-' + #menu.urlAddr")
-  @Transactional
-  public void delete(Menu menu) {
-    menuRepository.delete(menu);
-  }
-
-  // 이 메서드는 전체 캐시를 비움
-  @CacheEvict(value = CacheNames.MENU_PERMISSIONS, allEntries = true)
-  public void clearCache() {
-
-  }
-
-  @Cacheable(value = CacheNames.MENU_PERMISSIONS, key = "#gnrlUser.lgnId")
+  // @Cacheable(value = CacheNames.MENU_PERMISSIONS, key = "#gnrlUser.lgnId")
   @Transactional(readOnly = true)
   public List<Menu> getUserAccessibleMenus(GnrlUser gnrlUser) {
     List<UserType> userTypes = gnrlUser.getUserAuthrts().stream().map(userAuthrt -> userAuthrt.getUserTypeCd()).toList();
