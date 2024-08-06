@@ -1,7 +1,7 @@
 package kr.app.restfulapi.domain.common.file.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import kr.app.restfulapi.global.entity.BaseFileEntity;
+import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 
 public record FileRspnsDto(
     String fileId,

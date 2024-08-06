@@ -1,4 +1,4 @@
-package kr.app.restfulapi.global.entity;
+package kr.app.restfulapi.domain.common.file.entity;
 
 import java.time.LocalDateTime;
 import org.hibernate.annotations.ColumnDefault;
@@ -8,6 +8,7 @@ import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import kr.app.restfulapi.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

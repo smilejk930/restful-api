@@ -19,7 +19,7 @@ public class QPostFile extends EntityPathBase<PostFile> {
 
     public static final QPostFile postFile = new QPostFile("postFile");
 
-    public final kr.app.restfulapi.global.entity.QBaseFileEntity _super = new kr.app.restfulapi.global.entity.QBaseFileEntity(this);
+    public final kr.app.restfulapi.domain.common.file.entity.QBaseFileEntity _super = new kr.app.restfulapi.domain.common.file.entity.QBaseFileEntity(this);
 
     //inherited
     public final StringPath delYn = _super.delYn;

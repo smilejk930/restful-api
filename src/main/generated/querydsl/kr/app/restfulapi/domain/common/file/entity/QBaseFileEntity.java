@@ -1,4 +1,4 @@
-package kr.app.restfulapi.global.entity;
+package kr.app.restfulapi.domain.common.file.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,11 +15,11 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultSupertypeSerializer")
 public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
 
-    private static final long serialVersionUID = 880763737L;
+    private static final long serialVersionUID = 351151659L;
 
     public static final QBaseFileEntity baseFileEntity = new QBaseFileEntity("baseFileEntity");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
+    public final kr.app.restfulapi.global.entity.QBaseEntity _super = new kr.app.restfulapi.global.entity.QBaseEntity(this);
 
     public final StringPath delYn = createString("delYn");
 

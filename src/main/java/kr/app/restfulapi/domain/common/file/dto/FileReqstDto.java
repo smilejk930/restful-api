@@ -1,7 +1,7 @@
 package kr.app.restfulapi.domain.common.file.dto;
 
 import org.apache.commons.lang3.ObjectUtils;
-import kr.app.restfulapi.global.entity.BaseFileEntity;
+import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

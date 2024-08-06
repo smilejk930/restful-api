@@ -9,7 +9,7 @@ import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.app.restfulapi.global.entity.BaseFileEntity;
+import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
