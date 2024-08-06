@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(indexes = {@Index(name = "idx_finm", columnList = "finm"), @Index(name = "idx_reg_dt", columnList = "reg_dt")})
+@Table(indexes = {@Index(name = "idx_rfrnc_tsid", columnList = "rfrnc_tsid"), @Index(name = "idx_reg_dt", columnList = "reg_dt")})
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostFile extends BaseFileEntity {
