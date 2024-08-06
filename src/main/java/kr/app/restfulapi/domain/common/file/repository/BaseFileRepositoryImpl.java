@@ -27,10 +27,10 @@ public class BaseFileRepositoryImpl<T extends BaseFileEntity> implements BaseFil
     JPAQuery<T> query = queryFactory.selectFrom(qFileEntity).where(whereClause);
 
     // ORDER BY 절을 설정
-    OrderSpecifier<String> orderByFileSectValue = new OrderSpecifier<>(Order.ASC, Expressions.stringPath(qFileEntity, "fileSectValue"));
-    OrderSpecifier<Long> orderByFileSn = new OrderSpecifier<>(Order.ASC, Expressions.numberPath(Long.class, qFileEntity, "fileSn"));
+    OrderSpecifier<String> orderByFileClsfNm = new OrderSpecifier<>(Order.ASC, Expressions.stringPath(qFileEntity, "fileClsfNm"));
+    OrderSpecifier<Long> orderByFileSeq = new OrderSpecifier<>(Order.ASC, Expressions.numberPath(Long.class, qFileEntity, "fileSeq"));
 
-    query.orderBy(orderByFileSectValue, orderByFileSn);
+    query.orderBy(orderByFileClsfNm, orderByFileSeq);
 
     return query.fetch();
   }
@@ -42,6 +42,6 @@ public class BaseFileRepositoryImpl<T extends BaseFileEntity> implements BaseFil
     return Expressions.stringPath(qFileEntity, "delYn")
         .eq("N")
         .and(Expressions.stringPath(qFileEntity, "fileGroupNm").eq(criteria.getFileGroupNm()))
-        .and(Expressions.stringPath(qFileEntity, "refrnId").eq(criteria.getRefrnId()));
+        .and(Expressions.stringPath(qFileEntity, "rfrncTsid").eq(criteria.getRfrncTsid()));
   }
 }

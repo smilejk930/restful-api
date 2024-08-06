@@ -25,40 +25,37 @@ public class QPostFile extends EntityPathBase<PostFile> {
     public final StringPath delYn = _super.delYn;
 
     //inherited
-    public final NumberPath<Long> dwldCo = _super.dwldCo;
+    public final NumberPath<Long> dwnldCnt = _super.dwnldCnt;
 
     //inherited
-    public final StringPath fileExtsnNm = _super.fileExtsnNm;
+    public final StringPath fileClsfNm = _super.fileClsfNm;
+
+    //inherited
+    public final StringPath fileExtnNm = _super.fileExtnNm;
 
     //inherited
     public final StringPath fileGroupNm = _super.fileGroupNm;
 
     //inherited
-    public final StringPath fileId = _super.fileId;
-
-    //inherited
     public final StringPath fileNm = _super.fileNm;
 
     //inherited
-    public final StringPath fileSectValue = _super.fileSectValue;
+    public final NumberPath<Long> fileSeq = _super.fileSeq;
 
     //inherited
     public final NumberPath<Long> fileSize = _super.fileSize;
 
     //inherited
-    public final NumberPath<Long> fileSn = _super.fileSn;
-
-    //inherited
     public final StringPath fileStreCours = _super.fileStreCours;
 
     //inherited
-    public final StringPath fileStreNm = _super.fileStreNm;
+    public final StringPath fileSyncCd = _super.fileSyncCd;
 
     //inherited
-    public final StringPath fileSynchrnCode = _super.fileSynchrnCode;
+    public final DateTimePath<java.time.LocalDateTime> fileSyncDt = _super.fileSyncDt;
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> fileSynchrnDt = _super.fileSynchrnDt;
+    public final StringPath fileTsid = _super.fileTsid;
 
     //inherited
     public final StringPath lastSrvrNm = _super.lastSrvrNm;
@@ -70,16 +67,19 @@ public class QPostFile extends EntityPathBase<PostFile> {
     public final StringPath mdfrTsid = _super.mdfrTsid;
 
     //inherited
-    public final StringPath refrnId = _super.refrnId;
-
-    //inherited
     public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     //inherited
     public final StringPath regSrvrNm = _super.regSrvrNm;
 
     //inherited
+    public final StringPath rfrncTsid = _super.rfrncTsid;
+
+    //inherited
     public final StringPath rgtrTsid = _super.rgtrTsid;
+
+    //inherited
+    public final StringPath strgFileNm = _super.strgFileNm;
 
     public QPostFile(String variable) {
         super(PostFile.class, forVariable(variable));

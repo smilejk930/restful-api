@@ -63,7 +63,7 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
 
     List<FileRspnsDto> uploadedFiles = new ArrayList<>();
 
-    AtomicLong atFileSn = new AtomicLong(1L);
+    AtomicLong atFileSeq = new AtomicLong(1L);
 
     Stream.ofNullable(files).flatMap(List<MultipartFile>::stream).forEach(file -> {
 
@@ -90,12 +90,12 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
       T saveFileEntity = (T) fileEntity.toBuilder()
           .fileNm(cleanedFilename)
           .fileGroupNm(fileReqstDto.getFileGroupNm())
-          .refrnId(fileReqstDto.getRefrnId())
-          .fileSectValue(fileReqstDto.getFileSectValue())
-          .fileSn(atFileSn.getAndIncrement())
-          .fileStreNm(saveFileName)
+          .rfrncTsid(fileReqstDto.getRfrncTsid())
+          .fileClsfNm(fileReqstDto.getFileClsfNm())
+          .fileSeq(atFileSeq.getAndIncrement())
+          .strgFileNm(saveFileName)
           .fileStreCours(savePath.getParent().toString())
-          .fileExtsnNm(CustomFileUtils.getFileExtension(cleanedFilename))
+          .fileExtnNm(CustomFileUtils.getFileExtension(cleanedFilename))
           .fileSize(file.getSize())
           .build();
 
@@ -110,18 +110,18 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
   }
 
   @Transactional(readOnly = true)
-  public Optional<FileRspnsDto> getFile(String fileId) {
+  public Optional<FileRspnsDto> getFile(String fileTsid) {
 
-    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileIdAndDelYn(fileId, "N").map(FileRspnsDto::toDto);
+    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileTsidAndDelYn(fileTsid, "N").map(FileRspnsDto::toDto);
 
     return optFileRspnsDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
 
   @Transactional
-  public Optional<FileRspnsDto> getFileDownload(String fileId) {
+  public Optional<FileRspnsDto> getFileDownload(String fileTsid) {
 
-    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileIdAndDelYn(fileId, "N").map(fileEntity -> {
-      fileEntity.setDwldCo(fileEntity.getDwldCo() + 1);
+    Optional<FileRspnsDto> optFileRspnsDto = fileRepository.findByFileTsidAndDelYn(fileTsid, "N").map(fileEntity -> {
+      fileEntity.setDwnldCnt(fileEntity.getDwnldCnt() + 1);
 
       return FileRspnsDto.toDto(fileEntity);
     });
@@ -131,7 +131,7 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
 
   @Transactional(readOnly = true)
   public byte[] getImage(FileRspnsDto fileRspnsDto) throws IOException {
-    Path imagePath = Paths.get(fileRspnsDto.fileStreCours()).resolve(fileRspnsDto.fileStreNm());
+    Path imagePath = Paths.get(fileRspnsDto.fileStreCours()).resolve(fileRspnsDto.strgFileNm());
     return Files.readAllBytes(imagePath);
   }
 }

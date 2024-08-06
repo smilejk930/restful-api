@@ -23,29 +23,27 @@ public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
 
     public final StringPath delYn = createString("delYn");
 
-    public final NumberPath<Long> dwldCo = createNumber("dwldCo", Long.class);
+    public final NumberPath<Long> dwnldCnt = createNumber("dwnldCnt", Long.class);
 
-    public final StringPath fileExtsnNm = createString("fileExtsnNm");
+    public final StringPath fileClsfNm = createString("fileClsfNm");
+
+    public final StringPath fileExtnNm = createString("fileExtnNm");
 
     public final StringPath fileGroupNm = createString("fileGroupNm");
 
-    public final StringPath fileId = createString("fileId");
-
     public final StringPath fileNm = createString("fileNm");
 
-    public final StringPath fileSectValue = createString("fileSectValue");
+    public final NumberPath<Long> fileSeq = createNumber("fileSeq", Long.class);
 
     public final NumberPath<Long> fileSize = createNumber("fileSize", Long.class);
 
-    public final NumberPath<Long> fileSn = createNumber("fileSn", Long.class);
-
     public final StringPath fileStreCours = createString("fileStreCours");
 
-    public final StringPath fileStreNm = createString("fileStreNm");
+    public final StringPath fileSyncCd = createString("fileSyncCd");
 
-    public final StringPath fileSynchrnCode = createString("fileSynchrnCode");
+    public final DateTimePath<java.time.LocalDateTime> fileSyncDt = createDateTime("fileSyncDt", java.time.LocalDateTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> fileSynchrnDt = createDateTime("fileSynchrnDt", java.time.LocalDateTime.class);
+    public final StringPath fileTsid = createString("fileTsid");
 
     //inherited
     public final StringPath lastSrvrNm = _super.lastSrvrNm;
@@ -56,16 +54,18 @@ public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
     //inherited
     public final StringPath mdfrTsid = _super.mdfrTsid;
 
-    public final StringPath refrnId = createString("refrnId");
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDt = _super.regDt;
 
     //inherited
     public final StringPath regSrvrNm = _super.regSrvrNm;
 
+    public final StringPath rfrncTsid = createString("rfrncTsid");
+
     //inherited
     public final StringPath rgtrTsid = _super.rgtrTsid;
+
+    public final StringPath strgFileNm = createString("strgFileNm");
 
     public QBaseFileEntity(String variable) {
         super(BaseFileEntity.class, forVariable(variable));

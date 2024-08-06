@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 public class FileReqstDto<T extends BaseFileEntity> {
 
   private String fileGroupNm;
-  private String refrnId;
-  private String fileSectValue;
+  private String rfrncTsid;
+  private String fileClsfNm;
 
   @SuppressWarnings("unchecked")
   public T toEntity(T fileEntity) {
-    return (T) fileEntity.toBuilder().fileGroupNm(fileGroupNm).refrnId(refrnId).fileSectValue(fileSectValue).build();
+    return (T) fileEntity.toBuilder().fileGroupNm(fileGroupNm).rfrncTsid(rfrncTsid).fileClsfNm(fileClsfNm).build();
   }
 
   public boolean isAnyNullOfRequiredlField() {
-    return ObjectUtils.anyNull(fileGroupNm, refrnId);
+    return ObjectUtils.anyNull(fileGroupNm, rfrncTsid);
   }
 }

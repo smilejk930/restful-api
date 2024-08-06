@@ -7,5 +7,5 @@ import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 
 @NoRepositoryBean
 public interface BaseFileRepository<T extends BaseFileEntity> extends JpaRepository<T, String>, BaseFileRepositoryCustom<T> {
-  Optional<T> findByFileIdAndDelYn(String fileId, String delYn);
+  Optional<T> findByFileTsidAndDelYn(String fileTsid, String delYn);
 }

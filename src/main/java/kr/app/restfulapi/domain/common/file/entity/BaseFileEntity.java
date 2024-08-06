@@ -27,9 +27,9 @@ public abstract class BaseFileEntity extends BaseEntity {
 
   @Id
   @Tsid
-  @Comment("파일아이디")
+  @Comment("파일식별번호")
   @Column(length = 13, columnDefinition = "CHAR(13)")
-  private String fileId;
+  private String fileTsid;
 
   @Comment("파일명")
   @Column(length = 200, nullable = false)
@@ -39,13 +39,13 @@ public abstract class BaseFileEntity extends BaseEntity {
   @Column(length = 200, nullable = false)
   private String fileGroupNm;
 
-  @Comment("참조아이디")
+  @Comment("참조식별번호")
   @Column(length = 13, columnDefinition = "CHAR(13)", nullable = false)
-  private String refrnId;
+  private String rfrncTsid;
 
-  @Comment("파일섹션값")
+  @Comment("파일분류명")
   @Column(nullable = false)
-  private String fileSectValue;
+  private String fileClsfNm;
 
   @Comment("삭제여부")
   @Column(length = 1, nullable = false, columnDefinition = "CHAR(1)")
@@ -53,15 +53,15 @@ public abstract class BaseFileEntity extends BaseEntity {
   @Builder.Default
   private String delYn = "N";
 
-  @Comment("파일순번")
+  @Comment("파일순서")
   @Column(nullable = false)
   @ColumnDefault("0")
   @Builder.Default
-  private Long fileSn = 0L;
+  private Long fileSeq = 0L;
 
-  @Comment("파일저장명")
+  @Comment("저장파일명")
   @Column(length = 200, nullable = false)
-  private String fileStreNm;
+  private String strgFileNm;
 
   @Comment("파일저장경로")
   @Column(length = 4000, nullable = false)
@@ -69,25 +69,25 @@ public abstract class BaseFileEntity extends BaseEntity {
 
   @Comment("파일확장자명")
   @Column(length = 200, nullable = false)
-  private String fileExtsnNm;
+  private String fileExtnNm;
 
   @Comment("파일사이즈")
   @Column(nullable = false)
   private Long fileSize;
 
-  @Comment("다운로드횟수")
+  @Comment("다운로드수")
   @Column(nullable = false)
   @ColumnDefault("0")
   @Builder.Default
-  private Long dwldCo = 0L;
+  private Long dwnldCnt = 0L;
 
   @Comment("파일동기화코드")
   @Column(nullable = false)
   @ColumnDefault("'FSC001'")
   @Builder.Default
-  private String fileSynchrnCode = "FSC001";
+  private String fileSyncCd = "FSC001";
 
   @Comment("파일동기화일시")
   @LastModifiedDate
-  private LocalDateTime fileSynchrnDt;
+  private LocalDateTime fileSyncDt;
 }

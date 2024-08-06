@@ -54,12 +54,12 @@ public class PostFileController {
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.CREATED).data(uploadedFiles).build());
   }
 
-  @GetMapping("/{fileId}")
-  public ResponseEntity<Resource> downloadFile(@PathVariable String fileId, HttpServletRequest request) throws IOException {
-    Optional<FileRspnsDto> optFileRspnsDto = fileService.getFileDownload(fileId);
+  @GetMapping("/{fileTsid}")
+  public ResponseEntity<Resource> downloadFile(@PathVariable String fileTsid, HttpServletRequest request) throws IOException {
+    Optional<FileRspnsDto> optFileRspnsDto = fileService.getFileDownload(fileTsid);
 
     FileRspnsDto fileRspnsDto = optFileRspnsDto.get();
-    Resource resource = new PathResource(fileRspnsDto.fileStreCours() + File.separator + fileRspnsDto.fileStreNm());
+    Resource resource = new PathResource(fileRspnsDto.fileStreCours() + File.separator + fileRspnsDto.strgFileNm());
 
     String contentType = request.getServletContext().getMimeType(fileRspnsDto.fileNm());
     if (contentType == null) {
@@ -76,9 +76,9 @@ public class PostFileController {
     return ResponseEntity.ok().headers(headers).body(resource);
   }
 
-  @GetMapping("/image/{fileId}")
-  public ResponseEntity<Resource> showImage(@PathVariable String fileId) {
-    Optional<FileRspnsDto> optFileRspnsDto = fileService.getFile(fileId);
+  @GetMapping("/image/{fileTsid}")
+  public ResponseEntity<Resource> showImage(@PathVariable String fileTsid) {
+    Optional<FileRspnsDto> optFileRspnsDto = fileService.getFile(fileTsid);
 
     FileRspnsDto fileRspnsDto = optFileRspnsDto.get();
 

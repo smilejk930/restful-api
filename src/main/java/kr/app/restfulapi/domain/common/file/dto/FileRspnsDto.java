@@ -4,26 +4,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 
 public record FileRspnsDto(
-    String fileId,
+    String fileTsid,
     String fileNm,
-    String fileSectValue,
-    Long fileSn,
-    String fileExtsnNm,
+    String fileClsfNm,
+    Long fileSeq,
+    String fileExtnNm,
     Long fileSize,
-    String fileSynchrnCode,
-    @JsonIgnore String fileStreNm,
+    String fileSyncCd,
+    @JsonIgnore String strgFileNm,
     @JsonIgnore String fileStreCours) {
 
   public static <T extends BaseFileEntity> FileRspnsDto toDto(T fileEntity) {
     return new FileRspnsDto(
-        fileEntity.getFileId(),
+        fileEntity.getFileTsid(),
         fileEntity.getFileNm(),
-        fileEntity.getFileSectValue(),
-        fileEntity.getFileSn(),
-        fileEntity.getFileExtsnNm(),
+        fileEntity.getFileClsfNm(),
+        fileEntity.getFileSeq(),
+        fileEntity.getFileExtnNm(),
         fileEntity.getFileSize(),
-        fileEntity.getFileSynchrnCode(),
-        fileEntity.getFileStreNm(),
+        fileEntity.getFileSyncCd(),
+        fileEntity.getStrgFileNm(),
         fileEntity.getFileStreCours());
   }
 }
