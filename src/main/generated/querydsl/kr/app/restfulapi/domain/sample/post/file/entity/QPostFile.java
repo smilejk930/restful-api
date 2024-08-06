@@ -49,7 +49,7 @@ public class QPostFile extends EntityPathBase<PostFile> {
     public final StringPath fileStreCours = _super.fileStreCours;
 
     //inherited
-    public final StringPath fileSyncCd = _super.fileSyncCd;
+    public final EnumPath<kr.app.restfulapi.domain.common.file.util.FileSyncType> fileSyncCd = _super.fileSyncCd;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> fileSyncDt = _super.fileSyncDt;

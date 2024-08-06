@@ -2,6 +2,7 @@ package kr.app.restfulapi.domain.common.file.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
+import kr.app.restfulapi.domain.common.file.util.FileSyncType;
 
 public record FileRspnsDto(
     String fileTsid,
@@ -10,7 +11,7 @@ public record FileRspnsDto(
     Long fileSeq,
     String fileExtnNm,
     Long fileSize,
-    String fileSyncCd,
+    FileSyncType fileSyncCd,
     @JsonIgnore String strgFileNm,
     @JsonIgnore String fileStreCours) {
 

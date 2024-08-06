@@ -39,7 +39,7 @@ public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
 
     public final StringPath fileStreCours = createString("fileStreCours");
 
-    public final StringPath fileSyncCd = createString("fileSyncCd");
+    public final EnumPath<kr.app.restfulapi.domain.common.file.util.FileSyncType> fileSyncCd = createEnum("fileSyncCd", kr.app.restfulapi.domain.common.file.util.FileSyncType.class);
 
     public final DateTimePath<java.time.LocalDateTime> fileSyncDt = createDateTime("fileSyncDt", java.time.LocalDateTime.class);
 

@@ -6,8 +6,11 @@ import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.LastModifiedDate;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import kr.app.restfulapi.domain.common.file.util.FileSyncType;
 import kr.app.restfulapi.global.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -81,11 +84,12 @@ public abstract class BaseFileEntity extends BaseEntity {
   @Builder.Default
   private Long dwnldCnt = 0L;
 
+  @Enumerated(EnumType.STRING)
   @Comment("파일동기화코드")
-  @Column(nullable = false)
+  @Column(length = 10, nullable = false)
   @ColumnDefault("'FSC001'")
   @Builder.Default
-  private String fileSyncCd = "FSC001";
+  private FileSyncType fileSyncCd = FileSyncType.FSC001;
 
   @Comment("파일동기화일시")
   @LastModifiedDate
