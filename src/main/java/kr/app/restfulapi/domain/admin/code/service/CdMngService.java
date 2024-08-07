@@ -41,10 +41,10 @@ public class CdMngService {
     CdGroup cdGroup = cdGroupRepository.findByCdGroupNm(cdGroupNm).orElseThrow(ResourceNotFoundException::new);
 
     Sort sort = Sort.by(Sort.Order.desc("cdNm"));
-    List<Cd> cdList = cdRepository.findAllByCdGroupNm(cdGroupNm, sort);
+    List<Cd> cds = cdRepository.findAllByCdGroupNm(cdGroupNm, sort);
 
     String cdSeNm = cdGroup.getCdSeNm();
-    String cdNm = generateCdNm(cdSeNm, cdList);
+    String cdNm = generateCdNm(cdSeNm, cds);
 
     Cd saveCd = cdMngReqstDto.toEntity();
     saveCd.setCdGroupNm(cdGroupNm);
@@ -73,11 +73,11 @@ public class CdMngService {
   }
 
   /* cdNm 생성로직 */
-  private String generateCdNm(String cdSeNm, List<Cd> cdList) {
-    if (cdList.isEmpty()) {
+  private String generateCdNm(String cdSeNm, List<Cd> cds) {
+    if (cds.isEmpty()) {
       return cdSeNm + String.format("%03d", 1);
     } else {
-      String lastCdNm = cdList.getFirst().getCdNm();
+      String lastCdNm = cds.getFirst().getCdNm();
       String lastCdNumberStr = lastCdNm.substring(cdSeNm.length());
       Integer lastCdNumber = Integer.parseInt(lastCdNumberStr);
       lastCdNumber++;

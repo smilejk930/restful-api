@@ -29,14 +29,14 @@ public class CdService {
   public List<CdRspnsDto> getAllCdByCdGroupNmAndUpCdNm(String cdGroupNm, String upCdNm) {
 
     Sort sort = Sort.by(Sort.Order.asc("cdSeq"));
-    List<CdRspnsDto> cdRspnsDtoList =
+    List<CdRspnsDto> cdRspnsDtos =
         cdRepository.findAllByCdGroupNmAndUpCdNmAndUseYn(cdGroupNm, upCdNm, "Y", sort).stream().map(CdRspnsDto::toDto).toList();
 
-    if (cdRspnsDtoList.isEmpty()) {
+    if (cdRspnsDtos.isEmpty()) {
       throw new ResourceNotFoundException();
     }
 
-    return cdRspnsDtoList;
+    return cdRspnsDtos;
   }
 
   @Transactional(readOnly = true)

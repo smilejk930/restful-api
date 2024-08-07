@@ -48,9 +48,9 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
       throw new FieldNullPointException();
     }
 
-    List<T> fileEntityList = fileRepository.findAllWithCriteria(fileReqstDto.toEntity(fileEntity));
+    List<T> fileEntities = fileRepository.findAllWithCriteria(fileReqstDto.toEntity(fileEntity));
 
-    return fileEntityList.stream().map(FileRspnsDto::toDto).toList();
+    return fileEntities.stream().map(FileRspnsDto::toDto).toList();
   }
 
   @Transactional

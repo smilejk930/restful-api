@@ -23,17 +23,17 @@ public class CdController {
   @GetMapping("/{cdGroupNm}")
   public ResponseEntity<SuccessResponse> getAllCdByCdGroupNm(@PathVariable String cdGroupNm) {
 
-    List<CdRspnsDto> cdRspnsDtoList = cdService.getAllCdByCdGroupNm(cdGroupNm);
+    List<CdRspnsDto> cdRspnsDtos = cdService.getAllCdByCdGroupNm(cdGroupNm);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdRspnsDtos).build());
   }
 
   @GetMapping("/{cdGroupNm}/upCdNms/{upCdNm}")
   public ResponseEntity<SuccessResponse> getAllCdByCdGroupNmAndUpCdNm(@PathVariable String cdGroupNm, @PathVariable String upCdNm) {
 
-    List<CdRspnsDto> cdRspnsDtoList = cdService.getAllCdByCdGroupNmAndUpCdNm(cdGroupNm, upCdNm);
+    List<CdRspnsDto> cdRspnsDtos = cdService.getAllCdByCdGroupNmAndUpCdNm(cdGroupNm, upCdNm);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdRspnsDtos).build());
   }
 
   @GetMapping("/{cdGroupNm}/{cdNm}")

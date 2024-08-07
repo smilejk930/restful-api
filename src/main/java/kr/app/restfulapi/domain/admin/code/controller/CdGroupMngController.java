@@ -36,9 +36,9 @@ public class CdGroupMngController {
   public ResponseEntity<SuccessResponse> getAllCdGroup(@ModelAttribute CdGroupMngSrchDto srchDto,
       @PageableDefault(size = 10, sort = "cdGroupNm", direction = Sort.Direction.DESC) Pageable pageable) {
 
-    Page<CdGroupMngRspnsDto> cdGroupMngRspnsDtoList = cdGroupMngService.getAllCdGroup(srchDto, pageable);
+    Page<CdGroupMngRspnsDto> cdGroupMngRspnsDtos = cdGroupMngService.getAllCdGroup(srchDto, pageable);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdGroupMngRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdGroupMngRspnsDtos).build());
   }
 
   @PostMapping

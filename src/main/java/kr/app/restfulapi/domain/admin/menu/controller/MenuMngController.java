@@ -32,17 +32,17 @@ public class MenuMngController {
   public ResponseEntity<SuccessResponse> getAllCdByMenuGroupCd() {
 
     String menuGroupCd = "menu_group_cd";
-    List<CdMngRspnsDto> cdMngRspnsDtoList = cdMngService.getAllCdByCdGroupNm(menuGroupCd);
+    List<CdMngRspnsDto> cdMngRspnsDtos = cdMngService.getAllCdByCdGroupNm(menuGroupCd);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdMngRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(cdMngRspnsDtos).build());
   }
 
   @GetMapping("/menuGroups/{menuGroupCd}")
   public ResponseEntity<SuccessResponse> getAllMenuByMenuGroupCd(@PathVariable String menuGroupCd) {
 
-    List<MenuMngRspnsDto> menuMngRspnsDtoList = menuMngService.getAllMenuByMenuGroupCd(menuGroupCd);
+    List<MenuMngRspnsDto> menuMngRspnsDtos = menuMngService.getAllMenuByMenuGroupCd(menuGroupCd);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(menuMngRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(menuMngRspnsDtos).build());
   }
 
   @PostMapping("/menuGroups/{menuGroupCd}")
