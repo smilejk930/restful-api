@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
+import kr.app.restfulapi.domain.common.user.gnrl.repository.GnrlUserRepository;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostRspnsDto;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 
   private final PostRepository postRepository;
+  private final GnrlUserRepository gnrlUserRepository;
 
   @Transactional(readOnly = true)
   public Page<PostRspnsDto> getAllPost(PostSrchDto srchDto, Pageable pageable) {
@@ -56,6 +59,9 @@ public class PostService {
     }
     Post savedPost = postRepository.save(post);
 
+    UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+    savedPost.setRgtrNm(userPrincipal.getUserNm());
+
     return PostRspnsDto.toDto(savedPost);
   }
 
@@ -75,6 +81,9 @@ public class PostService {
       if ("Y".equals(sbmsnYn)) {
         post.setSbmsnDt(LocalDateTime.now());
       }
+
+      GnrlUser optRgtrUser = gnrlUserRepository.findByUserTsid(post.getRgtrTsid()).orElse(GnrlUser.builder().build());
+      post.setRgtrNm(optRgtrUser.getUserNm());
 
       return PostRspnsDto.toDto(post);
     });

@@ -69,7 +69,7 @@ public class Post extends BaseAuditingEntity {
   private LocalDateTime sbmsnDt;
 
   @Transient // JPA가 이 필드를 데이터베이스 컬럼으로 인식하지 않도록 하기 위해 @Transient를 사용
-  private String userNm;
+  private String rgtrNm;// 등록자명
 
   @Transient
   private PostSrchDto srchDto;

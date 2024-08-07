@@ -60,7 +60,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     List<Post> results = tupleResults.stream().map(tuple -> {
       Post post = tuple.get(qPost);
-      post.setUserNm(tuple.get(qGnrlUser.userNm));
+      post.setRgtrNm(tuple.get(qGnrlUser.userNm));
       return post;
     }).toList();
 
@@ -131,7 +131,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         .stream()
         .map(tuple -> {
           Post post = tuple.get(qPost);
-          post.setUserNm(tuple.get(qGnrlUser.userNm));
+          post.setRgtrNm(tuple.get(qGnrlUser.userNm));
           return post;
         })
         .findFirst();// Optional<Post>를 반환

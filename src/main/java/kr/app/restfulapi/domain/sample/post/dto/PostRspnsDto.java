@@ -9,8 +9,8 @@ public record PostRspnsDto(
     String ttl,
     String cn,
     Integer telgmLen,
-    String userNm,
     String sbmsnYn,
+    String rgtrNm,
     String regYmd) {
 
   public static PostRspnsDto toDto(Post post) {
@@ -19,8 +19,8 @@ public record PostRspnsDto(
         post.getTtl(),
         post.getCn(),
         post.getTelgmLen(),
-        Objects.toString(post.getUserNm(), "-"),
         post.getSbmsnYn(),
+        Objects.toString(post.getRgtrNm(), "-"),
         CustomDateUtils.getFormatYmdDate(post.getRegDt()));
   }
 }
