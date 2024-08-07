@@ -54,6 +54,12 @@ public class CdGroup extends BaseAuditingEntity {
   @Builder.Default
   private String useYn = "Y";
 
+  @Comment("공통코드여부")
+  @Column(length = 1, nullable = false, columnDefinition = "CHAR(1)")
+  @ColumnDefault("'N'")
+  @Builder.Default
+  private String comCdYn = "N";
+
   @OneToMany(mappedBy = "cdGroup", fetch = FetchType.LAZY)
   @OrderBy("cdSeq ASC") // cdSeq를 오름차순으로 정렬
   private Set<Cd> cds = new HashSet<>();

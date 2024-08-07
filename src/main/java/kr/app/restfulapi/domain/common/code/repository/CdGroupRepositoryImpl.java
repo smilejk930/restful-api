@@ -73,6 +73,9 @@ public class CdGroupRepositoryImpl implements CdGroupRepositoryCustom {
     whereClause =
         StringUtils.hasText(criteria.getMngSrchDto().useYn()) ? whereClause.and(qCdGroup.useYn.eq(criteria.getMngSrchDto().useYn())) : whereClause;
 
+    whereClause = StringUtils.hasText(criteria.getMngSrchDto().comCdYn()) ? whereClause.and(qCdGroup.comCdYn.eq(criteria.getMngSrchDto().comCdYn()))
+        : whereClause;
+
     return whereClause;
   }
 }

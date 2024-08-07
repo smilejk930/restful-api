@@ -32,6 +32,8 @@ public class QCdGroup extends EntityPathBase<CdGroup> {
 
     public final StringPath cdSeNm = createString("cdSeNm");
 
+    public final StringPath comCdYn = createString("comCdYn");
+
     //inherited
     public final StringPath lastSrvrNm = _super.lastSrvrNm;
 

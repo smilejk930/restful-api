@@ -7,7 +7,8 @@ public record CdGroupMngSrchDto(
     String cdKornNm,
     String cdSeNm,
     String cdExpln,
-    String useYn) {
+    String useYn,
+    String comCdYn) {
 
   public CdGroup toEntity() {
     return CdGroup.builder().mngSrchDto(this).build();

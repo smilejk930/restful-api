@@ -9,6 +9,7 @@ public record CdGroupMngRspnsDto(
     String cdSeNm,
     String cdExpln,
     String useYn,
+    String comCdYn,
     String regYmd) {
 
   public static CdGroupMngRspnsDto toDto(CdGroup cdGroup) {
@@ -18,6 +19,7 @@ public record CdGroupMngRspnsDto(
         cdGroup.getCdSeNm(),
         cdGroup.getCdExpln(),
         cdGroup.getUseYn(),
+        cdGroup.getComCdYn(),
         CustomDateUtils.getFormatYmdDate(cdGroup.getRegDt()));
   }
 }

@@ -46,6 +46,7 @@ public class CdGroupMngService {
     Optional<CdGroupMngRspnsDto> optCdGroupMngRspnsDto = cdGroupRepository.findByCdGroupNm(cdGroupNm).map(cdGroup -> {
       cdGroup.setCdKornNm(cdGroupMngReqstDto.cdKornNm());
       cdGroup.setUseYn(cdGroupMngReqstDto.useYn());
+      cdGroup.setComCdYn(cdGroupMngReqstDto.comCdYn());
 
       return CdGroupMngRspnsDto.toDto(cdGroup);
     });

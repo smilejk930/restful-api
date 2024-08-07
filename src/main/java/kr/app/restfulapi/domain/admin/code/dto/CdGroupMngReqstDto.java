@@ -22,9 +22,20 @@ public record CdGroupMngReqstDto(
 
     @NotBlank(message = "사용여부는 필수 입력값입니다.")
     @Size(max = 1, message = "사용여부는 {max}자 입니다.", groups = {Create.class, Update.class})
-    @Pattern(regexp = "[YN]", message = "사용여부는 Y 또는 N 이어야 합니다.", groups = {Create.class, Update.class}) String useYn){
+    @Pattern(regexp = "[YN]", message = "사용여부는 Y 또는 N 이어야 합니다.", groups = {Create.class, Update.class}) String useYn,
+
+    @NotBlank(message = "공통코드여부는 필수 입력값입니다.")
+    @Size(max = 1, message = "공통코드여부는 {max}자 입니다.", groups = {Create.class, Update.class})
+    @Pattern(regexp = "[YN]", message = "공통코드여부는 Y 또는 N 이어야 합니다.", groups = {Create.class, Update.class}) String comCdYn){
 
   public CdGroup toEntity() {
-    return CdGroup.builder().cdGroupNm(cdGroupNm).cdKornNm(cdKornNm).cdSeNm(cdSeNm.toUpperCase()).cdExpln(cdExpln).useYn(useYn).build();
+    return CdGroup.builder()
+        .cdGroupNm(cdGroupNm)
+        .cdKornNm(cdKornNm)
+        .cdSeNm(cdSeNm.toUpperCase())
+        .cdExpln(cdExpln)
+        .useYn(useYn)
+        .comCdYn(comCdYn)
+        .build();
   }
 }
