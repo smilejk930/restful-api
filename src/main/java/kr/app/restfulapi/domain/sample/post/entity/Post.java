@@ -46,7 +46,7 @@ public class Post extends BaseAuditingEntity {
   private String ttl;
 
   @Comment("내용")
-  @Column(length = 4000, nullable = false)
+  @Column(length = 4000)
   private String cn;
 
   @Comment("삭제여부")
