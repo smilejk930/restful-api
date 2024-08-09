@@ -39,15 +39,15 @@ public class PostController {
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostSrchDto srchDto,
       @PageableDefault(size = 10, sort = "regDt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-    Page<PostRspnsDto> postRspnsDtoList = postService.getAllPost(srchDto, pageable);
+    Page<PostRspnsDto> postRspnsDtos = postService.getAllPost(srchDto, pageable);
     /*
-    List<EntityModel<PostDto>> models = postDtoList.stream().map(data -> {
+    List<EntityModel<PostDto>> models = postRspnsDtos.stream().map(data -> {
       Link detailLink = null;
       detailLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPostById(data.postTsid(), userDetails)).withRel("detailLink");
       return EntityModel.of(data, detailLink);
     }).toList();*/
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(postRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(postRspnsDtos).build());
   }
 
   @GetMapping("/{postTsid}")
@@ -66,14 +66,14 @@ public class PostController {
 
   @PostMapping
   public ResponseEntity<SuccessResponse> createPost(@Validated
-  @RequestBody PostReqstDto postReqstDto) {
+  @ModelAttribute PostReqstDto postReqstDto) {
 
     return processCreatPost(postReqstDto, "N");
   }
 
   @PostMapping("/submit")
   public ResponseEntity<SuccessResponse> submitCreatePost(@Validated(FinalSubmit.class)
-  @RequestBody PostReqstDto postReqstDto) {
+  @ModelAttribute PostReqstDto postReqstDto) {
 
     return processCreatPost(postReqstDto, "Y");
   }

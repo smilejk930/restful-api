@@ -41,9 +41,9 @@ public class PostFileController {
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllFiles(@ModelAttribute FileReqstDto<PostFile> fileReqstDto) {
 
-    List<FileRspnsDto> fileRspnsDtoList = fileService.getAllFiles(fileReqstDto);
+    List<FileRspnsDto> fileRspnsDtos = fileService.getAllFiles(fileReqstDto);
 
-    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(fileRspnsDtoList).build());
+    return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(fileRspnsDtos).build());
   }
 
   @PostMapping
@@ -59,7 +59,7 @@ public class PostFileController {
     Optional<FileRspnsDto> optFileRspnsDto = fileService.getFileDownload(fileTsid);
 
     FileRspnsDto fileRspnsDto = optFileRspnsDto.get();
-    Resource resource = new PathResource(fileRspnsDto.fileStreCours() + File.separator + fileRspnsDto.strgFileNm());
+    Resource resource = new PathResource(fileRspnsDto.fileStrgPath() + File.separator + fileRspnsDto.strgFileNm());
 
     String contentType = request.getServletContext().getMimeType(fileRspnsDto.fileNm());
     if (contentType == null) {

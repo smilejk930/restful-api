@@ -57,8 +57,8 @@ public class PostServiceNoneDBTest {
     // 반환된 PostDto의 속성들이 예상한 값과 일치하는지 확인합니다.
     assertNotNull(result.postTsid());
     assertTrue(TSID.isValid(result.postTsid())); // TSID 유효성 검사
-    assertEquals(inputDto.ttl(), result.ttl());
-    assertEquals(inputDto.cn(), result.cn());
+    assertEquals(inputDto.getTtl(), result.ttl());
+    assertEquals(inputDto.getCn(), result.cn());
 
     // TSID의 시간 정보 검증
     long currentTime = System.currentTimeMillis();

@@ -10,6 +10,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import kr.app.restfulapi.domain.common.file.util.FileGroupNmType;
 import kr.app.restfulapi.domain.common.file.util.FileSyncType;
 import kr.app.restfulapi.global.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -35,19 +36,20 @@ public abstract class BaseFileEntity extends BaseEntity {
   private String fileTsid;
 
   @Comment("파일명")
-  @Column(length = 200, nullable = false)
+  @Column(length = 100, nullable = false)
   private String fileNm;
 
+  @Enumerated(EnumType.STRING)
   @Comment("파일그룹명")
-  @Column(length = 200, nullable = false)
-  private String fileGroupNm;
+  @Column(length = 100, nullable = false)
+  private FileGroupNmType fileGroupNm;
 
   @Comment("참조식별번호")
   @Column(length = 13, columnDefinition = "CHAR(13)", nullable = false)
   private String rfrncTsid;
 
   @Comment("파일분류명")
-  @Column(nullable = false)
+  @Column(length = 100, nullable = false)
   private String fileClsfNm;
 
   @Comment("삭제여부")
@@ -63,15 +65,15 @@ public abstract class BaseFileEntity extends BaseEntity {
   private Long fileSeq = 0L;
 
   @Comment("저장파일명")
-  @Column(length = 200, nullable = false)
+  @Column(length = 300, nullable = false)
   private String strgFileNm;
 
   @Comment("파일저장경로")
-  @Column(length = 4000, nullable = false)
-  private String fileStreCours;
+  @Column(length = 100, nullable = false)
+  private String fileStrgPath;
 
   @Comment("파일확장자명")
-  @Column(length = 200, nullable = false)
+  @Column(length = 50, nullable = false)
   private String fileExtnNm;
 
   @Comment("파일사이즈")

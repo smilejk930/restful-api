@@ -41,7 +41,7 @@ public class BaseFileRepositoryImpl<T extends BaseFileEntity> implements BaseFil
   private BooleanExpression buildWhereClause(T criteria) {
     return Expressions.stringPath(qFileEntity, "delYn")
         .eq("N")
-        .and(Expressions.stringPath(qFileEntity, "fileGroupNm").eq(criteria.getFileGroupNm()))
+        .and(Expressions.stringPath(qFileEntity, "fileGroupNm").eq(criteria.getFileGroupNm().name()))
         .and(Expressions.stringPath(qFileEntity, "rfrncTsid").eq(criteria.getRfrncTsid()));
   }
 }

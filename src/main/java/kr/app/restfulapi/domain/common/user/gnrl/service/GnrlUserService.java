@@ -37,11 +37,11 @@ public class GnrlUserService {
   @Transactional
   public GnrlUserRspnsDto createGnrlUser(GnrlUserReqstDto gnrlUserReqstDto) {
 
-    if (gnrlUserRepository.findByLgnId(gnrlUserReqstDto.lgnId()).isPresent()) {
-      throw new LoginIdAlreadyExistsException(gnrlUserReqstDto.lgnId());
+    if (gnrlUserRepository.findByLgnId(gnrlUserReqstDto.getLgnId()).isPresent()) {
+      throw new LoginIdAlreadyExistsException(gnrlUserReqstDto.getLgnId());
     }
-    if (!isValidPassword(gnrlUserReqstDto.pswd())) {
-      throw new InvalidPasswordException(gnrlUserReqstDto.pswd());
+    if (!isValidPassword(gnrlUserReqstDto.getPswd())) {
+      throw new InvalidPasswordException(gnrlUserReqstDto.getPswd());
     }
 
     GnrlUser gnrlUser = gnrlUserReqstDto.toEntity();

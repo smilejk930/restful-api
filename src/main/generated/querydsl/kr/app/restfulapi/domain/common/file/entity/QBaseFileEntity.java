@@ -29,7 +29,7 @@ public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
 
     public final StringPath fileExtnNm = createString("fileExtnNm");
 
-    public final StringPath fileGroupNm = createString("fileGroupNm");
+    public final EnumPath<kr.app.restfulapi.domain.common.file.util.FileGroupNmType> fileGroupNm = createEnum("fileGroupNm", kr.app.restfulapi.domain.common.file.util.FileGroupNmType.class);
 
     public final StringPath fileNm = createString("fileNm");
 
@@ -37,7 +37,7 @@ public class QBaseFileEntity extends EntityPathBase<BaseFileEntity> {
 
     public final NumberPath<Long> fileSize = createNumber("fileSize", Long.class);
 
-    public final StringPath fileStreCours = createString("fileStreCours");
+    public final StringPath fileStrgPath = createString("fileStrgPath");
 
     public final EnumPath<kr.app.restfulapi.domain.common.file.util.FileSyncType> fileSyncCd = createEnum("fileSyncCd", kr.app.restfulapi.domain.common.file.util.FileSyncType.class);
 

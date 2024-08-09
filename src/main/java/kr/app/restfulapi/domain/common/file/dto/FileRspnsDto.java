@@ -13,7 +13,7 @@ public record FileRspnsDto(
     Long fileSize,
     FileSyncType fileSyncCd,
     @JsonIgnore String strgFileNm,
-    @JsonIgnore String fileStreCours) {
+    @JsonIgnore String fileStrgPath) {
 
   public static <T extends BaseFileEntity> FileRspnsDto toDto(T fileEntity) {
     return new FileRspnsDto(
@@ -25,6 +25,6 @@ public record FileRspnsDto(
         fileEntity.getFileSize(),
         fileEntity.getFileSyncCd(),
         fileEntity.getStrgFileNm(),
-        fileEntity.getFileStreCours());
+        fileEntity.getFileStrgPath());
   }
 }

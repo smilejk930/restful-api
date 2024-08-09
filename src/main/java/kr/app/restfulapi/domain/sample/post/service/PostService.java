@@ -1,11 +1,15 @@
 package kr.app.restfulapi.domain.sample.post.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import kr.app.restfulapi.domain.common.file.dto.FileReqstDto;
+import kr.app.restfulapi.domain.common.file.dto.FileRspnsDto;
 import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import kr.app.restfulapi.domain.common.user.gnrl.repository.GnrlUserRepository;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
@@ -13,6 +17,8 @@ import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostRspnsDto;
 import kr.app.restfulapi.domain.sample.post.dto.PostSrchDto;
 import kr.app.restfulapi.domain.sample.post.entity.Post;
+import kr.app.restfulapi.domain.sample.post.file.entity.PostFile;
+import kr.app.restfulapi.domain.sample.post.file.service.PostFileService;
 import kr.app.restfulapi.domain.sample.post.repository.PostRepository;
 import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundException;
 import kr.app.restfulapi.global.util.SecurityContextHelper;
@@ -24,11 +30,12 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final GnrlUserRepository gnrlUserRepository;
+  private final PostFileService fileService;
 
   @Transactional(readOnly = true)
   public Page<PostRspnsDto> getAllPost(PostSrchDto srchDto, Pageable pageable) {
 
-    return postRepository.findAllWithCriteria(srchDto.toEntity(), pageable).map(PostRspnsDto::toDto);
+    return postRepository.findAllWithCriteria(srchDto.toEntity(), pageable).map(post -> PostRspnsDto.toDto(post, null));
   }
 
   @Transactional(readOnly = true)
@@ -44,7 +51,7 @@ public class PostService {
     }
     */
 
-    Optional<PostRspnsDto> optPostRspnsDto = postRepository.findByPostTsid(postTsid).map(PostRspnsDto::toDto);
+    Optional<PostRspnsDto> optPostRspnsDto = postRepository.findByPostTsid(postTsid).map(post -> PostRspnsDto.toDto(post, null));
 
     return optPostRspnsDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
@@ -62,7 +69,18 @@ public class PostService {
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
     savedPost.setRgtrNm(userPrincipal.getUserNm());
 
-    return PostRspnsDto.toDto(savedPost);
+    /** 파일 업로드 */
+    List<FileReqstDto<PostFile>> fileReqstDtos = postReqstDto.getFileReqstDtos();
+    List<FileRspnsDto> uploadedFiles = new ArrayList<>();
+
+    fileReqstDtos.forEach(fileReqstDto -> {
+      fileReqstDto.setRfrncTsid(savedPost.getPostTsid());
+
+      List<FileRspnsDto> currentUploadedFiles = fileService.storeFiles(fileReqstDto.getFiles(), fileReqstDto);
+      uploadedFiles.addAll(currentUploadedFiles);
+    });
+
+    return PostRspnsDto.toDto(savedPost, uploadedFiles);
   }
 
   @Transactional
@@ -75,8 +93,8 @@ public class PostService {
         .orElseThrow(ResourceNotFoundException::new);
 
     Optional<PostRspnsDto> optPostRspnsDto = optPost.filter(post -> "N".equals(post.getSbmsnYn())).map(post -> {
-      post.setTtl(postReqstDto.ttl());
-      post.setCn(postReqstDto.cn());
+      post.setTtl(postReqstDto.getTtl());
+      post.setCn(postReqstDto.getCn());
       post.setSbmsnYn(sbmsnYn);
       if ("Y".equals(sbmsnYn)) {
         post.setSbmsnDt(LocalDateTime.now());
@@ -85,7 +103,7 @@ public class PostService {
       GnrlUser optRgtrUser = gnrlUserRepository.findByUserTsid(post.getRgtrTsid()).orElse(GnrlUser.builder().build());
       post.setRgtrNm(optRgtrUser.getUserNm());
 
-      return PostRspnsDto.toDto(post);
+      return PostRspnsDto.toDto(post, null);
     });
 
     return optPostRspnsDto.map(Optional::of).orElseThrow(() -> new ResourceNotFoundException("해당 게시글은 이미 제출되었습니다."));

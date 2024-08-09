@@ -76,9 +76,9 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
 
       String cleanedFilename = StringUtils.cleanPath(file.getOriginalFilename());
       String saveFileName = "FILE_" + CustomDateUtils.getCurrentDateTimeMillisecond();
-      String fileStreCours = uploadDir + File.separator + fileReqstDto.getFileGroupNm() + File.separator + CustomDateUtils.getCurrentYear()
+      String fileStrgPath = uploadDir + File.separator + fileReqstDto.getFileGroupNm() + File.separator + CustomDateUtils.getCurrentYear()
           + File.separator + CustomDateUtils.getCurrentMonth();
-      Path savePath = Paths.get(fileStreCours).resolve(saveFileName);
+      Path savePath = Paths.get(fileStrgPath).resolve(saveFileName);
 
       try {
         Files.createDirectories(savePath.getParent());
@@ -94,7 +94,7 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
           .fileClsfNm(fileReqstDto.getFileClsfNm())
           .fileSeq(atFileSeq.getAndIncrement())
           .strgFileNm(saveFileName)
-          .fileStreCours(savePath.getParent().toString())
+          .fileStrgPath(savePath.getParent().toString())
           .fileExtnNm(CustomFileUtils.getFileExtension(cleanedFilename))
           .fileSize(file.getSize())
           .build();
@@ -131,7 +131,7 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
 
   @Transactional(readOnly = true)
   public byte[] getImage(FileRspnsDto fileRspnsDto) throws IOException {
-    Path imagePath = Paths.get(fileRspnsDto.fileStreCours()).resolve(fileRspnsDto.strgFileNm());
+    Path imagePath = Paths.get(fileRspnsDto.fileStrgPath()).resolve(fileRspnsDto.strgFileNm());
     return Files.readAllBytes(imagePath);
   }
 }

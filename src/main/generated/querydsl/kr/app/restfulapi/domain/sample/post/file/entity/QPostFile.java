@@ -34,7 +34,7 @@ public class QPostFile extends EntityPathBase<PostFile> {
     public final StringPath fileExtnNm = _super.fileExtnNm;
 
     //inherited
-    public final StringPath fileGroupNm = _super.fileGroupNm;
+    public final EnumPath<kr.app.restfulapi.domain.common.file.util.FileGroupNmType> fileGroupNm = _super.fileGroupNm;
 
     //inherited
     public final StringPath fileNm = _super.fileNm;
@@ -46,7 +46,7 @@ public class QPostFile extends EntityPathBase<PostFile> {
     public final NumberPath<Long> fileSize = _super.fileSize;
 
     //inherited
-    public final StringPath fileStreCours = _super.fileStreCours;
+    public final StringPath fileStrgPath = _super.fileStrgPath;
 
     //inherited
     public final EnumPath<kr.app.restfulapi.domain.common.file.util.FileSyncType> fileSyncCd = _super.fileSyncCd;
