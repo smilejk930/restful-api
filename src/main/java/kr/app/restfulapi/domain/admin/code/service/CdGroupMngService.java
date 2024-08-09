@@ -29,7 +29,7 @@ public class CdGroupMngService {
   @Transactional
   public CdGroupMngRspnsDto createCdGroup(CdGroupMngReqstDto cdGroupMngReqstDto) {
 
-    String cdGroupNm = cdGroupMngReqstDto.cdGroupNm();
+    String cdGroupNm = cdGroupMngReqstDto.getCdGroupNm();
 
     if (cdGroupRepository.findByCdGroupNm(cdGroupNm).isPresent()) {
       throw new DuplicateKeyException("입력한 코드그룹명이 존재합니다.");
@@ -44,9 +44,9 @@ public class CdGroupMngService {
   public Optional<CdGroupMngRspnsDto> updateCdGroup(String cdGroupNm, CdGroupMngReqstDto cdGroupMngReqstDto) {
 
     Optional<CdGroupMngRspnsDto> optCdGroupMngRspnsDto = cdGroupRepository.findByCdGroupNm(cdGroupNm).map(cdGroup -> {
-      cdGroup.setCdKornNm(cdGroupMngReqstDto.cdKornNm());
-      cdGroup.setUseYn(cdGroupMngReqstDto.useYn());
-      cdGroup.setComCdYn(cdGroupMngReqstDto.comCdYn());
+      cdGroup.setCdKornNm(cdGroupMngReqstDto.getCdKornNm());
+      cdGroup.setUseYn(cdGroupMngReqstDto.getUseYn());
+      cdGroup.setComCdYn(cdGroupMngReqstDto.getComCdYn());
 
       return CdGroupMngRspnsDto.toDto(cdGroup);
     });

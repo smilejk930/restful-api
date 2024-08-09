@@ -40,19 +40,19 @@ public class UserAuthController {
 
       // AuthenticationManager를 사용하여 인증 수행
       Authentication authentication =
-          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(lgnReqstDto.lgnId(), lgnReqstDto.pswd()));
+          authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(lgnReqstDto.getLgnId(), lgnReqstDto.getPswd()));
 
       // 인증 성공 시 SecurityContext에 인증 정보 저장
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
       String jwt = tokenProvider.generateToken(authentication);
-      log.info("User logged in successfully: {}", lgnReqstDto.lgnId());
+      log.info("User logged in successfully: {}", lgnReqstDto.getLgnId());
       return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(new JwtRspnsDto(jwt)).build());
     } catch (BadCredentialsException ex) {
-      log.warn("Login attempt failed for user: {}", lgnReqstDto.lgnId());
+      log.warn("Login attempt failed for user: {}", lgnReqstDto.getLgnId());
       throw new BadCredentialsException(FieldErrorReason.BAD_CREDENTIALS.getReason());
     } catch (LockedException ex) {
-      log.warn("Locked account attempt to login: {}", lgnReqstDto.lgnId());
+      log.warn("Locked account attempt to login: {}", lgnReqstDto.getLgnId());
       throw new LockedException("Account is locked");
     } catch (Exception ex) {
       throw new Exception("An error occurred during login");

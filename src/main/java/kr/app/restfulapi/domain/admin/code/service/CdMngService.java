@@ -61,11 +61,11 @@ public class CdMngService {
 
     Cd cd = cdRepository.findByCdGroupNmAndCdNm(cdGroupNm, cdNm).orElseThrow(ResourceNotFoundException::new);
 
-    cd.setCdKornNm(cdMngReqstDto.cdKornNm());
-    cd.setUpCdNm(cdMngReqstDto.upCdNm());
-    cd.setCdSeq(cdMngReqstDto.cdSeq());
-    cd.setCdExpln(cdMngReqstDto.cdExpln());
-    cd.setUseYn(cdMngReqstDto.useYn());
+    cd.setCdKornNm(cdMngReqstDto.getCdKornNm());
+    cd.setUpCdNm(cdMngReqstDto.getUpCdNm());
+    cd.setCdSeq(cdMngReqstDto.getCdSeq());
+    cd.setCdExpln(cdMngReqstDto.getCdExpln());
+    cd.setUseYn(cdMngReqstDto.getUseYn());
 
     Cd updatedCd = cdRepository.save(cd);
 

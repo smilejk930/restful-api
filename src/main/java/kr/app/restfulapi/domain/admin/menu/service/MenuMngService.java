@@ -46,11 +46,11 @@ public class MenuMngService {
   // @CachePut(value = CacheNames.MENU_PERMISSIONS, key = "#menuMngReqstDto.httpDmndMethNm + '-' + #menuMngReqstDto.urlAddr")
   @Transactional
   public MenuMngRspnsDto createMenu(String menuGroupCd, MenuMngReqstDto menuMngReqstDto) {
-    if (menuRepository.findByHttpDmndMethNmAndUrlAddr(menuMngReqstDto.httpDmndMethNm(), menuMngReqstDto.urlAddr()).isPresent()) {
+    if (menuRepository.findByHttpDmndMethNmAndUrlAddr(menuMngReqstDto.getHttpDmndMethNm(), menuMngReqstDto.getUrlAddr()).isPresent()) {
       throw new DuplicateKeyException("입력한 HTTP요청메소드명과 URL주소 존재합니다.");
     }
 
-    if (menuMngReqstDto.menuAcsAuthrtCd() == MenuAcsAuthrtType.MAA001 && menuMngReqstDto.userTypeCds().isEmpty()) {
+    if (menuMngReqstDto.getMenuAcsAuthrtCd() == MenuAcsAuthrtType.MAA001 && menuMngReqstDto.getUserTypeCds().isEmpty()) {
       throw new IllegalArgumentException("사용자유형은 1개 이상 선택해야 합니다.");
     }
 
@@ -59,7 +59,7 @@ public class MenuMngService {
 
     Menu savedMenu = menuRepository.save(menu);
 
-    if (menuMngReqstDto.menuAcsAuthrtCd() == MenuAcsAuthrtType.MAA001) {
+    if (menuMngReqstDto.getMenuAcsAuthrtCd() == MenuAcsAuthrtType.MAA001) {
       // 메뉴권한에 사용자유형 등록
       List<MenuAuthrt> menuAuthrts = menuMngReqstDto.toMenuAuthrtEntities(savedMenu);
       menuAuthrts.forEach(menuAuthrtRepository::save);
@@ -76,16 +76,16 @@ public class MenuMngService {
 
     Menu menu = menuRepository.findByMenuTsid(menuTsid).orElseThrow(ResourceNotFoundException::new);
 
-    menu.setMenuGroupCd(menuMngReqstDto.menuGroupCd());
-    menu.setMenuNm(menuMngReqstDto.menuNm());
-    menu.setMenuTypeCd(menuMngReqstDto.menuTypeCd());
-    menu.setMenuAcsAuthrtCd(menuMngReqstDto.menuAcsAuthrtCd());
-    menu.setHttpDmndMethNm(menuMngReqstDto.httpDmndMethNm());
-    menu.setUrlAddr(menuMngReqstDto.urlAddr());
-    menu.setMenuSeq(menuMngReqstDto.menuSeq());
-    menu.setMenuExpln(menuMngReqstDto.menuExpln());
-    menu.setUpMenuTsid(menuMngReqstDto.upMenuTsid());
-    menu.setNpagYn(menuMngReqstDto.npagYn());
+    menu.setMenuGroupCd(menuMngReqstDto.getMenuGroupCd());
+    menu.setMenuNm(menuMngReqstDto.getMenuNm());
+    menu.setMenuTypeCd(menuMngReqstDto.getMenuTypeCd());
+    menu.setMenuAcsAuthrtCd(menuMngReqstDto.getMenuAcsAuthrtCd());
+    menu.setHttpDmndMethNm(menuMngReqstDto.getHttpDmndMethNm());
+    menu.setUrlAddr(menuMngReqstDto.getUrlAddr());
+    menu.setMenuSeq(menuMngReqstDto.getMenuSeq());
+    menu.setMenuExpln(menuMngReqstDto.getMenuExpln());
+    menu.setUpMenuTsid(menuMngReqstDto.getUpMenuTsid());
+    menu.setNpagYn(menuMngReqstDto.getNpagYn());
 
     Menu updatedMenu = menuRepository.save(menu);
 
