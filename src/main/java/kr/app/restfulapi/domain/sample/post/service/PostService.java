@@ -71,13 +71,15 @@ public class PostService {
     List<FileReqstDto<PostFile>> fileReqstDtos = postReqstDto.getFileReqstDtos();
     List<FileRspnsDto> uploadedFiles = new ArrayList<>();
 
-    fileReqstDtos.stream().filter(fileReqstDto -> fileReqstDto.getFiles() != null && !fileReqstDto.getFiles().isEmpty()).forEach(fileReqstDto -> {
-      fileReqstDto.setFileGroupNm(FileGroupNmType.SAMPLE_POST);
-      fileReqstDto.setRfrncTsid(savedPost.getPostTsid());
+    if (null != fileReqstDtos) {
+      fileReqstDtos.stream().filter(fileReqstDto -> fileReqstDto.getFiles() != null && !fileReqstDto.getFiles().isEmpty()).forEach(fileReqstDto -> {
+        fileReqstDto.setFileGroupNm(FileGroupNmType.SAMPLE_POST);
+        fileReqstDto.setRfrncTsid(savedPost.getPostTsid());
 
-      List<FileRspnsDto> currentUploadedFiles = fileService.storeFiles(fileReqstDto.getFiles(), fileReqstDto);
-      uploadedFiles.addAll(currentUploadedFiles);
-    });
+        List<FileRspnsDto> currentUploadedFiles = fileService.storeFiles(fileReqstDto.getFiles(), fileReqstDto);
+        uploadedFiles.addAll(currentUploadedFiles);
+      });
+    }
     /** 파일 업로드 - 종료 */
 
     return PostRspnsDto.toDto(savedPost, uploadedFiles);
@@ -108,23 +110,25 @@ public class PostService {
       // 파일 파라미터 객체
       List<FileReqstDto<PostFile>> fileReqstDtos = postReqstDto.getFileReqstDtos();
 
-      // 파일 조회
-      List<FileRspnsDto> fileRspnsDtos =
-          fileService.getAllFiles(FileReqstDto.<PostFile>builder().fileGroupNm(FileGroupNmType.SAMPLE_POST).rfrncTsid(postTsid).build());
+      if (null != fileReqstDtos) {
+        // 파일 조회
+        List<FileRspnsDto> fileRspnsDtos =
+            fileService.getAllFiles(FileReqstDto.<PostFile>builder().fileGroupNm(FileGroupNmType.SAMPLE_POST).rfrncTsid(postTsid).build());
 
-      List<String> fileTsids = fileRspnsDtos.stream().map(FileRspnsDto::fileTsid).toList();
+        List<String> fileTsids = fileRspnsDtos.stream().map(FileRspnsDto::fileTsid).toList();
 
-      // 파일 삭제
-      fileReqstDtos.stream()
-          .filter(fileReqstDto -> fileReqstDto.getDelFileTsids() != null && !fileReqstDto.getDelFileTsids().isEmpty())
-          .forEach(fileReqstDto -> fileService.deleteFiles(fileTsids, fileReqstDto.getDelFileTsids()));
+        // 파일 삭제
+        fileReqstDtos.stream()
+            .filter(fileReqstDto -> fileReqstDto.getDelFileTsids() != null && !fileReqstDto.getDelFileTsids().isEmpty())
+            .forEach(fileReqstDto -> fileService.deleteFiles(fileTsids, fileReqstDto.getDelFileTsids()));
 
-      // 파일 업로드
-      fileReqstDtos.stream().filter(fileReqstDto -> fileReqstDto.getFiles() != null && !fileReqstDto.getFiles().isEmpty()).forEach(fileReqstDto -> {
-        fileReqstDto.setFileGroupNm(FileGroupNmType.SAMPLE_POST);
-        fileReqstDto.setRfrncTsid(post.getPostTsid());
-        fileService.storeFiles(fileReqstDto.getFiles(), fileReqstDto);
-      });
+        // 파일 업로드
+        fileReqstDtos.stream().filter(fileReqstDto -> fileReqstDto.getFiles() != null && !fileReqstDto.getFiles().isEmpty()).forEach(fileReqstDto -> {
+          fileReqstDto.setFileGroupNm(FileGroupNmType.SAMPLE_POST);
+          fileReqstDto.setRfrncTsid(post.getPostTsid());
+          fileService.storeFiles(fileReqstDto.getFiles(), fileReqstDto);
+        });
+      }
 
       // 수정된 파일 조회
       List<FileRspnsDto> newFileRspnsDtos =
