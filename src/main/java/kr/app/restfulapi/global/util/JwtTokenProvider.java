@@ -96,24 +96,4 @@ public class JwtTokenProvider {
       return false;
     }
   }
-
-  // TODO jwt-해당 메소드가 필요한지 판단 필요
-  public boolean validateToken(String token, String lgnId) {
-    Optional<String> optLgnId = getLgnIdFromJWT(token);
-    if (optLgnId.isPresent()) {
-      return optLgnId.get().equals(lgnId) && !isTokenExpired(token);
-    } else {
-      return false;
-    }
-  }
-
-  // TODO jwt-해당 메소드가 필요한지 판단 필요(JwtException에서 유효기간 체크 해줌)
-  private boolean isTokenExpired(String token) {
-    try {
-      return extractClaim(token, Claims::getExpiration).before(Timestamp.valueOf(LocalDateTime.now()));
-    } catch (NullPointerException | JwtException ex) {
-      log.error(ex.getMessage());
-      return false;
-    }
-  }
 }
