@@ -20,9 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "post",
-    // uniqueConstraints = {@UniqueConstraint(columnNames = {"user_tsid"}, name = "fk_user_tsid")},
-    indexes = {@Index(name = "IX_t_post_ttl", columnList = "ttl"), @Index(name = "IX_t_post_reg_dt", columnList = "reg_dt")})
+@Table(name = "t_post", indexes = {@Index(name = "ix_t_post_ttl", columnList = "ttl"), @Index(name = "ix_t_post_reg_dt", columnList = "reg_dt")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,11 +29,6 @@ import lombok.Setter;
 public class Post extends BaseAuditingEntity {
 
   @Id
-  // Resolved [java.lang.NullPointerException: Cannot invoke "cubrid.jdbc.driver.CUBRIDConnection.createCUBRIDException(int, java.lang.Throwable)"
-  // because "this.con" is null]
-  // @GeneratedValue(strategy = GenerationType.IDENTITY) //cubrid error 발생
-  // @GeneratedValue(strategy = GenerationType.AUTO)
-  // @GeneratedValue(strategy = GenerationType.UUID)
   @Tsid
   @Comment("게시글식별번호")
   @Column(length = 13, columnDefinition = "CHAR(13)")
@@ -73,11 +66,4 @@ public class Post extends BaseAuditingEntity {
 
   @Transient
   private PostSrchDto srchDto;
-
-  // @Comment("사용자식별번호")
-  // @ManyToOne(fetch = FetchType.LAZY)
-  // @JoinColumn(name = "user_tsid",
-  // name = "wrter_id", referencedColumnName = "userTsid",
-  // foreignKey = @ForeignKey(name = "fk_gnrl_user_to_post"))
-  // private GnrlUser gnrlUser;
 }

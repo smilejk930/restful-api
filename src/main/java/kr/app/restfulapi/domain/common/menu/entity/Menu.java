@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "uk_menu_url_http_meth", columnNames = {"urlAddr", "httpDmndMethNm"})})
+@Table(name = "sys_menu", uniqueConstraints = {@UniqueConstraint(name = "uix_sys_menu_url_http_meth", columnNames = {"urlAddr", "httpDmndMethNm"})})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

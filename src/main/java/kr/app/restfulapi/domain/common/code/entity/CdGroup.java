@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(name = "sys_cd_group")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

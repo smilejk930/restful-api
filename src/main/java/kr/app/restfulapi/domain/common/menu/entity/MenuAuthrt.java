@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(indexes = {@Index(name = "ix_menu_authrt", columnList = "user_type_cd")})
+@Table(name = "sys_menu_authrt", indexes = {@Index(name = "ix_sys_menu_authrt", columnList = "user_type_cd")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

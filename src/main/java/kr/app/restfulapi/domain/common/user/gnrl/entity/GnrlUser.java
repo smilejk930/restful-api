@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(indexes = {@Index(name = "idx_user_nm", columnList = "user_nm")},
-    uniqueConstraints = {@UniqueConstraint(name = "uix_gnrl_user", columnNames = {"lgn_id"})})
+@Table(name = "sys_gnrl_user", indexes = {@Index(name = "ix_sys_gnrl_user_nm", columnList = "user_nm")},
+    uniqueConstraints = {@UniqueConstraint(name = "uix_sys_gnrl_user", columnNames = {"lgn_id"})})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
