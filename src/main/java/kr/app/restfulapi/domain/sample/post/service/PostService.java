@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import kr.app.restfulapi.domain.common.file.dto.FileReqstDto;
 import kr.app.restfulapi.domain.common.file.dto.FileRspnsDto;
+import kr.app.restfulapi.domain.common.file.util.FileGroupNmType;
 import kr.app.restfulapi.domain.common.user.gnrl.entity.GnrlUser;
 import kr.app.restfulapi.domain.common.user.gnrl.repository.GnrlUserRepository;
 import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
@@ -41,17 +42,14 @@ public class PostService {
   @Transactional(readOnly = true)
   public Optional<PostRspnsDto> getPostById(String postTsid) {
 
-    /*
-    Optional<PostDto> optPostDto;
-    if (!SecurityContextHelper.hasAnyRole(UserGroup.ADMIN_GROUP)) {
-      optPostDto = postRepository.findByPostTsidAndDelYn(postTsid, "N").map(PostDto::toDto);
-    } else {
-      UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
-      optPostDto = postRepository.findByPostTsidAndDelYnAndRgtrTsid(postTsid, "N", userPrincipal.getUserTsid()).map(PostDto::toDto);
-    }
-    */
+    Optional<PostRspnsDto> optPostRspnsDto = postRepository.findByPostTsid(postTsid).map(post -> {
 
-    Optional<PostRspnsDto> optPostRspnsDto = postRepository.findByPostTsid(postTsid).map(post -> PostRspnsDto.toDto(post, null));
+      /** 파일 조회 - 시작 */
+      List<FileRspnsDto> fileRspnsDtos =
+          fileService.getAllFiles(FileReqstDto.<PostFile>builder().fileGroupNm(FileGroupNmType.SAMPLE_POST).rfrncTsid(postTsid).build());
+      /** 파일 조회 - 끝 */
+      return PostRspnsDto.toDto(post, fileRspnsDtos);
+    });
 
     return optPostRspnsDto.map(Optional::of).orElseThrow(ResourceNotFoundException::new);
   }
@@ -69,16 +67,18 @@ public class PostService {
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
     savedPost.setRgtrNm(userPrincipal.getUserNm());
 
-    /** 파일 업로드 */
+    /** 파일 업로드 - 시작 */
     List<FileReqstDto<PostFile>> fileReqstDtos = postReqstDto.getFileReqstDtos();
     List<FileRspnsDto> uploadedFiles = new ArrayList<>();
 
-    fileReqstDtos.forEach(fileReqstDto -> {
+    fileReqstDtos.stream().filter(fileReqstDto -> fileReqstDto.getFiles() != null && !fileReqstDto.getFiles().isEmpty()).forEach(fileReqstDto -> {
+      fileReqstDto.setFileGroupNm(FileGroupNmType.SAMPLE_POST);
       fileReqstDto.setRfrncTsid(savedPost.getPostTsid());
 
       List<FileRspnsDto> currentUploadedFiles = fileService.storeFiles(fileReqstDto.getFiles(), fileReqstDto);
       uploadedFiles.addAll(currentUploadedFiles);
     });
+    /** 파일 업로드 - 종료 */
 
     return PostRspnsDto.toDto(savedPost, uploadedFiles);
   }
@@ -89,12 +89,13 @@ public class PostService {
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
 
     Optional<Post> optPost = postRepository.findByPostTsidAndDelYnAndRgtrTsid(postTsid, "N", userPrincipal.getUserTsid())
-        .map(Optional::ofNullable)
+        .map(Optional::of)
         .orElseThrow(ResourceNotFoundException::new);
 
     Optional<PostRspnsDto> optPostRspnsDto = optPost.filter(post -> "N".equals(post.getSbmsnYn())).map(post -> {
       post.setTtl(postReqstDto.getTtl());
       post.setCn(postReqstDto.getCn());
+      post.setTelgmLen(postReqstDto.getTelgmLen());
       post.setSbmsnYn(sbmsnYn);
       if ("Y".equals(sbmsnYn)) {
         post.setSbmsnDt(LocalDateTime.now());
@@ -103,7 +104,34 @@ public class PostService {
       GnrlUser optRgtrUser = gnrlUserRepository.findByUserTsid(post.getRgtrTsid()).orElse(GnrlUser.builder().build());
       post.setRgtrNm(optRgtrUser.getUserNm());
 
-      return PostRspnsDto.toDto(post, null);
+      /** 파일 삭제/업로드 - 시작 */
+      // 파일 파라미터 객체
+      List<FileReqstDto<PostFile>> fileReqstDtos = postReqstDto.getFileReqstDtos();
+
+      // 파일 조회
+      List<FileRspnsDto> fileRspnsDtos =
+          fileService.getAllFiles(FileReqstDto.<PostFile>builder().fileGroupNm(FileGroupNmType.SAMPLE_POST).rfrncTsid(postTsid).build());
+
+      List<String> fileTsids = fileRspnsDtos.stream().map(FileRspnsDto::fileTsid).toList();
+
+      // 파일 삭제
+      fileReqstDtos.stream()
+          .filter(fileReqstDto -> fileReqstDto.getDelFileTsids() != null && !fileReqstDto.getDelFileTsids().isEmpty())
+          .forEach(fileReqstDto -> fileService.deleteFiles(fileTsids, fileReqstDto.getDelFileTsids()));
+
+      // 파일 업로드
+      fileReqstDtos.stream().filter(fileReqstDto -> fileReqstDto.getFiles() != null && !fileReqstDto.getFiles().isEmpty()).forEach(fileReqstDto -> {
+        fileReqstDto.setFileGroupNm(FileGroupNmType.SAMPLE_POST);
+        fileReqstDto.setRfrncTsid(post.getPostTsid());
+        fileService.storeFiles(fileReqstDto.getFiles(), fileReqstDto);
+      });
+
+      // 수정된 파일 조회
+      List<FileRspnsDto> newFileRspnsDtos =
+          fileService.getAllFiles(FileReqstDto.<PostFile>builder().fileGroupNm(FileGroupNmType.SAMPLE_POST).rfrncTsid(postTsid).build());
+      /** 파일 삭제/업로드 - 종료 */
+
+      return PostRspnsDto.toDto(post, newFileRspnsDtos);
     });
 
     return optPostRspnsDto.map(Optional::of).orElseThrow(() -> new ResourceNotFoundException("해당 게시글은 이미 제출되었습니다."));
@@ -116,7 +144,7 @@ public class PostService {
 
     return optPost.filter(post -> "N".equals(post.getSbmsnYn())).map(post -> {
       post.setDelYn("Y");
-
+      // TODO 게시글 삭제 시 파일들도 삭제
       return true;
     }).orElseThrow(() -> new ResourceNotFoundException("해당 게시글은 이미 제출되었습니다."));
   }

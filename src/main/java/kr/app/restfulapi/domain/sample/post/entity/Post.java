@@ -22,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "post",
     // uniqueConstraints = {@UniqueConstraint(columnNames = {"user_tsid"}, name = "fk_user_tsid")},
-    indexes = {@Index(name = "idx_ttl", columnList = "ttl"), @Index(name = "idx_reg_dt", columnList = "reg_dt")})
+    indexes = {@Index(name = "IX_t_post_ttl", columnList = "ttl"), @Index(name = "IX_t_post_reg_dt", columnList = "reg_dt")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,7 +42,7 @@ public class Post extends BaseAuditingEntity {
   private String postTsid;
 
   @Comment("제목")
-  @Column(length = 200, nullable = false)
+  @Column(length = 500, nullable = false)
   private String ttl;
 
   @Comment("내용")

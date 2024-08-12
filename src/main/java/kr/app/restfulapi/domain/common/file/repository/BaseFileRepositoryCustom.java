@@ -5,4 +5,6 @@ import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 
 public interface BaseFileRepositoryCustom<T extends BaseFileEntity> {
   List<T> findAllWithCriteria(T fileEntity);
+
+  Long findByMaxFileSeq(T fileEntity);
 }

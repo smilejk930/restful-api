@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import kr.app.restfulapi.domain.common.file.dto.FileReqstDto;
 import kr.app.restfulapi.domain.common.file.dto.FileRspnsDto;
 import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 import kr.app.restfulapi.domain.common.file.repository.BaseFileRepository;
+import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.global.response.error.FieldErrorReason;
 import kr.app.restfulapi.global.response.error.exception.BusinessException;
 import kr.app.restfulapi.global.response.error.exception.FieldNullPointException;
@@ -26,6 +28,7 @@ import kr.app.restfulapi.global.response.error.exception.ResourceNotFoundExcepti
 import kr.app.restfulapi.global.util.CustomDateUtils;
 import kr.app.restfulapi.global.util.CustomFileUtils;
 import kr.app.restfulapi.global.util.CustomObjectUtils;
+import kr.app.restfulapi.global.util.SecurityContextHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,14 +59,17 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
   @Transactional
   public List<FileRspnsDto> storeFiles(List<MultipartFile> files, FileReqstDto<T> fileReqstDto) {
 
-    if (CustomObjectUtils.isAnyNullOfFields(fileReqstDto)) {
+    if (CustomObjectUtils.isAnyNullOfFields(fileReqstDto, "delFileTsids")) {
       log.error("fileReqstDto의 속성값들 중 NULL 존재");
       throw new FieldNullPointException();
     }
 
+    // 파일 순번
+    Long maxFileSeq = fileRepository.findByMaxFileSeq(fileReqstDto.toEntity(fileEntity));
+
     List<FileRspnsDto> uploadedFiles = new ArrayList<>();
 
-    AtomicLong atFileSeq = new AtomicLong(1L);
+    AtomicLong atFileSeq = new AtomicLong(maxFileSeq);
 
     Stream.ofNullable(files).flatMap(List<MultipartFile>::stream).forEach(file -> {
 
@@ -107,6 +113,25 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
     });
 
     return uploadedFiles;
+  }
+
+  @Transactional
+  public void deleteFiles(List<String> fileTsids, List<String> delFileTsids) {
+    if (!fileTsids.isEmpty()) {
+      UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
+      String userTsid = userPrincipal.getUserTsid();
+      fileTsids.forEach(fileTsid -> {
+        delFileTsids.forEach(delFileTsid -> {
+          if (fileTsid.equals(delFileTsid)) {
+            fileRepository.findByFileTsidAndDelYn(fileTsid, "N").ifPresent(file -> {
+              file.setDelYn("Y");
+              file.setMdfrTsid(userTsid);
+              file.setMdfcnDt(LocalDateTime.now());
+            });
+          }
+        });
+      });
+    }
   }
 
   @Transactional(readOnly = true)

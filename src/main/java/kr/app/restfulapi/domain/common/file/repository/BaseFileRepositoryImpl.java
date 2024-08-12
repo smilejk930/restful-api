@@ -10,6 +10,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
+import kr.app.restfulapi.domain.common.file.util.FileGroupNmType;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -35,13 +36,24 @@ public class BaseFileRepositoryImpl<T extends BaseFileEntity> implements BaseFil
     return query.fetch();
   }
 
+  public Long findByMaxFileSeq(T criteria) {
+    BooleanExpression whereClause = buildWhereClause(criteria);
+    whereClause = whereClause.and(Expressions.stringPath(qFileEntity, "fileClsfNm").eq(criteria.getFileClsfNm()));
+
+    JPAQuery<Long> query = queryFactory.select(Expressions.numberPath(Long.class, qFileEntity, "fileSeq").max()).from(qFileEntity).where(whereClause);
+
+    Long maxFileSeq = query.fetchOne();
+
+    return maxFileSeq != null ? maxFileSeq + 1 : 1L;
+  }
+
   /**
    * Where절 Build
    */
   private BooleanExpression buildWhereClause(T criteria) {
     return Expressions.stringPath(qFileEntity, "delYn")
         .eq("N")
-        .and(Expressions.stringPath(qFileEntity, "fileGroupNm").eq(criteria.getFileGroupNm().name()))
+        .and(Expressions.enumPath(FileGroupNmType.class, qFileEntity, "fileGroupNm").eq(criteria.getFileGroupNm()))
         .and(Expressions.stringPath(qFileEntity, "rfrncTsid").eq(criteria.getRfrncTsid()));
   }
 }

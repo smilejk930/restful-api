@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import kr.app.restfulapi.domain.sample.post.dto.PostReqstDto;
@@ -32,20 +31,11 @@ public class PostController {
 
   private final PostService postService;
 
-  // TODO 게시글 등록 파일등록도 같이, 수정 시에는 파일 삭제가 됐다면 삭제될 파일들 리스트를 가지고 파일 삭제해야함
-  // TODO 게시글 삭제 시 파일들도 삭제
-
   @GetMapping
   public ResponseEntity<SuccessResponse> getAllPost(@ModelAttribute PostSrchDto srchDto,
       @PageableDefault(size = 10, sort = "regDt", direction = Sort.Direction.DESC) Pageable pageable) {
 
     Page<PostRspnsDto> postRspnsDtos = postService.getAllPost(srchDto, pageable);
-    /*
-    List<EntityModel<PostDto>> models = postRspnsDtos.stream().map(data -> {
-      Link detailLink = null;
-      detailLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPostById(data.postTsid(), userDetails)).withRel("detailLink");
-      return EntityModel.of(data, detailLink);
-    }).toList();*/
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(postRspnsDtos).build());
   }
@@ -56,12 +46,6 @@ public class PostController {
     Optional<PostRspnsDto> optPostRspnsDto = postService.getPostById(postTsid);
 
     return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(optPostRspnsDto).build());
-
-    /*return optPostDto.map(data -> {
-       EntityModel<PostDto> model = EntityModel.of(data);
-      model.add(linkTo(methodOn(this.getClass()).getAllPost(data, Pageable.unpaged(), userDetails)).withRel("allPosts"));
-      return ResponseEntity.ok(SuccessResponse.builder().status(SuccessStatus.OK).data(data).build());
-    }).orElseThrow(ResourceNotFoundException::new);*/
   }
 
   @PostMapping
@@ -87,14 +71,14 @@ public class PostController {
 
   @PutMapping("/{postTsid}")
   public ResponseEntity<SuccessResponse> updatePost(@PathVariable String postTsid, @Validated
-  @RequestBody PostReqstDto postReqstDto) {
+  @ModelAttribute PostReqstDto postReqstDto) {
 
     return processUpdatePost(postTsid, postReqstDto, "N");
   }
 
   @PutMapping("/submit/{postTsid}")
   public ResponseEntity<SuccessResponse> submitUpdatePost(@PathVariable String postTsid, @Validated(FinalSubmit.class)
-  @RequestBody PostReqstDto postReqstDto) {
+  @ModelAttribute PostReqstDto postReqstDto) {
 
     return processUpdatePost(postTsid, postReqstDto, "Y");
   }
