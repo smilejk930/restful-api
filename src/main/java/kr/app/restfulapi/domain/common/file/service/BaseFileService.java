@@ -19,7 +19,6 @@ import kr.app.restfulapi.domain.common.file.dto.FileReqstDto;
 import kr.app.restfulapi.domain.common.file.dto.FileRspnsDto;
 import kr.app.restfulapi.domain.common.file.entity.BaseFileEntity;
 import kr.app.restfulapi.domain.common.file.repository.BaseFileRepository;
-import kr.app.restfulapi.domain.common.user.gnrl.util.UserPrincipal;
 import kr.app.restfulapi.global.response.error.FieldErrorReason;
 import kr.app.restfulapi.global.response.error.exception.BusinessException;
 import kr.app.restfulapi.global.response.error.exception.FieldNullPointException;
@@ -117,20 +116,33 @@ public abstract class BaseFileService<T extends BaseFileEntity> {
 
   @Transactional
   public void deleteFiles(List<String> fileTsids, List<String> delFileTsids) {
+
     if (!fileTsids.isEmpty()) {
-      UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();
-      String userTsid = userPrincipal.getUserTsid();
-      fileTsids.forEach(fileTsid -> {
-        delFileTsids.forEach(delFileTsid -> {
-          if (fileTsid.equals(delFileTsid)) {
-            fileRepository.findByFileTsidAndDelYn(fileTsid, "N").ifPresent(file -> {
-              file.setDelYn("Y");
-              file.setMdfrTsid(userTsid);
-              file.setMdfcnDt(LocalDateTime.now());
-            });
-          }
-        });
-      });
+      String userTsid = SecurityContextHelper.getUserPrincipal().getUserTsid();
+
+      fileTsids.forEach(fileTsid -> delFileTsids.forEach(delFileTsid -> {
+        if (fileTsid.equals(delFileTsid)) {
+          fileRepository.findByFileTsidAndDelYn(fileTsid, "N").ifPresent(file -> {
+            file.setDelYn("Y");
+            file.setMdfrTsid(userTsid);
+            file.setMdfcnDt(LocalDateTime.now());
+          });
+        }
+      }));
+    }
+  }
+
+  @Transactional
+  public void deleteFilesByFileTsids(List<String> fileTsids) {
+
+    if (!fileTsids.isEmpty()) {
+      String userTsid = SecurityContextHelper.getUserPrincipal().getUserTsid();
+
+      fileTsids.forEach(fileTsid -> fileRepository.findByFileTsidAndDelYn(fileTsid, "N").ifPresent(file -> {
+        file.setDelYn("Y");
+        file.setMdfrTsid(userTsid);
+        file.setMdfcnDt(LocalDateTime.now());
+      }));
     }
   }
 

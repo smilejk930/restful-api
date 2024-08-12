@@ -144,7 +144,16 @@ public class PostService {
 
     return optPost.filter(post -> "N".equals(post.getSbmsnYn())).map(post -> {
       post.setDelYn("Y");
-      // TODO 게시글 삭제 시 파일들도 삭제
+
+      /** 게시글 삭제 시 연관된 파일들 삭제 - 시작 */
+      // 게시글에 연결된 파일 조회
+      List<FileRspnsDto> fileRspnsDtos =
+          fileService.getAllFiles(FileReqstDto.<PostFile>builder().fileGroupNm(FileGroupNmType.SAMPLE_POST).rfrncTsid(postTsid).build());
+
+      List<String> fileTsids = fileRspnsDtos.stream().map(FileRspnsDto::fileTsid).toList();
+      fileService.deleteFilesByFileTsids(fileTsids);
+      /** 게시글 삭제 시 연관된 파일들 삭제 - 종료 */
+
       return true;
     }).orElseThrow(() -> new ResourceNotFoundException("해당 게시글은 이미 제출되었습니다."));
   }
