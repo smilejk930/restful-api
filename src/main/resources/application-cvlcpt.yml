@@ -18,10 +18,11 @@ spring:
     #url: jdbc:h2:mem:testdb
     #username: sa
     #password:
-    driver-class-name: cubrid.jdbc.driver.CUBRIDDriver
-    url: 'jdbc:cubrid:localhost:33000:testdb:::?charset=UTF-8'
-    username: testuser
-    password: ictway
+    #driver-class-name: cubrid.jdbc.driver.CUBRIDDriver
+    #url: 'jdbc:cubrid:localhost:33000:testdb:::?charset=UTF-8'
+    #username: testuser
+    #password: ictway
+    jndi-name: java:jboss/datasources/CubridRestfulApiDS
     
   jpa:
     properties:

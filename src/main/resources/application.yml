@@ -1,10 +1,6 @@
 #prod, dev 공통 설정
 #공백: 스페이스 2칸
 
-#서버 포트 설정
-server:
-  port: 9099
-  
 spring:
   application:
     name: restful-api
@@ -12,6 +8,10 @@ spring:
   #profile(e.g. dev, prod / cvlcpt, pbadms)
   profiles:
     active: dev, cvlcpt
+  
+  #내장톰캣 사용 안함
+  main:
+    web-application-type: none
     
   #JPA 설정
   jpa:

@@ -1,32 +1,17 @@
 #개발버전 설정
 
-#logging
 logging:
   level:
+    root: DEBUG
     org:
-      springframework: debug
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-
+      springframework: DEBUG
+    kr:
+      app:
+        restfulapi: DEBUG
+        
 #file upload path
 file:
   upload-dir: D:/develop/restful-api-file
-
-#actuator의 모든 정보를 볼 수 있음
-management:
-  server:
-    port: 9293
-  endpoint:
-    health :
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: '*'
 
 #CORS Configuration
 cors:

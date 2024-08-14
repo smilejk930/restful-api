@@ -1,11 +1,14 @@
 #운영버전 설정
 
-#logging
 logging:
   level:
+    root: WARN
     org:
-      springframework: info
-  
+      springframework: INFO
+    kr:
+      app:
+        restfulapi: INFO
+         
 #file upload path
 file:
   upload-dir: D:/develop/restful-api-file
