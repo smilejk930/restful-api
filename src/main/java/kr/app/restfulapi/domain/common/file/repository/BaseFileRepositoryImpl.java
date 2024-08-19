@@ -1,7 +1,6 @@
 package kr.app.restfulapi.domain.common.file.repository;
 
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,7 +19,6 @@ public class BaseFileRepositoryImpl<T extends BaseFileEntity> implements BaseFil
   private final EntityPathBase<T> qFileEntity;
 
   @Override
-  @Transactional(readOnly = true)
   public List<T> findAllWithCriteria(T criteria) {
 
     BooleanExpression whereClause = buildWhereClause(criteria);

@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
@@ -35,7 +34,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
   private QGnrlUser qGnrlUser = QGnrlUser.gnrlUser;
 
   @Override
-  @Transactional(readOnly = true)
   public Page<Post> findAllWithCriteria(Post criteria, Pageable pageable) {
 
     BooleanExpression whereClause = buildWhereClause(criteria);
@@ -105,7 +103,6 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
   }
 
   @Override
-  @Transactional(readOnly = true)
   public Optional<Post> findByPostTsid(String postTsid) {
 
     UserPrincipal userPrincipal = SecurityContextHelper.getUserPrincipal();

@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -27,7 +26,6 @@ public class CdGroupRepositoryImpl implements CdGroupRepositoryCustom {
   private QCdGroup qCdGroup = QCdGroup.cdGroup;
 
   @Override
-  @Transactional(readOnly = true)
   public Page<CdGroup> findAllWithCriteria(CdGroup criteria, Pageable pageable) {
 
     BooleanExpression whereClause = buildWhereClause(criteria);

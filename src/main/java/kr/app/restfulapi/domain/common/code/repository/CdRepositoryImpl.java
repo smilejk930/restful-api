@@ -2,7 +2,6 @@ package kr.app.restfulapi.domain.common.code.repository;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -21,7 +20,6 @@ public class CdRepositoryImpl implements CdRepositoryCustom {
   private QCd qCd = QCd.cd;
 
   @Override
-  @Transactional(readOnly = true)
   public List<Cd> findAllWithCriteria(String cdGroupNm, Cd criteria) {
 
     criteria.setCdGroupNm(cdGroupNm);
