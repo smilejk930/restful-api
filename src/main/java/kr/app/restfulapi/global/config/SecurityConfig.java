@@ -35,7 +35,7 @@ public class SecurityConfig {
 
   private final SecurityExceptionHandler securityExceptionHandler;
   private final GlobalExceptionTranslationFilter globalExceptionTranslationFilter;
-  private final CustomUserDetailsService userDetailsService;
+  private final CustomUserDetailsService customUserDetailsService;
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final DynamicAuthorizationFilter dynamicAuthorizationFilter;
 
@@ -54,7 +54,6 @@ public class SecurityConfig {
         .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(securityExceptionHandler) // AuthenticationEntryPoint는 인증되지
                                                                                                                      // 않은 사용자가 보안된 리소스에 접근하려 할 때 호출
             .accessDeniedHandler(securityExceptionHandler)) // AccessDeniedHandler는 인증된 사용자가 권한이 없는 리소스에 접근하려 할 때 호출
-        .userDetailsService(userDetailsService) // UserDetailsService 설정
     ;
 
     return http.build();
@@ -63,7 +62,7 @@ public class SecurityConfig {
   @Bean
   public AuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setUserDetailsService(customUserDetailsService);// UserDetailsService 설정
     authProvider.setPasswordEncoder(passwordEncoder());
     return authProvider;
   }
