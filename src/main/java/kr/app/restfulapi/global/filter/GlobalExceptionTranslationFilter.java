@@ -1,7 +1,8 @@
 package kr.app.restfulapi.global.filter;
 
 import java.io.IOException;
-import org.springframework.stereotype.Component;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,7 +12,7 @@ import kr.app.restfulapi.global.response.error.exception.SecurityExceptionHandle
 import lombok.RequiredArgsConstructor;
 
 
-@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 public class GlobalExceptionTranslationFilter extends OncePerRequestFilter {
 
@@ -25,7 +26,5 @@ public class GlobalExceptionTranslationFilter extends OncePerRequestFilter {
     } catch (Exception ex) {
       securityExceptionHandler.handleException(request, response, ex);
     }
-
   }
-
 }
